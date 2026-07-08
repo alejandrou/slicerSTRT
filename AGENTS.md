@@ -421,3 +421,27 @@ C:\stratum\extensions\slicerSTRT
 The current project is still a safe sandbox and should not be treated as production clinical software.
 
 Before adding new functionality, prefer cleaning generated template behavior and keeping the extension understandable.
+
+---
+
+## 14. Reusable Codex workflow
+
+For future Codex tasks, prefer this pattern:
+
+* Read `AGENTS.md`.
+* Follow the relevant `.agents/*.md` files.
+* Implement one specific `tasks/*.md` task card.
+* Keep changes small and reviewable.
+* Do not run Git commands unless explicitly asked.
+
+Example 1:
+
+```text
+Read AGENTS.md. Follow .agents/task_protocol.md and .agents/slicer_workflow.md. Implement tasks/phase_2a_check_environment.md. Keep changes small. Do not run Git commands.
+```
+
+Example 2:
+
+```text
+Read AGENTS.md. Follow .agents/task_protocol.md and .agents/code_style.md. In extensions/slicerSTRT, make only the requested small change: <describe change>. Do not run Git commands.
+```
