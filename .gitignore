@@ -1,0 +1,10 @@
+# Local-only or unmanaged folders
+/source/
+/apps/
+/knowledge/
+/workspace/
+
+# Common generated artifacts
+*.pyc
+__pycache__/
+.DS_Store
