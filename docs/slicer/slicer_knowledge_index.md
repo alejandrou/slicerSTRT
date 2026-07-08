@@ -31,7 +31,7 @@ Use this for:
 
 When answering a Slicer question:
 
-1. Check the STRATUM extension first.
+1. Check the slicerSTRT extension first.
 2. Check local Slicer source.
 3. Check `slicer-skill`.
 4. Only use web if local references are insufficient or the user asks for current/latest information.

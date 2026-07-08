@@ -1,4 +1,4 @@
-# STRATUM Coding Standards
+# slicerSTRT Coding Standards
 
 These rules are based on the Perk Lab presentation "Writing correct and understandable code".
 
@@ -112,7 +112,7 @@ Do not use comments for:
 
 Use TODO comments clearly:
 
-`# TODO: Validate this threshold with STRATUM sample data.`
+`# TODO: Validate this threshold with slicerSTRT sample data.`
 
 ## Cohesion
 

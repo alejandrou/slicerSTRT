@@ -27,7 +27,7 @@ Do not inspect the full repository.
 For Slicer API tasks:
 
 Read `AGENTS.md`.
-Inspect the local STRATUM module.
+Inspect the local slicerSTRT module.
 Then search only the relevant Slicer source folders.
 Do not guess APIs.
 

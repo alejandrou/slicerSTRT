@@ -1,6 +1,6 @@
-# STRATUM Codex Instructions
+# slicerSTRT Codex Instructions
 
-Personal workflow guide for using Codex efficiently in the STRATUM / 3D Slicer workspace.
+Personal workflow guide for using Codex efficiently in the slicerSTRT / 3D Slicer workspace.
 
 This file is for the developer, not for the AI agent.
 
@@ -64,7 +64,7 @@ Example:
 Read AGENTS.md and docs/development/coding_standards.md.
 
 Then inspect only:
-extensions/SlicerStratum/Stratum/Stratum.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 
 Task:
 Explain the current module structure and suggest the smallest safe cleanup.
@@ -93,7 +93,7 @@ Good separation:
 
 ```text
 Chat 1: project structure
-Chat 2: clean Stratum.py
+Chat 2: clean slicerSTRT.py
 Chat 3: add first test
 Chat 4: understand MRML nodes
 Chat 5: add UI controls
@@ -175,7 +175,7 @@ Task:
 I need to understand how [SLICER CONCEPT] works.
 
 Search order:
-1. extensions/SlicerStratum
+1. extensions/slicerSTRT
 2. C:\slicerSTRT\source
 3. C:\Users\AlejandroHerrera\.codex\skills\slicer-skill
 
@@ -192,7 +192,7 @@ Read AGENTS.md.
 
 Then read:
 docs/development/coding_standards.md
-extensions/SlicerStratum/Stratum/Stratum.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 
 Task:
 Make the smallest safe change to [GOAL].
@@ -278,7 +278,7 @@ Good:
 ```text
 @AGENTS.md
 @docs/development/coding_standards.md
-@extensions/SlicerStratum/Stratum/Stratum.py
+@extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 ```
 
 For Slicer API tasks:
@@ -286,7 +286,7 @@ For Slicer API tasks:
 ```text
 @AGENTS.md
 @docs/slicer/slicer_knowledge_index.md
-@extensions/SlicerStratum/Stratum/Stratum.py
+@extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 ```
 
 Only add source folders when needed:
@@ -321,7 +321,7 @@ C:\slicerSTRT\source
 Normal development goes under:
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum
+C:\slicerSTRT\extensions\slicerSTRT
 ```
 
 Documentation goes under:
@@ -360,7 +360,7 @@ For a normal development session:
 | Task | Context | Model |
 |---|---|---|
 | Markdown/docs cleanup | AGENTS.md + one docs file | Cheap/fast |
-| Explain Stratum.py | AGENTS.md + Stratum.py | Cheap/fast |
+| Explain slicerSTRT.py | AGENTS.md + slicerSTRT.py | Cheap/fast |
 | Small Python change | AGENTS.md + coding standards + target file | Cheap/fast or medium |
 | First test | AGENTS.md + testing strategy + target file | Medium |
 | Slicer API question | AGENTS.md + slicer index + relevant source folder | Medium/strong |

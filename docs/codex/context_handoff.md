@@ -1,13 +1,13 @@
-# STRATUM Slicer Context Handoff
+# slicerSTRT Slicer Context Handoff
 
 ## Current status
 
-The local STRATUM/Slicer workspace is located at:
+The local slicerSTRT/Slicer workspace is located at:
 
 `C:\slicerSTRT`
 
-The `Stratum` scripted module has been created and loads correctly in 3D Slicer.
-Cleanup pass completed: removed generated `__pycache__` folders under `C:\slicerSTRT\extensions\SlicerStratum` and trimmed template boilerplate from `Stratum.py`, `StratumWidget.py`, `StratumLogic.py`, and `StratumTest.py` without changing the module split or adding STRATUM functionality.
+The `slicerSTRT` scripted module has been created and loads correctly in 3D Slicer.
+Cleanup pass completed: removed generated `__pycache__` folders under `C:\slicerSTRT\extensions\slicerSTRT` and trimmed template boilerplate from `slicerSTRT.py` without changing the module structure or adding slicerSTRT functionality.
 
 ## Main paths
 
@@ -16,9 +16,9 @@ Cleanup pass completed: removed generated `__pycache__` folders under `C:\slicer
 - Slicer source: `C:\slicerSTRT\source`
 - Slicer build: `C:\slicerSTRT\apps\SR`
 - Slicer executable: `C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe`
-- STRATUM extension: `C:\slicerSTRT\extensions\SlicerStratum`
-- STRATUM module: `C:\slicerSTRT\extensions\SlicerStratum\Stratum`
-- Main module file: `C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py`
+- slicerSTRT extension: `C:\slicerSTRT\extensions\slicerSTRT`
+- slicerSTRT module: `C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT`
+- Main module file: `C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py`
 - Project docs: `C:\slicerSTRT\docs`
 - Slicer skill: `C:\Users\AlejandroHerrera\.codex\skills\slicer-skill`
 
@@ -26,15 +26,17 @@ Cleanup pass completed: removed generated `__pycache__` folders under `C:\slicer
 
 The extension currently contains:
 
-`C:\slicerSTRT\extensions\SlicerStratum`
+`C:\slicerSTRT\extensions\slicerSTRT`
 
 with:
 
 - `CMakeLists.txt`
-- `SlicerStratum.png`
-- `Stratum\Stratum.py`
-- `Stratum\Resources`
-- `Stratum\Testing`
+- `slicerSTRT.png`
+- `slicerSTRT\slicerSTRT.py`
+- `slicerSTRT\Resources\UI\slicerSTRT.ui`
+- `slicerSTRT\Resources\Icons\slicerSTRT.png`
+- `slicerSTRT\Resources`
+- `slicerSTRT\Testing`
 
 ## Rules
 
@@ -49,9 +51,9 @@ Before coding, Codex must read:
 
 ## Next technical goal
 
-Verify the cleanup in Slicer with Reload / Reload and Test before any new STRATUM feature work.
+Verify the cleanup in Slicer with Reload / Reload and Test before any new slicerSTRT feature work.
 
-Do not add real STRATUM medical functionality yet.
+Do not add real slicerSTRT medical functionality yet.
 
 ## Important
 
@@ -64,4 +66,5 @@ unless explicitly requested.
 
 Normal development goes under:
 
-`C:\slicerSTRT\extensions\SlicerStratum`
+`C:\slicerSTRT\extensions\slicerSTRT`
+

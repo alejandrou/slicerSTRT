@@ -1,4 +1,4 @@
-# STRATUM Codex Workflow
+# slicerSTRT Codex Workflow
 
 This project uses Codex inside VS Code.
 
@@ -18,7 +18,7 @@ before working.
 
 Use prompts like:
 
-"Read AGENTS.md first. Then inspect the current STRATUM extension. I want to..."
+"Read AGENTS.md first. Then inspect the current slicerSTRT extension. I want to..."
 
 ## Before coding
 
@@ -87,5 +87,6 @@ The active learning roadmap is:
 Current status:
 
 - Slicer build works.
-- `Stratum` module loads correctly.
+- `slicerSTRT` module loads correctly.
 - Next recommended phase: Phase 1 — Clean and understand the generated module.
+

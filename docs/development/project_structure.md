@@ -1,4 +1,4 @@
-# STRATUM Project Structure
+# slicerSTRT Project Structure
 
 Main workspace:
 
@@ -37,17 +37,17 @@ Do not edit this folder unless explicitly requested.
 
 ### `extensions`
 
-Contains STRATUM-specific Slicer extensions and modules.
+Contains slicerSTRT-specific Slicer extensions and modules.
 
 Normal development goes here.
 
 Current extension:
 
-`C:\slicerSTRT\extensions\SlicerStratum`
+`C:\slicerSTRT\extensions\slicerSTRT`
 
 Current module:
 
-`C:\slicerSTRT\extensions\SlicerStratum\Stratum`
+`C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT`
 
 ### `docs`
 
@@ -74,15 +74,15 @@ Do not put final module source code here.
 
 ## Current extension structure
 
-`extensions\SlicerStratum`
+`extensions\slicerSTRT`
 
 Contains:
 
 - `CMakeLists.txt`
-- `SlicerStratum.png`
-- `Stratum\Stratum.py`
-- `Stratum\Resources`
-- `Stratum\Testing`
+- `slicerSTRT.png`
+- `slicerSTRT\slicerSTRT.py`
+- `slicerSTRT\Resources`
+- `slicerSTRT\Testing`
 
 ## Edit permissions
 
@@ -99,20 +99,20 @@ Codex must not edit unless explicitly requested:
 
 ## Development rule
 
-For now, STRATUM development should start as a Python scripted Slicer module.
+For now, slicerSTRT development should start as a Python scripted Slicer module.
 
 Do not rebuild Slicer for normal Python changes.
 Use Slicer Developer Mode and Reload / Reload and Test.
 
 ## Sandbox roadmap
 
-The STRATUM learning sandbox is defined in:
+The slicerSTRT learning sandbox is defined in:
 
 `docs/development/sandbox_roadmap.md`
 
 Sandbox code should live under:
 
-`extensions/SlicerStratum`
+`extensions/slicerSTRT`
 
 Sandbox temporary/generated files should live under:
 

@@ -24,18 +24,20 @@ Important ideas:
 
 ## Scripted module structure
 
-The module is split into:
+The current `slicerSTRT` module is implemented in a single Python file:
 
-- Module class
-- Widget class
-- Logic class
+- `slicerSTRT.py`
 
-In this project:
+That file contains:
 
-- `Stratum.py` contains module metadata and module entry point.
-- `StratumWidget.py` contains UI code only.
-- `StratumLogic.py` contains processing/business logic.
-- `StratumTest.py` contains tests.
+- the module class `slicerSTRT`
+- the parameter node class `slicerSTRTParameterNode`
+- the widget class `slicerSTRTWidget`
+- the logic class `slicerSTRTLogic`
+- the test class `slicerSTRTTest`
+- the `registerSampleData()` helper
+
+The UI definition lives in `Resources/UI/slicerSTRT.ui`.
 
 ## Module class rules
 
@@ -51,15 +53,15 @@ Do not put feature logic here.
 
 ## Widget class rules
 
-The Widget class is responsible for:
+The widget class is responsible for:
 - building the UI
 - connecting buttons and selectors
 - reading values from UI controls
-- calling methods from `StratumLogic`
+- calling methods from `slicerSTRTLogic`
 - updating labels, tables, and visual UI output
 - keeping UI synchronized with parameter nodes when used
 
-The Widget must not contain processing algorithms.
+The widget must not contain processing algorithms.
 
 Bad:
 - calculating measurements directly in the button callback
@@ -73,7 +75,7 @@ Good:
 
 ## Logic class rules
 
-The Logic class is responsible for:
+The logic class is responsible for:
 - computation
 - validation
 - MRML node inspection
@@ -82,7 +84,7 @@ The Logic class is responsible for:
 - report generation helpers
 - prototype workflow logic
 
-The Logic class must not depend on the Widget.
+The logic class must not depend on the widget.
 
 Logic methods should be callable from:
 - the UI
@@ -119,7 +121,7 @@ Do not over-engineer parameter nodes too early.
 2. Do not let Logic depend on Widget.
 3. Do not store important state only in UI controls.
 4. Do not modify MRML nodes without updating the UI when needed.
-5. Do not add clinical/STRATUM production logic before the sandbox workflow is stable.
+5. Do not add clinical/slicerSTRT production logic before the sandbox workflow is stable.
 6. Do not add sample data, API calls, or AI workflows without a clear task.
 
 ## Current recommended feature order
@@ -146,5 +148,5 @@ Before changing code:
 Never:
 - rewrite the whole module without asking
 - add clinical claims
-- add real STRATUM API integration without approval
+- add real slicerSTRT API integration without approval
 - move logic into the UI

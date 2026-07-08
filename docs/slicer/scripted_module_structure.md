@@ -1,88 +1,82 @@
-# Stratum Scripted Module Structure
+# slicerSTRT Scripted Module Structure
 
-This note summarizes the current structure of `C:\slicerSTRT\extensions\SlicerStratum\Stratum`.
+This note summarizes the current structure of the `slicerSTRT` scripted module.
 
-## Module class: `Stratum`
+## Current module layout
 
-Defines the module metadata shown in Slicer:
+The module is implemented in a single Python file:
+
+- `C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py`
+
+That file defines:
+
+- `slicerSTRT`
+- `registerSampleData()`
+- `slicerSTRTParameterNode`
+- `slicerSTRTWidget`
+- `slicerSTRTLogic`
+- `slicerSTRTTest`
+
+The module UI lives in:
+
+- `C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\Resources\UI\slicerSTRT.ui`
+
+## What each part does
+
+### `slicerSTRT`
+
+Module metadata and startup setup:
 
 - title
-- category
-- dependencies
+- categories
 - contributors
 - help text
 - acknowledgement text
+- sample data registration after startup
 
-It also registers sample data after Slicer startup by connecting to `startupCompleted()`.
+### `registerSampleData()`
 
-This file is now the thin entry point for the module and imports `StratumWidget` from the `StratumLib` package so Slicer can discover the widget class.
+Registers the sample data category and sample volumes shown in Slicer's Sample Data module.
 
-The packaged helper files live under `StratumLib/`. They are not top-level module entry points, so Slicer does not instantiate them as separate modules.
+### `slicerSTRTParameterNode`
 
-## Sample data helper: `registerSampleData()`
-
-Registers the `Stratum` sample data category and the sample volumes that appear in the Sample Data module.
-
-This helper keeps the sample-data setup separate from the widget and logic classes.
-
-The helper lives in `StratumLib/StratumLogic.py` so the main file stays focused on module registration.
-
-## Parameter node: `StratumParameterNode`
-
-Defines the structured state that Slicer stores for the module.
-
-In this module, it tracks:
+Stores the module state that should survive scene save and reload:
 
 - input volume
 - threshold value
 - invert flag
-- output volume
+- thresholded output volume
 - inverted output volume
 
-The parameter node also lives in `StratumLib/StratumLogic.py` so the widget and logic share one definition.
+### `slicerSTRTWidget`
 
-## Widget class: `StratumWidget`
+Handles the UI and user interaction:
 
-Implements the user interface and user interactions.
+- loads the `.ui` file
+- connects selectors and buttons
+- synchronizes the UI with the parameter node
+- calls the logic when Apply is clicked
 
-Responsibilities include:
+### `slicerSTRTLogic`
 
-- loading the `.ui` file
-- connecting UI controls to the parameter node
-- reacting to scene close events
-- triggering the processing logic when the Apply button is clicked
+Contains the processing code:
 
-The widget implementation lives in `StratumLib/StratumWidget.py`.
+- parameter-node access
+- threshold processing
+- CLI invocation
+- output cleanup
 
-## Logic class: `StratumLogic`
+### `slicerSTRTTest`
 
-Contains the processing code that can run without the GUI.
+Contains the scripted test that loads sample data and checks the logic.
 
-It calls the `Threshold Scalar Volume` CLI module, keeps sample-data registration separate, and handles the output volume update.
+## Development guidance
 
-The logic implementation lives in `StratumLib/StratumLogic.py`.
+When editing this module:
 
-## Test class: `StratumTest`
+1. Keep metadata and startup code in `slicerSTRT.py`.
+2. Keep UI behavior in `slicerSTRTWidget`.
+3. Keep processing in `slicerSTRTLogic`.
+4. Keep regression checks in `slicerSTRTTest`.
+5. Use Reload / Reload and Test after changes.
 
-Provides the scripted module test.
-
-The current test loads sample data, exercises the logic, and checks the resulting scalar range.
-
-The scripted test lives in `Testing/Python/StratumTest.py` and is registered from `Testing/Python/CMakeLists.txt`.
-
-## Development order
-
-When developing this module, use this order:
-
-1. Change `StratumLib/StratumWidget.py` for UI behavior.
-2. Change `StratumLib/StratumLogic.py` for processing, parameter-node, or sample-data work.
-3. Change `Testing/Python/StratumTest.py` for logic and regression tests.
-4. Keep `Stratum.py` limited to module registration and top-level imports.
-
-## Reload workflow
-
-After edits, use Slicer Developer Mode and Reload / Reload and Test to confirm the module still loads and the test still runs.
-
-## Phase 1 cleanup note
-
-For Phase 1, keep the module behavior unchanged and limit edits to safe cleanup such as removing obvious template comments or placeholder text.

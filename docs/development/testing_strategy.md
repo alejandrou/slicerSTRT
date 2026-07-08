@@ -1,10 +1,10 @@
-# STRATUM Testing Strategy
+# slicerSTRT Testing Strategy
 
-This document defines how STRATUM Slicer code should be tested.
+This document defines how slicerSTRT Slicer code should be tested.
 
 ## Current phase
 
-The current STRATUM module is a Python scripted Slicer module.
+The current slicerSTRT module is a Python scripted Slicer module.
 
 Testing should start simple.
 
@@ -12,7 +12,7 @@ Testing should start simple.
 
 Tests for the current module should live under:
 
-`C:\slicerSTRT\extensions\SlicerStratum\Stratum\Testing`
+`C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\Testing`
 
 ## What to test first
 
@@ -30,7 +30,7 @@ Avoid testing only GUI clicks unless necessary.
 
 For normal Python changes:
 
-1. Edit code under `extensions\SlicerStratum`
+1. Edit code under `extensions\slicerSTRT`
 2. Open Slicer
 3. Use Developer Mode
 4. Use Reload / Reload and Test

@@ -1,6 +1,6 @@
-# STRATUM Slicer Sandbox Roadmap
+# slicerSTRT Slicer Sandbox Roadmap
 
-Personal learning roadmap for building a safe, local, STRATUM-inspired 3D Slicer sandbox.
+Personal learning roadmap for building a safe, local, slicerSTRT-inspired 3D Slicer sandbox.
 
 Recommended location:
 
@@ -8,13 +8,13 @@ Recommended location:
 C:\slicerSTRT\docs\development\sandbox_roadmap.md
 ```
 
-This document is for learning and local development only. It is not the official STRATUM codebase and must not be treated as clinical software.
+This document is for learning and local development only. It is not the official slicerSTRT codebase and must not be treated as clinical software.
 
 ---
 
 ## 1. Purpose
 
-The goal of this sandbox is to help the developer learn 3D Slicer development while preparing for future work on STRATUM.
+The goal of this sandbox is to help the developer learn 3D Slicer development while preparing for future work on slicerSTRT.
 
 The sandbox should simulate the type of workflow that may appear in a 3D decision-support tool:
 
@@ -32,11 +32,11 @@ The sandbox must avoid private patient data, real diagnostic claims, and any unv
 
 ---
 
-## 2. Public STRATUM alignment
+## 2. Public slicerSTRT alignment
 
-Public STRATUM information describes a 3D decision-support tool for brain surgery guidance and diagnostics based on multimodal data processing, AI algorithms, and point-of-care computing.
+Public slicerSTRT information describes a 3D decision-support tool for brain surgery guidance and diagnostics based on multimodal data processing, AI algorithms, and point-of-care computing.
 
-The sandbox is inspired by the public STRATUM work packages:
+The sandbox is inspired by the public slicerSTRT work packages:
 
 - WP2: intraoperative acquisition and data collection,
 - WP3: diagnostic and integration algorithm development,
@@ -48,9 +48,9 @@ In the sandbox, these are represented only as safe mock workflows.
 
 Sources:
 
-- https://www.stratum-project.eu/
-- https://www.stratum-project.eu/work-packages/
-- https://www.stratum-project.eu/project-results/
+- https://www.slicerSTRT-project.eu/
+- https://www.slicerSTRT-project.eu/work-packages/
+- https://www.slicerSTRT-project.eu/project-results/
 
 ---
 
@@ -65,13 +65,13 @@ C:\slicerSTRT
 Main module:
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 ```
 
 Extension root:
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum
+C:\slicerSTRT\extensions\slicerSTRT
 ```
 
 Documentation:
@@ -123,7 +123,7 @@ Core rules:
 
 1. Do not edit `C:\slicerSTRT\apps\SR` unless explicitly requested.
 2. Do not edit `C:\slicerSTRT\source` unless explicitly requested.
-3. Normal sandbox development goes under `C:\slicerSTRT\extensions\SlicerStratum`.
+3. Normal sandbox development goes under `C:\slicerSTRT\extensions\slicerSTRT`.
 4. Documentation goes under `C:\slicerSTRT\docs`.
 5. Temporary generated files go under `C:\slicerSTRT\workspace`.
 6. Start with Python scripted modules.
@@ -136,7 +136,7 @@ Core rules:
 
 ## 5. End goal
 
-The final sandbox should provide a simple STRATUM-inspired workflow:
+The final sandbox should provide a simple slicerSTRT-inspired workflow:
 
 1. Check the Slicer environment.
 2. Load or select a sample volume.
@@ -158,7 +158,7 @@ This is a learning project. It does not diagnose, guide surgery, or make clinica
 
 ## Goal
 
-Confirm that the local Slicer build and the `Stratum` module work.
+Confirm that the local Slicer build and the `slicerSTRT` module work.
 
 ## Skills learned
 
@@ -170,7 +170,7 @@ Confirm that the local Slicer build and the `Stratum` module work.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 C:\slicerSTRT\docs\codex\context_handoff.md
 ```
 
@@ -182,7 +182,7 @@ C:\slicerSTRT\docs\codex\context_handoff.md
 C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe
 ```
 
-2. Confirm the `Stratum` module appears in Slicer.
+2. Confirm the `slicerSTRT` module appears in Slicer.
 3. Enable Developer Mode if not already enabled.
 4. Test Reload / Reload and Test.
 5. Record the status in `docs\codex\context_handoff.md`.
@@ -190,7 +190,7 @@ C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe
 ## Acceptance criteria
 
 - Slicer opens.
-- `Stratum` module loads.
+- `slicerSTRT` module loads.
 - Reload works.
 - No code changes required.
 
@@ -198,7 +198,7 @@ C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe
 
 ```text
 Read AGENTS.md and docs/codex/context_handoff.md.
-The Stratum module loads correctly in Slicer.
+The slicerSTRT module loads correctly in Slicer.
 Update context_handoff.md with this status only.
 Do not edit source code.
 ```
@@ -209,7 +209,7 @@ Do not edit source code.
 
 ## Goal
 
-Understand the generated `Stratum.py` structure and clean only what is safe.
+Understand the generated `slicerSTRT.py` structure and clean only what is safe.
 
 ## Skills learned
 
@@ -222,13 +222,13 @@ Understand the generated `Stratum.py` structure and clean only what is safe.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 C:\slicerSTRT\docs\slicer\scripted_module_structure.md
 ```
 
 ## Tasks
 
-1. Inspect `Stratum.py`.
+1. Inspect `slicerSTRT.py`.
 2. Identify generated classes.
 3. Document what each class does.
 4. Remove only obviously unused template comments if safe.
@@ -252,13 +252,13 @@ C:\slicerSTRT\docs\slicer\scripted_module_structure.md
 Read AGENTS.md, docs/development/coding_standards.md, and docs/slicer/slicer_knowledge_index.md.
 
 Inspect:
-extensions/SlicerStratum/Stratum/Stratum.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 
 Task:
 Explain the generated scripted module structure and make only the smallest safe cleanup.
 
 Rules:
-- Do not add real STRATUM functionality.
+- Do not add real slicerSTRT functionality.
 - Do not edit C:\slicerSTRT\source.
 - Do not edit C:\slicerSTRT\apps\SR.
 - Explain how to test with Reload / Reload and Test.
@@ -282,7 +282,7 @@ Add a harmless first feature that confirms the environment is working.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 ```
 
 Optional documentation:
@@ -320,7 +320,7 @@ When clicked, it should display:
 Read AGENTS.md and docs/development/coding_standards.md.
 
 Inspect:
-extensions/SlicerStratum/Stratum/Stratum.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 
 Task:
 Add a minimal "Check Environment" button.
@@ -353,7 +353,7 @@ Learn how to select a volume node and inspect basic image metadata.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 C:\slicerSTRT\docs\slicer\volume_nodes.md
 ```
 
@@ -386,7 +386,7 @@ Display:
 Read AGENTS.md, docs/development/coding_standards.md, and docs/slicer/slicer_knowledge_index.md.
 
 Inspect:
-extensions/SlicerStratum/Stratum/Stratum.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 
 Search local Slicer source only if needed for volume node APIs.
 
@@ -418,7 +418,7 @@ Learn Slicer markups and coordinate systems.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 C:\slicerSTRT\docs\slicer\markups_and_coordinates.md
 ```
 
@@ -449,7 +449,7 @@ entryToTargetDistanceMm
 Read AGENTS.md and docs/development/coding_standards.md.
 
 Inspect:
-extensions/SlicerStratum/Stratum/Stratum.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 
 Task:
 Add a markups-based distance tool using two control points.
@@ -479,7 +479,7 @@ Learn segmentation nodes and simple quantitative measurements.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 C:\slicerSTRT\docs\slicer\segmentation_nodes.md
 ```
 
@@ -511,7 +511,7 @@ Display basic information:
 Read AGENTS.md, docs/development/coding_standards.md, and docs/slicer/slicer_knowledge_index.md.
 
 Inspect:
-extensions/SlicerStratum/Stratum/Stratum.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 
 Task:
 Add a basic segmentation inspection feature.
@@ -529,7 +529,7 @@ Rules:
 
 ## Goal
 
-Simulate STRATUM-style multimodal integration without using real project data.
+Simulate slicerSTRT-style multimodal integration without using real project data.
 
 ## Skills learned
 
@@ -541,7 +541,7 @@ Simulate STRATUM-style multimodal integration without using real project data.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 C:\slicerSTRT\workspace\sample_data
 C:\slicerSTRT\docs\slicer\multimodal_mock_workflow.md
 ```
@@ -601,7 +601,7 @@ Learn how to integrate AI outputs safely without building a real model.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 C:\slicerSTRT\workspace\sample_data\mock_ai_result.json
 C:\slicerSTRT\docs\slicer\mock_ai_result_schema.md
 ```
@@ -611,7 +611,7 @@ C:\slicerSTRT\docs\slicer\mock_ai_result_schema.md
 ```json
 {
   "case_id": "demo_case_001",
-  "model_name": "mock-stratum-demo-model",
+  "model_name": "mock-slicerSTRT-demo-model",
   "model_version": "0.0.0-demo",
   "tumour_probability": 0.72,
   "confidence": "medium",
@@ -669,7 +669,7 @@ Create a simple traceable output report from the sandbox workflow.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 C:\slicerSTRT\workspace\reports
 C:\slicerSTRT\docs\slicer\report_generation.md
 ```
@@ -727,8 +727,8 @@ Add automated checks for the most important logic.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Testing
-C:\slicerSTRT\extensions\SlicerStratum\Stratum\Stratum.py
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\Testing
+C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 C:\slicerSTRT\docs\development\testing_strategy.md
 ```
 
@@ -755,8 +755,8 @@ Start with:
 Read AGENTS.md and docs/development/testing_strategy.md.
 
 Inspect:
-extensions/SlicerStratum/Stratum/Stratum.py
-extensions/SlicerStratum/Stratum/Testing
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
+extensions/slicerSTRT/slicerSTRT/Testing
 
 Task:
 Add the first basic tests for logic-only functions.
@@ -773,7 +773,7 @@ Rules:
 
 ## Goal
 
-Avoid letting `Stratum.py` become a large, unmaintainable file.
+Avoid letting `slicerSTRT.py` become a large, unmaintainable file.
 
 ## Skills learned
 
@@ -784,13 +784,13 @@ Avoid letting `Stratum.py` become a large, unmaintainable file.
 
 ## Trigger
 
-Do this only when `Stratum.py` becomes difficult to read or grows too much.
+Do this only when `slicerSTRT.py` becomes difficult to read or grows too much.
 
 ## Possible structure
 
 ```text
-Stratum
-├── Stratum.py
+slicerSTRT
+├── slicerSTRT.py
 ├── lib
 │   ├── logic
 │   │   ├── environment.py
@@ -809,7 +809,7 @@ Stratum
 
 ## Acceptance criteria
 
-- `Stratum.py` keeps Slicer module entry points and UI.
+- `slicerSTRT.py` keeps Slicer module entry points and UI.
 - Logic moves into focused files.
 - Tests still run.
 - Imports work inside Slicer.
@@ -821,7 +821,7 @@ Stratum
 Read AGENTS.md, docs/development/project_structure.md, and docs/development/coding_standards.md.
 
 Inspect:
-extensions/SlicerStratum/Stratum/Stratum.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 
 Task:
 Propose a refactor plan only.
@@ -886,7 +886,7 @@ Rules:
 
 ## Goal
 
-Review the sandbox as a learning project and prepare for future real STRATUM onboarding.
+Review the sandbox as a learning project and prepare for future real slicerSTRT onboarding.
 
 ## Tasks
 
@@ -894,7 +894,7 @@ Review the sandbox as a learning project and prepare for future real STRATUM onb
 2. Review module structure.
 3. Review tests.
 4. List what was learned.
-5. List gaps before working on real STRATUM code.
+5. List gaps before working on real slicerSTRT code.
 6. Create a final handoff:
 
 ```text
@@ -918,4 +918,5 @@ C:\slicerSTRT\docs\codex\context_handoff.md
 - Sandbox is documented.
 - Sandbox is safe.
 - Sandbox is understandable.
-- Sandbox prepares the developer for real STRATUM work.
+- Sandbox prepares the developer for real slicerSTRT work.
+
