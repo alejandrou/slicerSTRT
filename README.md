@@ -25,6 +25,3 @@ If you are opening this repository for the first time, start with:
 3. `docs/codex/codex_workflow.md`
 4. `README_Stratum_Slicer_Build.md`
 
-## Current status
-
-This repository is prepared for local development and documentation. Publishing to a remote repository named `slicerSTRT` still needs a Git remote / hosting step.
