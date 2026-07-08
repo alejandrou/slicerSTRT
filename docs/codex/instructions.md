@@ -7,7 +7,7 @@ This file is for the developer, not for the AI agent.
 Recommended location:
 
 ```text
-C:\slicerSTRT\docs\codex\instructions.md
+C:\stratum\docs\codex\instructions.md
 ```
 
 ---
@@ -31,13 +31,13 @@ Use:
 Always open VS Code at:
 
 ```text
-C:\slicerSTRT
+C:\stratum
 ```
 
 Before starting a Codex task, make sure the project has:
 
 ```text
-C:\slicerSTRT\AGENTS.md
+C:\stratum\AGENTS.md
 ```
 
 That file is the entry point for Codex.
@@ -69,7 +69,7 @@ extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
 Task:
 Explain the current module structure and suggest the smallest safe cleanup.
 
-Do not inspect C:\slicerSTRT\source unless you need to verify a Slicer API.
+Do not inspect C:\stratum\source unless you need to verify a Slicer API.
 Do not edit anything yet.
 ```
 
@@ -78,7 +78,7 @@ Do not edit anything yet.
 Avoid prompts like:
 
 ```text
-Read all of C:\slicerSTRT and tell me what to do.
+Read all of C:\stratum and tell me what to do.
 ```
 
 This wastes context and increases the chance of generic answers.
@@ -176,7 +176,7 @@ I need to understand how [SLICER CONCEPT] works.
 
 Search order:
 1. extensions/slicerSTRT
-2. C:\slicerSTRT\source
+2. C:\stratum\source
 3. C:\Users\AlejandroHerrera\.codex\skills\slicer-skill
 
 Rules:
@@ -199,8 +199,8 @@ Make the smallest safe change to [GOAL].
 
 Rules:
 - Explain the plan before editing.
-- Do not edit C:\slicerSTRT\source.
-- Do not edit C:\slicerSTRT\apps\SR.
+- Do not edit C:\stratum\source.
+- Do not edit C:\stratum\apps\SR.
 - Do not do Git operations.
 - After editing, explain how to test with Slicer Reload / Reload and Test.
 ```
@@ -300,7 +300,7 @@ Only add source folders when needed:
 Avoid tagging:
 
 ```text
-@C:\slicerSTRT
+@C:\stratum
 @source
 @apps\SR
 ```
@@ -314,26 +314,26 @@ unless the task really needs that much context.
 Do not let Codex edit these unless explicitly needed:
 
 ```text
-C:\slicerSTRT\apps\SR
-C:\slicerSTRT\source
+C:\stratum\apps\SR
+C:\stratum\source
 ```
 
 Normal development goes under:
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT
+C:\stratum\extensions\slicerSTRT
 ```
 
 Documentation goes under:
 
 ```text
-C:\slicerSTRT\docs
+C:\stratum\docs
 ```
 
 Temporary experiments go under:
 
 ```text
-C:\slicerSTRT\workspace
+C:\stratum\workspace
 ```
 
 ---
@@ -342,8 +342,8 @@ C:\slicerSTRT\workspace
 
 For a normal development session:
 
-1. Open VS Code at `C:\slicerSTRT`.
-2. Open Slicer from `C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe`.
+1. Open VS Code at `C:\stratum`.
+2. Open Slicer from `C:\stratum\apps\SR\Slicer-build\Slicer.exe`.
 3. Start a new Codex chat for the task.
 4. Tell Codex to read `AGENTS.md`.
 5. Give only the files needed.
@@ -392,3 +392,4 @@ Recommended approach:
 4. Ask for a plan before edits.
 5. Test in Slicer.
 6. Update `context_handoff.md`.
+

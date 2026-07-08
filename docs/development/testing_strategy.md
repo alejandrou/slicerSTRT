@@ -12,7 +12,7 @@ Testing should start simple.
 
 Tests for the current module should live under:
 
-`C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\Testing`
+`C:\stratum\extensions\slicerSTRT\slicerSTRT\Testing`
 
 ## What to test first
 
@@ -54,3 +54,4 @@ Do not require private patient data for basic tests.
 Do not commit patient data, private DICOM files, or sensitive medical images.
 
 Use anonymized, synthetic, or public sample data.
+

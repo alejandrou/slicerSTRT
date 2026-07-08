@@ -4,16 +4,16 @@ This file tells Codex where to look for Slicer information locally.
 
 ## Main local Slicer source
 
-`C:\slicerSTRT\source`
+`C:\stratum\source`
 
 Important folders:
 
-- `C:\slicerSTRT\source\Modules`
-- `C:\slicerSTRT\source\Libs`
-- `C:\slicerSTRT\source\Base`
-- `C:\slicerSTRT\source\Docs`
-- `C:\slicerSTRT\source\Extensions`
-- `C:\slicerSTRT\source\Utilities`
+- `C:\stratum\source\Modules`
+- `C:\stratum\source\Libs`
+- `C:\stratum\source\Base`
+- `C:\stratum\source\Docs`
+- `C:\stratum\source\Extensions`
+- `C:\stratum\source\Utilities`
 
 ## Existing Slicer skill
 
@@ -54,3 +54,4 @@ Codex should search local sources before answering questions about:
 - Qt widgets
 - CMake
 - Extension packaging
+

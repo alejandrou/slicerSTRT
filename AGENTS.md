@@ -6,11 +6,11 @@ Codex must use this file as the entry point, then read the linked documentation 
 
 ## Main paths
 
-- Slicer source root: `C:\slicerSTRT\source`
-- Slicer build root: `C:\slicerSTRT\apps\SR`
-- Built Slicer executable: `C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe`
-- STRATUM extensions: `C:\slicerSTRT\extensions`
-- Project documentation: `C:\slicerSTRT\docs`
+- Slicer source root: `C:\stratum\source`
+- Slicer build root: `C:\stratum\apps\SR`
+- Built Slicer executable: `C:\stratum\apps\SR\Slicer-build\Slicer.exe`
+- STRATUM extensions: `C:\stratum\extensions`
+- Project documentation: `C:\stratum\docs`
 - User Slicer skill: `C:\Users\AlejandroHerrera\.codex\skills\slicer-skill`
 
 ## Project documentation to read

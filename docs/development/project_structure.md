@@ -2,7 +2,7 @@
 
 Main workspace:
 
-`C:\slicerSTRT`
+`C:\stratum`
 
 Open this folder directly in VS Code when working with Codex.
 
@@ -14,7 +14,7 @@ Contains built or installed applications.
 
 Current Slicer build:
 
-`C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe`
+`C:\stratum\apps\SR\Slicer-build\Slicer.exe`
 
 Do not edit this folder unless explicitly requested.
 
@@ -43,11 +43,11 @@ Normal development goes here.
 
 Current extension:
 
-`C:\slicerSTRT\extensions\slicerSTRT`
+`C:\stratum\extensions\slicerSTRT`
 
 Current module:
 
-`C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT`
+`C:\stratum\extensions\slicerSTRT\slicerSTRT`
 
 ### `docs`
 
@@ -88,14 +88,14 @@ Contains:
 
 Codex may normally edit:
 
-- `C:\slicerSTRT\extensions`
-- `C:\slicerSTRT\docs`
-- `C:\slicerSTRT\workspace`
+- `C:\stratum\extensions`
+- `C:\stratum\docs`
+- `C:\stratum\workspace`
 
 Codex must not edit unless explicitly requested:
 
-- `C:\slicerSTRT\apps`
-- `C:\slicerSTRT\source`
+- `C:\stratum\apps`
+- `C:\stratum\source`
 
 ## Development rule
 
@@ -122,3 +122,4 @@ Suggested generated folders:
 
 `workspace/sample_data`
 `workspace/reports`
+

@@ -5,7 +5,7 @@ Personal learning roadmap for building a safe, local, slicerSTRT-inspired 3D Sli
 Recommended location:
 
 ```text
-C:\slicerSTRT\docs\development\sandbox_roadmap.md
+C:\stratum\docs\development\sandbox_roadmap.md
 ```
 
 This document is for learning and local development only. It is not the official slicerSTRT codebase and must not be treated as clinical software.
@@ -59,43 +59,43 @@ Sources:
 Project root:
 
 ```text
-C:\slicerSTRT
+C:\stratum
 ```
 
 Main module:
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 ```
 
 Extension root:
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT
+C:\stratum\extensions\slicerSTRT
 ```
 
 Documentation:
 
 ```text
-C:\slicerSTRT\docs
+C:\stratum\docs
 ```
 
 Temporary reports and generated files:
 
 ```text
-C:\slicerSTRT\workspace
+C:\stratum\workspace
 ```
 
 Built Slicer executable:
 
 ```text
-C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe
+C:\stratum\apps\SR\Slicer-build\Slicer.exe
 ```
 
 Local Slicer source reference:
 
 ```text
-C:\slicerSTRT\source
+C:\stratum\source
 ```
 
 Slicer skill:
@@ -111,21 +111,21 @@ C:\Users\AlejandroHerrera\.codex\skills\slicer-skill
 Before coding, Codex should read:
 
 ```text
-C:\slicerSTRT\AGENTS.md
-C:\slicerSTRT\docs\development\project_structure.md
-C:\slicerSTRT\docs\development\coding_standards.md
-C:\slicerSTRT\docs\development\testing_strategy.md
-C:\slicerSTRT\docs\slicer\slicer_knowledge_index.md
-C:\slicerSTRT\docs\codex\codex_workflow.md
+C:\stratum\AGENTS.md
+C:\stratum\docs\development\project_structure.md
+C:\stratum\docs\development\coding_standards.md
+C:\stratum\docs\development\testing_strategy.md
+C:\stratum\docs\slicer\slicer_knowledge_index.md
+C:\stratum\docs\codex\codex_workflow.md
 ```
 
 Core rules:
 
-1. Do not edit `C:\slicerSTRT\apps\SR` unless explicitly requested.
-2. Do not edit `C:\slicerSTRT\source` unless explicitly requested.
-3. Normal sandbox development goes under `C:\slicerSTRT\extensions\slicerSTRT`.
-4. Documentation goes under `C:\slicerSTRT\docs`.
-5. Temporary generated files go under `C:\slicerSTRT\workspace`.
+1. Do not edit `C:\stratum\apps\SR` unless explicitly requested.
+2. Do not edit `C:\stratum\source` unless explicitly requested.
+3. Normal sandbox development goes under `C:\stratum\extensions\slicerSTRT`.
+4. Documentation goes under `C:\stratum\docs`.
+5. Temporary generated files go under `C:\stratum\workspace`.
 6. Start with Python scripted modules.
 7. Do not start with C++ unless there is a clear reason.
 8. Do not build real diagnostic logic.
@@ -170,8 +170,8 @@ Confirm that the local Slicer build and the `slicerSTRT` module work.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
-C:\slicerSTRT\docs\codex\context_handoff.md
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\docs\codex\context_handoff.md
 ```
 
 ## Tasks
@@ -179,7 +179,7 @@ C:\slicerSTRT\docs\codex\context_handoff.md
 1. Open Slicer:
 
 ```text
-C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe
+C:\stratum\apps\SR\Slicer-build\Slicer.exe
 ```
 
 2. Confirm the `slicerSTRT` module appears in Slicer.
@@ -222,8 +222,8 @@ Understand the generated `slicerSTRT.py` structure and clean only what is safe.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
-C:\slicerSTRT\docs\slicer\scripted_module_structure.md
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\docs\slicer\scripted_module_structure.md
 ```
 
 ## Tasks
@@ -236,7 +236,7 @@ C:\slicerSTRT\docs\slicer\scripted_module_structure.md
 6. Create a short documentation file:
 
 ```text
-C:\slicerSTRT\docs\slicer\scripted_module_structure.md
+C:\stratum\docs\slicer\scripted_module_structure.md
 ```
 
 ## Acceptance criteria
@@ -259,8 +259,8 @@ Explain the generated scripted module structure and make only the smallest safe 
 
 Rules:
 - Do not add real slicerSTRT functionality.
-- Do not edit C:\slicerSTRT\source.
-- Do not edit C:\slicerSTRT\apps\SR.
+- Do not edit C:\stratum\source.
+- Do not edit C:\stratum\apps\SR.
 - Explain how to test with Reload / Reload and Test.
 ```
 
@@ -282,13 +282,13 @@ Add a harmless first feature that confirms the environment is working.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
 ```
 
 Optional documentation:
 
 ```text
-C:\slicerSTRT\docs\slicer\module_reload_workflow.md
+C:\stratum\docs\slicer\module_reload_workflow.md
 ```
 
 ## Feature
@@ -353,8 +353,8 @@ Learn how to select a volume node and inspect basic image metadata.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
-C:\slicerSTRT\docs\slicer\volume_nodes.md
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\docs\slicer\volume_nodes.md
 ```
 
 ## Feature
@@ -418,8 +418,8 @@ Learn Slicer markups and coordinate systems.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
-C:\slicerSTRT\docs\slicer\markups_and_coordinates.md
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\docs\slicer\markups_and_coordinates.md
 ```
 
 ## Feature
@@ -479,8 +479,8 @@ Learn segmentation nodes and simple quantitative measurements.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
-C:\slicerSTRT\docs\slicer\segmentation_nodes.md
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\docs\slicer\segmentation_nodes.md
 ```
 
 ## Feature
@@ -541,9 +541,9 @@ Simulate slicerSTRT-style multimodal integration without using real project data
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
-C:\slicerSTRT\workspace\sample_data
-C:\slicerSTRT\docs\slicer\multimodal_mock_workflow.md
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\workspace\sample_data
+C:\stratum\docs\slicer\multimodal_mock_workflow.md
 ```
 
 ## Feature
@@ -601,9 +601,9 @@ Learn how to integrate AI outputs safely without building a real model.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
-C:\slicerSTRT\workspace\sample_data\mock_ai_result.json
-C:\slicerSTRT\docs\slicer\mock_ai_result_schema.md
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\workspace\sample_data\mock_ai_result.json
+C:\stratum\docs\slicer\mock_ai_result_schema.md
 ```
 
 ## Example mock JSON
@@ -669,9 +669,9 @@ Create a simple traceable output report from the sandbox workflow.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
-C:\slicerSTRT\workspace\reports
-C:\slicerSTRT\docs\slicer\report_generation.md
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\workspace\reports
+C:\stratum\docs\slicer\report_generation.md
 ```
 
 ## Feature
@@ -689,7 +689,7 @@ Generate a Markdown report containing:
 
 ## Acceptance criteria
 
-- Report saves under `C:\slicerSTRT\workspace\reports`.
+- Report saves under `C:\stratum\workspace\reports`.
 - Report is Markdown.
 - Report clearly says it is a sandbox/demo output.
 - No private patient data is included unless explicitly allowed.
@@ -703,7 +703,7 @@ Task:
 Add a Markdown report generator for sandbox results.
 
 Rules:
-- Save to C:\slicerSTRT\workspace\reports.
+- Save to C:\stratum\workspace\reports.
 - Include a clear demo warning.
 - Do not include private patient data.
 - Keep file writing code small and testable.
@@ -727,9 +727,9 @@ Add automated checks for the most important logic.
 ## Files involved
 
 ```text
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\Testing
-C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
-C:\slicerSTRT\docs\development\testing_strategy.md
+C:\stratum\extensions\slicerSTRT\slicerSTRT\Testing
+C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py
+C:\stratum\docs\development\testing_strategy.md
 ```
 
 ## Tests to add
@@ -898,7 +898,7 @@ Review the sandbox as a learning project and prepare for future real slicerSTRT 
 6. Create a final handoff:
 
 ```text
-C:\slicerSTRT\docs\codex\context_handoff.md
+C:\stratum\docs\codex\context_handoff.md
 ```
 
 ## Final review questions
@@ -919,4 +919,5 @@ C:\slicerSTRT\docs\codex\context_handoff.md
 - Sandbox is safe.
 - Sandbox is understandable.
 - Sandbox prepares the developer for real slicerSTRT work.
+
 

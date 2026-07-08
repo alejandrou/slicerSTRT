@@ -6,7 +6,7 @@ This project uses Codex inside VS Code.
 
 Open VS Code at:
 
-`C:\slicerSTRT`
+`C:\stratum`
 
 Codex should read:
 
@@ -36,8 +36,8 @@ For Slicer API questions, Codex must not answer from memory.
 
 It should inspect:
 
-1. `C:\slicerSTRT\extensions`
-2. `C:\slicerSTRT\source`
+1. `C:\stratum\extensions`
+2. `C:\stratum\source`
 3. `C:\Users\AlejandroHerrera\.codex\skills\slicer-skill`
 
 ## Git rule
@@ -89,4 +89,5 @@ Current status:
 - Slicer build works.
 - `slicerSTRT` module loads correctly.
 - Next recommended phase: Phase 1 — Clean and understand the generated module.
+
 

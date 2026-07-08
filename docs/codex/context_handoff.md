@@ -4,29 +4,29 @@
 
 The local slicerSTRT/Slicer workspace is located at:
 
-`C:\slicerSTRT`
+`C:\stratum`
 
 The `slicerSTRT` scripted module has been created and loads correctly in 3D Slicer.
-Cleanup pass completed: removed generated `__pycache__` folders under `C:\slicerSTRT\extensions\slicerSTRT` and trimmed template boilerplate from `slicerSTRT.py` without changing the module structure or adding slicerSTRT functionality.
+Cleanup pass completed: removed generated `__pycache__` folders under `C:\stratum\extensions\slicerSTRT` and trimmed template boilerplate from `slicerSTRT.py` without changing the module structure or adding slicerSTRT functionality.
 
 ## Main paths
 
-- Project root: `C:\slicerSTRT`
-- Codex instructions: `C:\slicerSTRT\AGENTS.md`
-- Slicer source: `C:\slicerSTRT\source`
-- Slicer build: `C:\slicerSTRT\apps\SR`
-- Slicer executable: `C:\slicerSTRT\apps\SR\Slicer-build\Slicer.exe`
-- slicerSTRT extension: `C:\slicerSTRT\extensions\slicerSTRT`
-- slicerSTRT module: `C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT`
-- Main module file: `C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py`
-- Project docs: `C:\slicerSTRT\docs`
+- Project root: `C:\stratum`
+- Codex instructions: `C:\stratum\AGENTS.md`
+- Slicer source: `C:\stratum\source`
+- Slicer build: `C:\stratum\apps\SR`
+- Slicer executable: `C:\stratum\apps\SR\Slicer-build\Slicer.exe`
+- slicerSTRT extension: `C:\stratum\extensions\slicerSTRT`
+- slicerSTRT module: `C:\stratum\extensions\slicerSTRT\slicerSTRT`
+- Main module file: `C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py`
+- Project docs: `C:\stratum\docs`
 - Slicer skill: `C:\Users\AlejandroHerrera\.codex\skills\slicer-skill`
 
 ## Current project structure
 
 The extension currently contains:
 
-`C:\slicerSTRT\extensions\slicerSTRT`
+`C:\stratum\extensions\slicerSTRT`
 
 with:
 
@@ -59,12 +59,13 @@ Do not add real slicerSTRT medical functionality yet.
 
 Do not edit:
 
-- `C:\slicerSTRT\apps\SR`
-- `C:\slicerSTRT\source`
+- `C:\stratum\apps\SR`
+- `C:\stratum\source`
 
 unless explicitly requested.
 
 Normal development goes under:
 
-`C:\slicerSTRT\extensions\slicerSTRT`
+`C:\stratum\extensions\slicerSTRT`
+
 

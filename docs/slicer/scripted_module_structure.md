@@ -6,7 +6,7 @@ This note summarizes the current structure of the `slicerSTRT` scripted module.
 
 The module is implemented in a single Python file:
 
-- `C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py`
+- `C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py`
 
 That file defines:
 
@@ -19,7 +19,7 @@ That file defines:
 
 The module UI lives in:
 
-- `C:\slicerSTRT\extensions\slicerSTRT\slicerSTRT\Resources\UI\slicerSTRT.ui`
+- `C:\stratum\extensions\slicerSTRT\slicerSTRT\Resources\UI\slicerSTRT.ui`
 
 ## What each part does
 
@@ -79,4 +79,5 @@ When editing this module:
 3. Keep processing in `slicerSTRTLogic`.
 4. Keep regression checks in `slicerSTRTTest`.
 5. Use Reload / Reload and Test after changes.
+
 
