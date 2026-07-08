@@ -1,90 +1,102 @@
 import os
-from typing import Annotated
+import importlib
+import platform
+import sys
 
 import slicer
-from slicer import vtkMRMLScalarVolumeNode
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleLogic
-from slicer.parameterNodeWrapper import WithinRange, parameterNodeWrapper
-
-
-def registerSampleData():
-    """Add data sets to Sample Data module."""
-    import SampleData
-
-    iconsPath = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Resources", "Icons")
-
-    SampleData.SampleDataLogic.registerCustomSampleDataCategory("slicerSTRT", title="slicerSTRT")
-
-    SampleData.SampleDataLogic.registerCustomSampleDataSource(
-        category="slicerSTRT",
-        sampleName="slicerSTRT1",
-        thumbnailFileName=os.path.join(iconsPath, "slicerSTRT1.png"),
-        uris="https://github.com/Slicer/SlicerTestingData/releases/download/SHA256/998cb522173839c78657f4bc0ea907cea09fd04e44601f17c82ea27927937b95",
-        fileNames="slicerSTRT1.nrrd",
-        checksums="SHA256:998cb522173839c78657f4bc0ea907cea09fd04e44601f17c82ea27927937b95",
-        nodeNames="slicerSTRT1",
-    )
-
-    SampleData.SampleDataLogic.registerCustomSampleDataSource(
-        category="slicerSTRT",
-        sampleName="slicerSTRT2",
-        thumbnailFileName=os.path.join(iconsPath, "slicerSTRT2.png"),
-        uris="https://github.com/Slicer/SlicerTestingData/releases/download/SHA256/1a64f3f422eb3d1c9b093d1a18da354b13bcf307907c66317e2463ee530b7a97",
-        fileNames="slicerSTRT2.nrrd",
-        checksums="SHA256:1a64f3f422eb3d1c9b093d1a18da354b13bcf307907c66317e2463ee530b7a97",
-        nodeNames="slicerSTRT2",
-    )
-
-
-@parameterNodeWrapper
-class slicerSTRTParameterNode:
-    """
-    The parameters needed by module.
-
-    inputVolume - The volume to threshold.
-    imageThreshold - The value at which to threshold the input volume.
-    invertThreshold - If true, will invert the threshold.
-    thresholdedVolume - The output volume that will contain the thresholded volume.
-    invertedVolume - The output volume that will contain the inverted thresholded volume.
-    """
-
-    inputVolume: vtkMRMLScalarVolumeNode
-    imageThreshold: Annotated[float, WithinRange(-100, 500)] = 100
-    invertThreshold: bool = False
-    thresholdedVolume: vtkMRMLScalarVolumeNode
-    invertedVolume: vtkMRMLScalarVolumeNode
 
 
 class slicerSTRTLogic(ScriptedLoadableModuleLogic):
     def __init__(self) -> None:
         super().__init__()
 
-    def getParameterNode(self):
-        return slicerSTRTParameterNode(super().getParameterNode())
+    @staticmethod
+    def moduleFilePath() -> str:
+        return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "slicerSTRT.py"))
 
-    def process(
-        self,
-        inputVolume: vtkMRMLScalarVolumeNode,
-        outputVolume: vtkMRMLScalarVolumeNode,
-        imageThreshold: float,
-        invert: bool = False,
-        showResult: bool = True,
-    ) -> None:
-        if not inputVolume or not outputVolume:
-            raise ValueError("Input or output volume is invalid")
+    @staticmethod
+    def _formatValue(value) -> str:
+        if value in (None, ""):
+            return "Unavailable"
+        return str(value)
 
-        cliParams = {
-            "InputVolume": inputVolume.GetID(),
-            "OutputVolume": outputVolume.GetID(),
-            "ThresholdValue": imageThreshold,
-            "ThresholdType": "Above" if invert else "Below",
+    @staticmethod
+    def _checkImport(moduleName: str) -> dict:
+        try:
+            importlib.import_module(moduleName)
+            return {"status": "PASS", "message": "Available"}
+        except Exception as exc:
+            return {"status": "FAIL", "message": str(exc)}
+
+    def collectEnvironmentReport(self) -> dict:
+        moduleFilePath = self.moduleFilePath()
+        slicerApp = slicer.app
+
+        importChecks = {
+            moduleName: self._checkImport(moduleName)
+            for moduleName in ("slicer", "vtk", "qt", "ctk")
         }
-        cliNode = slicer.cli.run(
-            slicer.modules.thresholdscalarvolume,
-            None,
-            cliParams,
-            wait_for_completion=True,
-            update_display=showResult,
-        )
-        slicer.mrmlScene.RemoveNode(cliNode)
+        packageChecks = {
+            packageName: self._checkImport(packageName)
+            for packageName in ("numpy", "SimpleITK")
+        }
 
+        missingCoreImports = [name for name, result in importChecks.items() if result["status"] != "PASS"]
+        missingOptionalPackages = [name for name, result in packageChecks.items() if result["status"] != "PASS"]
+
+        summaryStatus = "PASS"
+        summaryMessage = "Core Slicer environment checks passed."
+        if missingCoreImports:
+            summaryStatus = "FAIL"
+            summaryMessage = "Core imports failed: {0}".format(", ".join(missingCoreImports))
+        elif missingOptionalPackages:
+            summaryStatus = "WARN"
+            summaryMessage = "Optional packages missing: {0}".format(", ".join(missingOptionalPackages))
+
+        report = {
+            "summaryStatus": summaryStatus,
+            "summaryMessage": summaryMessage,
+            "slicerVersion": self._formatValue(getattr(slicerApp, "applicationVersion", None)),
+            "slicerRevision": self._formatValue(getattr(slicerApp, "repositoryRevision", None)),
+            "slicerRevisionDisplay": self._formatValue(getattr(slicerApp, "revision", None)),
+            "mainApplicationRevision": self._formatValue(getattr(slicerApp, "mainApplicationRepositoryRevision", None)),
+            "pythonVersion": self._formatValue(sys.version.replace("\n", " ")),
+            "pythonExecutablePath": self._formatValue(sys.executable),
+            "pythonPlatform": self._formatValue(platform.platform()),
+            "moduleFilePath": moduleFilePath,
+            "currentWorkingDirectory": self._formatValue(os.getcwd()),
+            "sceneNodeCount": int(slicer.mrmlScene.GetNumberOfNodes()),
+            "importChecks": importChecks,
+            "packageChecks": packageChecks,
+        }
+        report["reportText"] = self.formatEnvironmentReport(report)
+        return report
+
+    def formatEnvironmentReport(self, report: dict) -> str:
+        lines = [
+            "[{0}] {1}".format(report["summaryStatus"], report["summaryMessage"]),
+            "",
+            "Slicer version: {0}".format(report["slicerVersion"]),
+            "Slicer revision: {0}".format(report["slicerRevision"]),
+            "Slicer revision display: {0}".format(report["slicerRevisionDisplay"]),
+            "Main application revision: {0}".format(report["mainApplicationRevision"]),
+            "Python version: {0}".format(report["pythonVersion"]),
+            "Python executable: {0}".format(report["pythonExecutablePath"]),
+            "Python platform: {0}".format(report["pythonPlatform"]),
+            "Module file path: {0}".format(report["moduleFilePath"]),
+            "Current working directory: {0}".format(report["currentWorkingDirectory"]),
+            "MRML scene node count: {0}".format(report["sceneNodeCount"]),
+            "",
+            "Core imports:",
+        ]
+
+        for moduleName, result in report["importChecks"].items():
+            lines.append("  {0}: {1} - {2}".format(moduleName, result["status"], result["message"]))
+
+        lines.append("")
+        lines.append("Optional packages:")
+        for packageName, result in report["packageChecks"].items():
+            lines.append("  {0}: {1} - {2}".format(packageName, result["status"], result["message"]))
+
+        return "\n".join(lines)

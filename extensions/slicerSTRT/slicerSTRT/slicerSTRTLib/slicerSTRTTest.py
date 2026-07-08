@@ -1,7 +1,7 @@
 import slicer
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleTest
 
-from .slicerSTRTLogic import registerSampleData, slicerSTRTLogic
+from .slicerSTRTLogic import slicerSTRTLogic
 
 
 class slicerSTRTTest(ScriptedLoadableModuleTest):
@@ -10,36 +10,31 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
 
     def runTest(self):
         self.setUp()
-        self.test_slicerSTRT1()
+        self.test_environmentCheckReport()
 
-    def test_slicerSTRT1(self):
-        """Exercise the logic against sample data."""
+    def test_environmentCheckReport(self):
+        """Exercise the environment check logic."""
 
         self.delayDisplay("Starting the test")
 
-        import SampleData
-
-        registerSampleData()
-        inputVolume = SampleData.downloadSample("slicerSTRT1")
-        self.delayDisplay("Loaded test data set")
-
-        inputScalarRange = inputVolume.GetImageData().GetScalarRange()
-        self.assertEqual(inputScalarRange[0], 0)
-        self.assertEqual(inputScalarRange[1], 695)
-
-        outputVolume = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLScalarVolumeNode")
-        threshold = 100
-
         logic = slicerSTRTLogic()
-        logic.process(inputVolume, outputVolume, threshold, True)
-        outputScalarRange = outputVolume.GetImageData().GetScalarRange()
-        self.assertEqual(outputScalarRange[0], inputScalarRange[0])
-        self.assertEqual(outputScalarRange[1], threshold)
+        report = logic.collectEnvironmentReport()
 
-        logic.process(inputVolume, outputVolume, threshold, False)
-        outputScalarRange = outputVolume.GetImageData().GetScalarRange()
-        self.assertEqual(outputScalarRange[0], inputScalarRange[0])
-        self.assertEqual(outputScalarRange[1], inputScalarRange[1])
+        self.assertIn(report["summaryStatus"], ("PASS", "WARN"))
+        self.assertTrue(report["slicerVersion"])
+        self.assertTrue(report["pythonVersion"])
+        self.assertTrue(report["pythonExecutablePath"])
+        self.assertTrue(report["currentWorkingDirectory"])
+        self.assertTrue(report["moduleFilePath"].endswith("slicerSTRT.py"))
+        self.assertTrue(report["sceneNodeCount"] >= 0)
+
+        for moduleName in ("slicer", "vtk", "qt", "ctk"):
+            self.assertEqual(report["importChecks"][moduleName]["status"], "PASS")
+
+        for packageName in ("numpy", "SimpleITK"):
+            self.assertIn(report["packageChecks"][packageName]["status"], ("PASS", "FAIL"))
+
+        self.assertIn("Core imports:", report["reportText"])
+        self.assertIn("Optional packages:", report["reportText"])
 
         self.delayDisplay("Test passed")
-
