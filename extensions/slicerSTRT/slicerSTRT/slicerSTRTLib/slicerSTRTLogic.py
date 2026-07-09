@@ -2,6 +2,8 @@ import os
 import importlib
 import platform
 import sys
+from functools import reduce
+from operator import mul
 
 import slicer
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleLogic
@@ -28,6 +30,25 @@ class slicerSTRTLogic(ScriptedLoadableModuleLogic):
             return {"status": "PASS", "message": "Available"}
         except Exception as exc:
             return {"status": "FAIL", "message": str(exc)}
+
+    @staticmethod
+    def _formatSequence(values, precision: int = 3) -> str:
+        if values is None:
+            return "Unavailable"
+        formattedValues = []
+        for value in values:
+            if isinstance(value, float):
+                formattedValues.append("{0:.{1}f}".format(value, precision))
+            else:
+                formattedValues.append(str(value))
+        return "({0})".format(", ".join(formattedValues))
+
+    @staticmethod
+    def _formatDirectionMatrix(directionMatrix) -> str:
+        formattedRows = []
+        for row in directionMatrix:
+            formattedRows.append("[{0}]".format(", ".join("{0:.3f}".format(value) for value in row)))
+        return " ".join(formattedRows)
 
     def collectEnvironmentReport(self) -> dict:
         moduleFilePath = self.moduleFilePath()
@@ -99,4 +120,65 @@ class slicerSTRTLogic(ScriptedLoadableModuleLogic):
         for packageName, result in report["packageChecks"].items():
             lines.append("  {0}: {1} - {2}".format(packageName, result["status"], result["message"]))
 
+        return "\n".join(lines)
+
+    def inspectVolumeMetadata(self, volumeNode) -> dict:
+        if volumeNode is None:
+            report = {
+                "summaryStatus": "WARN",
+                "summaryMessage": "No volume is selected.",
+                "reportText": "[WARN] No volume is selected.\n\nSelect a volume node, then click Inspect Volume.",
+            }
+            return report
+
+        imageData = volumeNode.GetImageData()
+        if imageData is None:
+            report = {
+                "summaryStatus": "FAIL",
+                "summaryMessage": "The selected volume has no image data.",
+                "reportText": "[FAIL] The selected volume has no image data.",
+            }
+            return report
+
+        imageDimensions = tuple(int(value) for value in imageData.GetDimensions())
+        spacingMm = tuple(float(value) for value in volumeNode.GetSpacing())
+        origin_RAS = tuple(float(value) for value in volumeNode.GetOrigin())
+        directionMatrix_IJKToRAS = [[0.0] * 3 for _ in range(3)]
+        volumeNode.GetIJKToRASDirections(directionMatrix_IJKToRAS)
+
+        voxelCount = reduce(mul, imageDimensions, 1)
+        estimatedVoxelVolumeMm3 = spacingMm[0] * spacingMm[1] * spacingMm[2]
+        scalarType = imageData.GetScalarTypeAsString() if hasattr(imageData, "GetScalarTypeAsString") else "Unavailable"
+
+        report = {
+            "summaryStatus": "PASS",
+            "summaryMessage": "Volume metadata inspected successfully.",
+            "volumeName": volumeNode.GetName() or "Unnamed volume",
+            "imageDimensions": imageDimensions,
+            "spacingMm": spacingMm,
+            "origin_RAS": origin_RAS,
+            "directionMatrix_IJKToRAS": directionMatrix_IJKToRAS,
+            "scalarType": scalarType,
+            "voxelCount": voxelCount,
+            "estimatedVoxelVolumeMm3": estimatedVoxelVolumeMm3,
+        }
+        report["reportText"] = self.formatVolumeMetadataReport(report)
+        return report
+
+    def formatVolumeMetadataReport(self, report: dict) -> str:
+        if "volumeName" not in report:
+            return report["reportText"]
+
+        lines = [
+            "[{0}] {1}".format(report["summaryStatus"], report["summaryMessage"]),
+            "",
+            "Selected volume name: {0}".format(report["volumeName"]),
+            "Image dimensions: {0}".format(self._formatSequence(report["imageDimensions"], precision=0)),
+            "Spacing (mm): {0}".format(self._formatSequence(report["spacingMm"])),
+            "Origin (RAS): {0}".format(self._formatSequence(report["origin_RAS"])),
+            "Direction/orientation (IJK to RAS): {0}".format(self._formatDirectionMatrix(report["directionMatrix_IJKToRAS"])),
+            "Scalar type: {0}".format(report["scalarType"]),
+            "Voxel count: {0}".format(report["voxelCount"]),
+            "Estimated voxel volume (mm^3): {0:.3f}".format(report["estimatedVoxelVolumeMm3"]),
+        ]
         return "\n".join(lines)

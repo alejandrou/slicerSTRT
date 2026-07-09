@@ -16,14 +16,15 @@ class slicerSTRT(ScriptedLoadableModule):
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
         self.parent.title = _("slicerSTRT")
-        self.parent.categories = [translate("qSlicerAbstractCoreModule", "Examples")]
+        self.parent.categories = [translate("qSlicerAbstractCoreModule", "STRATUM")]
         self.parent.dependencies = []
         self.parent.contributors = ["STRATUM Developers"]
         self.parent.helpText = _("""
-This learning sandbox module provides a basic environment check for the local Slicer and Python runtime.
-Use <b>Check Environment</b> to confirm the module can inspect core application and package availability safely.
+This learning sandbox module provides safe local inspection tools for the STRATUM Slicer workspace.
+Use <b>Check Environment</b> to inspect the current Slicer and Python runtime, and use
+<b>Inspect Volume</b> to review basic metadata for the selected volume node.
 """)
         self.parent.acknowledgementText = _("""
-This file was originally developed by Jean-Christophe Fillion-Robin, Kitware Inc., Andras Lasso, PerkLab,
-and Steve Pieper, Isomics, Inc. and was partially funded by NIH grant 3P41RR013218-12S1.
+This module is based on the 3D Slicer scripted module template and has been adapted for the
+STRATUM learning sandbox.
 """)

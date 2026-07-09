@@ -1,4 +1,5 @@
 import slicer
+import vtk
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleTest
 
 from .slicerSTRTLogic import slicerSTRTLogic
@@ -11,6 +12,8 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
     def runTest(self):
         self.setUp()
         self.test_environmentCheckReport()
+        self.test_inspectVolumeMetadata_withoutSelection()
+        self.test_inspectVolumeMetadata_withScalarVolume()
 
     def test_environmentCheckReport(self):
         """Exercise the environment check logic."""
@@ -38,3 +41,34 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
         self.assertIn("Optional packages:", report["reportText"])
 
         self.delayDisplay("Test passed")
+
+    def test_inspectVolumeMetadata_withoutSelection(self):
+        logic = slicerSTRTLogic()
+        report = logic.inspectVolumeMetadata(None)
+
+        self.assertEqual(report["summaryStatus"], "WARN")
+        self.assertIn("No volume is selected", report["summaryMessage"])
+        self.assertIn("Select a volume node", report["reportText"])
+
+    def test_inspectVolumeMetadata_withScalarVolume(self):
+        logic = slicerSTRTLogic()
+
+        volumeNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLScalarVolumeNode", "SyntheticVolume")
+        imageData = vtk.vtkImageData()
+        imageData.SetDimensions(4, 5, 6)
+        imageData.AllocateScalars(vtk.VTK_SHORT, 1)
+        volumeNode.SetAndObserveImageData(imageData)
+        volumeNode.SetSpacing(1.0, 2.0, 3.0)
+        volumeNode.SetOrigin(10.0, 20.0, 30.0)
+        volumeNode.SetIJKToRASDirections(-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0)
+
+        report = logic.inspectVolumeMetadata(volumeNode)
+
+        self.assertEqual(report["summaryStatus"], "PASS")
+        self.assertEqual(report["volumeName"], "SyntheticVolume")
+        self.assertEqual(report["imageDimensions"], (4, 5, 6))
+        self.assertEqual(report["spacingMm"], (1.0, 2.0, 3.0))
+        self.assertEqual(report["origin_RAS"], (10.0, 20.0, 30.0))
+        self.assertEqual(report["voxelCount"], 120)
+        self.assertEqual(report["scalarType"], "short")
+        self.assertIn("Direction/orientation (IJK to RAS)", report["reportText"])

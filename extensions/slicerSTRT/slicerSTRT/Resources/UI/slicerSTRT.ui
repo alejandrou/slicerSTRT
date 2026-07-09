@@ -73,6 +73,77 @@
     </widget>
    </item>
    <item>
+    <widget class="ctkCollapsibleButton" name="volumeMetadataCollapsibleButton">
+     <property name="text">
+      <string>Volume Metadata</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="volumeMetadataIntroLabel">
+        <property name="text">
+         <string>Select a volume node and inspect basic metadata without loading any external data.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="inputVolumeLabel">
+        <property name="text">
+         <string>Input volume:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="qMRMLNodeComboBox" name="inputVolumeNodeComboBox"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="inspectVolumeButton">
+        <property name="toolTip">
+         <string>Inspect metadata for the selected volume.</string>
+        </property>
+        <property name="text">
+         <string>Inspect Volume</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="volumeMetadataSummaryLabel">
+        <property name="toolTip">
+         <string>Overall volume metadata inspection summary.</string>
+        </property>
+        <property name="text">
+         <string>WARN: No volume is selected.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPlainTextEdit" name="volumeMetadataResultsTextEdit">
+        <property name="toolTip">
+         <string>Detailed results from the most recent volume metadata inspection.</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="plainText">
+         <string>Select a volume and press Inspect Volume.</string>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>180</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -99,6 +170,11 @@
    <extends>QWidget</extends>
    <header>ctkCollapsibleButton.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>qMRMLNodeComboBox</class>
+   <extends>QWidget</extends>
+   <header>qMRMLNodeComboBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
