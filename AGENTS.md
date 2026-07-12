@@ -1,447 +1,110 @@
-# STRATUM / slicerSTRT Codex Instructions
+# STRATUM / slicerSTRT Agent Router
 
-This repository is a Windows 11 3D Slicer development workspace for the STRATUM / slicerSTRT learning project.
+This repository is the active Windows 11 STRATUM-related 3D Slicer development project and prototype. It is not the upstream 3D Slicer repository and is not production clinical software.
 
-Codex must treat this file as the entry point before making changes.
-
----
-
-## 1. Project identity
-
-This is not the upstream 3D Slicer repository.
-
-This workspace contains:
-
-* a local clone of upstream 3D Slicer for reference,
-* a local Slicer build,
-* a STRATUM-specific Slicer extension,
-* project documentation,
-* temporary workspace material,
-* local knowledge and notes.
-
-The current goal is to build a safe local Slicer scripted-module sandbox inspired by slicerSTRT concepts.
-
-Do not implement clinical diagnosis, surgical guidance, real medical decision logic, or unvalidated STRATUM algorithms unless explicitly instructed.
-
----
-
-## 2. Main paths
-
-Project root:
-
-```text
-C:\stratum
-```
-
-Important paths:
-
-```text
-C:\stratum\source
-C:\stratum\apps\SR
-C:\stratum\apps\SR\Slicer-build\Slicer.exe
-C:\stratum\extensions
-C:\stratum\extensions\slicerSTRT
-C:\stratum\extensions\slicerSTRT\slicerSTRT
-C:\stratum\docs
-C:\stratum\knowledge
-C:\stratum\workspace
-```
-
-Slicer skill path:
-
-```text
-C:\Users\AlejandroHerrera\.codex\skills\slicer-skill
-```
-
----
-
-## 3. Folder responsibilities
-
-### `source`
-
-Local clone of upstream 3D Slicer.
-
-Use only as reference for:
-
-* Slicer APIs,
-* scripted module examples,
-* MRML,
-* Qt,
-* VTK,
-* ITK,
-* CMake,
-* extension structure.
-
-Do not edit this folder unless explicitly requested.
-
-### `apps`
-
-Local application/build area.
-
-Current Slicer build:
-
-```text
-C:\stratum\apps\SR\Slicer-build\Slicer.exe
-```
-
-Do not edit this folder unless explicitly requested.
-
-Do not commit generated build outputs.
-
-### `extensions`
-
-Main project code area.
-
-Normal slicerSTRT development goes here.
-
-Current extension:
-
-```text
-C:\stratum\extensions\slicerSTRT
-```
-
-Current module:
-
-```text
-C:\stratum\extensions\slicerSTRT\slicerSTRT
-```
-
-### `docs`
-
-Project documentation, development notes, Codex workflow, Slicer notes, and planning files.
-
-Use this as the main source of project intent.
-
-### `knowledge`
-
-External references, PDFs, downloaded docs, and supporting notes.
-
-Use as read-only reference material unless explicitly asked to organize or update it.
-
-### `workspace`
-
-Temporary scripts, experiments, reports, generated data, and local-only material.
-
-Do not put final module source code here.
-
----
-
-## 4. Default edit permissions
+## Editable And Protected Directories
 
 Codex may normally edit:
 
-```text
-C:\stratum\extensions
-C:\stratum\docs
-C:\stratum\workspace
-```
+- `extensions/`
+- `docs/`
+- `workspace/`
+- `.ai/`
+- `tasks/`
+- `config/`
 
 Codex must not edit unless explicitly requested:
 
-```text
-C:\stratum\source
-C:\stratum\apps
-C:\stratum\knowledge
-```
+- `source/`
+- `apps/`
+- `knowledge/`
 
-Codex must ask before Git operations:
+Do not modify generated files, local build outputs, or private local configuration.
 
-* commit,
-* push,
-* pull,
-* branch,
-* merge,
-* rebase,
-* reset,
-* force operations,
-* deleting tracked files.
+Use `config/local.example.json` as the portable template. The real local configuration file is `config/local.json`, and it must remain ignored by Git.
 
----
+During implementation, Codex may only modify files explicitly listed in the active task's `Files allowed` section.
 
-## 5. Required reading order
+Files outside that list require an approved task update before they can be modified.
 
-Before changing project structure, read:
+## Source Of Truth
 
-```text
-docs\development\project_structure.md
-```
+When instructions conflict, use this order:
 
-Before writing or modifying code, read:
+1. Root `AGENTS.md`.
+2. Accepted ADRs in `docs/architecture/decisions/`.
+3. The only task in `tasks/active/` or `tasks/review/`.
+4. Policies under `.ai/policies/`.
+5. Workflows under `.ai/workflows/`.
+6. Existing code and automated tests.
+7. General documentation.
+8. External skills and references.
 
-```text
-docs\development\coding_standards.md
-```
+External skills provide technical knowledge but must not override an accepted repository decision or an approved task.
 
-Before adding or changing tests, read:
+An active task may specialize repository policies, but it must not contradict an accepted ADR. Changing an accepted architectural decision requires a new ADR that supersedes it.
 
-```text
-docs\development\testing_strategy.md
-```
+## One Active Task
 
-Before answering Slicer API/module questions, read:
+Only one task may exist across `tasks/active/` and `tasks/review/` combined.
 
-```text
-docs\slicer\slicer_knowledge_index.md
-```
+A new implementation task must not start until the previous task is completed or explicitly returned to backlog.
 
-Before planning Codex workflow or context usage, read:
+## Task Lifecycle
 
-```text
-docs\codex\codex_workflow.md
-docs\codex\context_management.md
-```
+Every task follows the same lifecycle:
 
-Before continuing project progress, read:
+`BACKLOG -> SPECIFICATION -> HUMAN APPROVAL -> ACTIVE -> IMPLEMENTATION -> FAST AUTOMATED TESTS -> MANUAL VERIFICATION -> REVIEW -> INDEPENDENT AI REVIEW -> HUMAN APPROVAL -> COMPLETED`
 
-```text
-docs\codex\context_handoff.md
-```
+Use `.ai/templates/task-template.md` for all task cards. Use `.ai/workflows/task-lifecycle.md` for the detailed procedure.
 
-Before implementing sandbox roadmap tasks, read:
+## Skill Routing
 
-```text
-docs\development\sandbox_roadmap.md
-```
+Use the installed Slicer skill for Slicer APIs, MRML, Qt, VTK, ITK, SimpleITK, segmentations, markups, transforms, DICOM, CMake, extensions, CLI modules, C++ modules, packaging, and Slicer testing.
 
----
+Do not load the Slicer skill for unrelated Markdown or administrative changes.
 
-## 6. Search order for Slicer questions
+Skills should be declared in the active task when they are required. Inspect current project code before searching generic external examples. Do not invent Slicer APIs.
 
-When answering Slicer-specific questions, do not invent APIs.
+Do not modify or reinstall external skills unless explicitly requested.
 
-Search in this order:
+## Git Restrictions
 
-1. Current project extension:
+Codex may use read-only Git commands to inspect the repository, including:
 
-```text
-C:\stratum\extensions\slicerSTRT
-```
+- `git status`
+- `git diff`
+- `git log`
+- `git show`
+- `git branch --show-current`
 
-2. Local Slicer source:
+Do not perform state-changing Git operations, including commit, push, pull, branch creation, checkout, merge, rebase, reset, force operations, staging, or tracked-file deletion, unless explicitly requested by the user.
 
-```text
-C:\stratum\source
-```
+See `.ai/policies/git-workflow.md`.
 
-3. Local Slicer skill:
+## MCP Restrictions
 
-```text
-C:\Users\AlejandroHerrera\.codex\skills\slicer-skill
-```
+MCP is disabled by default. Use MCP only when the active task explicitly allows it, the user explicitly requests it, scene inspection or visual verification cannot reasonably be performed through normal tests, or a milestone requires additional evidence.
 
-4. Web or external sources only if local references are insufficient or the user asks for current/latest information.
+MCP verification never replaces manual user verification. Do not use MCP with private, identifiable, or unapproved medical data.
 
-When giving an answer, mention which local paths were inspected.
+See `.ai/policies/mcp-policy.md`.
 
----
+## Medical Data Restrictions
 
-## 7. Development rules
+Use only synthetic data, public Slicer sample data, anonymized test data, mock JSON/results, or explicitly approved public medical data.
 
-Use Python scripted modules by default.
+Do not commit private patient data, non-anonymized DICOM, sensitive medical images, real clinical reports, or private hospital data. Do not implement diagnosis, surgical guidance, real medical decision logic, or unvalidated STRATUM algorithms unless explicitly instructed.
 
-Do not use C++ unless there is a clear reason.
+See `.ai/policies/medical-data-policy.md` and `.ai/policies/algorithm-boundary-policy.md`.
 
-Do not rebuild Slicer for normal Python changes.
+## Expected Completion Report
 
-For normal `.py` module changes:
+For implementation tasks, report:
 
-1. edit files under `extensions\slicerSTRT`,
-2. open Slicer,
-3. enable Developer Mode,
-4. use Reload or Reload and Test.
-
-Only rebuild Slicer when changing C++, CMake, extension packaging, or build-level configuration.
-
-Keep changes small, readable, and testable.
-
-Avoid large multi-phase edits.
-
-Do one roadmap phase at a time.
-
----
-
-## 8. Code structure rules
-
-Keep responsibilities separated.
-
-For scripted modules:
-
-* module entry file: metadata and registration only,
-* widget class: UI, events, scene interaction,
-* logic class: processing and algorithmic behavior,
-* test class: automated checks,
-* helper modules: reusable utilities when needed.
-
-Do not put real logic directly inside button callbacks.
-
-Avoid large files.
-
-Avoid unclear names such as:
-
-```text
-tmp
-data
-manager
-processor
-x
-pos
-```
-
-Prefer explicit names with units and coordinate systems where useful:
-
-```text
-inputVolumeNode
-segmentationNode
-entryPoint_RAS
-targetPoint_RAS
-distanceMm
-angleDeg
-spacingMm
-```
-
----
-
-## 9. Medical safety rules
-
-This project is a learning sandbox.
-
-Do not commit:
-
-* private patient data,
-* non-anonymized DICOM files,
-* sensitive medical images,
-* real clinical reports,
-* private hospital data.
-
-Use only:
-
-* synthetic data,
-* public Slicer sample data,
-* anonymized test data,
-* mock JSON/results.
-
-Do not present mock AI output as real diagnosis.
-
-Do not implement real surgical guidance or clinical decision-making.
-
----
-
-## 10. Testing rules
-
-Prefer tests for:
-
-* logic functions,
-* validation,
-* coordinate conversions,
-* input/output behavior,
-* error handling.
-
-Avoid testing only GUI clicks unless necessary.
-
-Tests for the current module should live under:
-
-```text
-C:\stratum\extensions\slicerSTRT\slicerSTRT\Testing
-```
-
-For Python module changes, test with:
-
-```text
-Reload
-Reload and Test
-```
-
-inside Slicer.
-
-Use small, repeatable, independent tests.
-
----
-
-## 11. Context and token management
-
-Before starting a task, inspect only the files needed for that task.
-
-Do not read the full Slicer source tree unless necessary.
-
-Prefer targeted searches.
-
-Use this order for task context:
-
-1. `AGENTS.md`
-2. relevant docs under `docs`
-3. current extension files
-4. local Slicer source only if API confirmation is needed
-5. slicer-skill only if Slicer patterns are needed
-
-For large tasks, first summarize:
-
-* files inspected,
-* current state,
-* intended change,
-* risks,
-* test plan.
-
-Then make the smallest safe change.
-
----
-
-## 12. Expected Codex response format
-
-For implementation tasks, respond with:
-
-1. Direct answer.
-2. Files inspected.
-3. Changes made or proposed.
-4. How to test in Slicer.
-5. Any risks or follow-up tasks.
-
-For review/planning tasks, respond with:
-
-1. Current assessment.
-2. Problems found.
-3. Recommended next step.
-4. Files or paths involved.
-
-Do not over-explain unless the user asks.
-
----
-
-## 13. Current working assumptions
-
-The local Slicer build works.
-
-The slicerSTRT module is a Python scripted module.
-
-The active development location is:
-
-```text
-C:\stratum\extensions\slicerSTRT
-```
-
-The current project is still a safe sandbox and should not be treated as production clinical software.
-
-Before adding new functionality, prefer cleaning generated template behavior and keeping the extension understandable.
-
----
-
-## 14. Reusable Codex workflow
-
-For future Codex tasks, prefer this pattern:
-
-* Read `AGENTS.md`.
-* Follow the relevant `.agents/*.md` files.
-* Implement one specific `tasks/*.md` task card.
-* Keep changes small and reviewable.
-* Do not run Git commands unless explicitly asked.
-
-Example 1:
-
-```text
-Read AGENTS.md. Follow .agents/task_protocol.md and .agents/slicer_workflow.md. Implement tasks/phase_2a_check_environment.md. Keep changes small. Do not run Git commands.
-```
-
-Example 2:
-
-```text
-Read AGENTS.md. Follow .agents/task_protocol.md and .agents/code_style.md. In extensions/slicerSTRT, make only the requested small change: <describe change>. Do not run Git commands.
-```
+1. Files inspected.
+2. Files created.
+3. Files modified.
+4. Validation performed and results.
+5. How to test manually, including Slicer Reload / Reload and Test when production module code changes.
+6. Risks, ambiguities, or follow-up tasks.

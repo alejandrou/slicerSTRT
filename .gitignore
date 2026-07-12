@@ -3,6 +3,7 @@
 /apps/
 /knowledge/
 /workspace/
+/config/local.json
 
 # Common generated artifacts
 *.pyc

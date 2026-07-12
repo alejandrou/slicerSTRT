@@ -1,0 +1,6 @@
+{
+  "slicerSourceDirectory": "C:/path/to/Slicer/source",
+  "slicerBuildDirectory": "C:/path/to/Slicer/build",
+  "slicerExecutable": "C:/path/to/Slicer-build/Slicer.exe",
+  "slicerSkillDirectory": "C:/path/to/slicer-skill"
+}
