@@ -9,16 +9,17 @@ This repository is the active Windows 11 STRATUM-related 3D Slicer development p
 - `tasks/`: current task cards, review state, and completion evidence.
 - `docs/development/`: project structure, coding, testing, and local development guidance.
 - `docs/slicer/`: reusable 3D Slicer technical notes for this project.
-- `docs/knowledge/`: supporting reference material.
+- `docs/knowledge/`: curated, non-sensitive, version-controlled reference notes.
 - `extensions/`: STRATUM-specific Slicer extension and module development.
 - `source/`: local upstream Slicer source reference.
 - `apps/`: local Slicer application/build outputs.
 - `workspace/`: temporary work, experiments, scripts, and generated local artifacts.
+- `knowledge/`: ignored local reference material, downloaded files, and private working notes.
 - `config/`: portable local configuration template and ignored machine-specific configuration.
 
 ## Development Entry Points
 
-Production extension development happens under `extensions/`.
+Extension development happens under `extensions/`.
 
 Local Slicer build instructions are in `README_Stratum_Slicer_Build.md`.
 

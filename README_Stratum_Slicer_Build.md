@@ -2,7 +2,9 @@
 
 This document describes the local Windows 11 build setup for the STRATUM-related Slicer prototype.
 
-Machine-specific paths belong in `config/local.json`. Use `config/local.example.json` as the portable template.
+Machine-specific Slicer paths used by repository tooling belong in `config/local.json`. Use `config/local.example.json` as the portable template.
+
+Exact Qt and CMake paths belong in local build scripts or local environment variables, not in `config/local.json`.
 
 ## Prerequisites
 
@@ -35,6 +37,7 @@ Copy `config/local.example.json` to `config/local.json` and set the local paths 
 - `extensions/`: STRATUM-specific Slicer extension code.
 
 The `apps/` build tree is generated output. Do not commit it.
+The `workspace/` tree is ignored local material. Scripts under `workspace/build_scripts/` may contain machine-specific paths, are not guaranteed to exist in every clone, and local paths must not be committed.
 
 ## Configure The Build
 
@@ -49,9 +52,41 @@ where patch
 cmake --version
 ```
 
-Also verify that Qt is installed and that the Qt CMake package directory exists. Store the exact Qt and CMake paths in local build scripts or `config/local.json`, not in repository-wide instructions.
+Also verify that Qt is installed and that the Qt CMake package directory exists. Store exact Qt and CMake paths in local build scripts or local environment variables, not in repository-wide instructions.
 
 If the Slicer source checkout is nested differently on a local machine, update the local configuration or build script variables rather than changing repository documentation.
+
+## Local Build Helper Scripts
+
+When the optional local scripts exist, run them from the x64 Native Tools Command Prompt for VS 2022.
+
+Clean build:
+
+```bat
+cd /d <repository>\workspace\build_scripts
+Stratum_Release_Build_ASCII.bat clean
+```
+
+Incremental build:
+
+```bat
+cd /d <repository>\workspace\build_scripts
+Stratum_Release_Build_ASCII.bat
+```
+
+Optional launcher:
+
+```bat
+cd /d <repository>\workspace\build_scripts
+Start_Stratum_Slicer_Release_ASCII.bat
+```
+
+After a successful build, verify that these executables exist:
+
+```text
+apps/SR/Slicer-build/Slicer.exe
+apps/SR/Slicer-build/bin/Release/SlicerApp-real.exe
+```
 
 ## Clean Build
 
@@ -78,6 +113,7 @@ The conventional local executable is:
 
 ```text
 apps/SR/Slicer-build/Slicer.exe
+apps/SR/Slicer-build/bin/Release/SlicerApp-real.exe
 ```
 
 If a local machine uses a different build tree, set `slicerExecutable` in `config/local.json`.

@@ -13,6 +13,7 @@ This repository contains the STRATUM-related 3D Slicer development prototype. It
 - `source/`: local upstream Slicer source reference.
 - `apps/`: local Slicer application and build outputs.
 - `workspace/`: temporary work, experiments, scripts, and local generated artifacts.
+- `knowledge/`: ignored local reference material, downloaded files, and private working notes.
 
 For exact edit permissions, follow `AGENTS.md` and the active task card.
 
@@ -45,7 +46,7 @@ Machine-specific paths should be configured in `config/local.json`, using `confi
 - `docs/development/`: project structure, coding standards, and testing strategy.
 - `docs/slicer/`: reusable Slicer technical notes.
 - `docs/architecture/decisions/`: accepted ADRs.
-- `docs/knowledge/`: supporting reference material.
+- `docs/knowledge/`: curated, non-sensitive, version-controlled reference notes useful to the project.
 
 ## Task And Workflow Files
 

@@ -39,13 +39,16 @@ It should stay small. Keep helper implementation in `slicerSTRTLib/` so Slicer d
 
 ## Logic
 
-`slicerSTRTLib/slicerSTRTLogic.py` contains:
+`slicerSTRTLib/slicerSTRTLogic.py` currently defines `slicerSTRTLogic`.
 
-- `registerSampleData()`;
-- `slicerSTRTParameterNode`;
-- `slicerSTRTLogic`.
+The logic class owns reusable behavior for the module's current inspection tools:
 
-The logic file owns reusable processing and validation behavior.
+- collecting a Slicer/Python environment report;
+- checking core imports and optional packages;
+- inspecting selected volume metadata, including dimensions, spacing, origin, IJK-to-RAS directions, scalar type, voxel count, and estimated voxel volume;
+- formatting those reports for display by the widget and verification by tests.
+
+The current production module does not define a parameter-node wrapper or sample-data registration function.
 
 ## Widget
 
