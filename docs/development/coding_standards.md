@@ -12,6 +12,19 @@ Prefer code that is:
 
 Do not optimize for performance before the behavior and boundaries are clear.
 
+## Local Python Quality Checks
+
+From the repository root, run:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+.\scripts\development\run-python-quality.ps1
+```
+
+Create the ignored root `.venv` and install Ruff and Pyright there before the first run. Activate that environment in each new PowerShell session. The command runs Ruff and Pyright against project-owned Python under `extensions/slicerSTRT/`; they are development tools, not Slicer runtime dependencies, and the script does not install them.
+
+Pyright uses `basic` checking. Missing imports from Slicer's runtime-provided modules are warnings because normal system Python does not provide the real `slicer`, `qt`, `ctk`, and Slicer-bundled `vtk` environment. `reportMissingModuleSource` is disabled because several of these modules are compiled or injected at runtime. Project files remain included, `slicerSTRTLib` is resolved through the repository configuration, and other basic diagnostics remain enabled.
+
 ## Separate Responsibilities
 
 Keep UI, logic, I/O, tests, and reusable helpers separate when practical.

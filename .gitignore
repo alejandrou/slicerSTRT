@@ -4,8 +4,10 @@
 /knowledge/
 /workspace/
 /config/local.json
+/.venv/
 
 # Common generated artifacts
 *.pyc
 __pycache__/
+.ruff_cache/
 .DS_Store

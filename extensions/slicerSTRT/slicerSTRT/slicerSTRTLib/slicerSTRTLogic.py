@@ -1,5 +1,5 @@
-import os
 import importlib
+import os
 import platform
 import sys
 from functools import reduce
