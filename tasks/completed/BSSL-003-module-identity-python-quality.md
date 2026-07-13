@@ -1,7 +1,7 @@
 ---
 id: BSSL-003
 title: Align module identity and establish Python quality tooling
-status: review
+status: completed
 branch: feature/BSSL-003-module-identity-python-quality
 required_skills:
   - slicer
@@ -24,7 +24,7 @@ BSSL-002 consolidated the repository documentation and is completed and merged i
 
 The current scripted module already provides Check Environment and Inspect Volume behavior. Its help and acknowledgement metadata still call the module a `learning sandbox`, which no longer matches the repository identity in `AGENTS.md`. The project-owned Python currently consists of the entry point and four files in `slicerSTRTLib`; there is no committed Ruff or Pyright configuration and no combined local Python-quality command.
 
-The local Slicer runtime cannot be verified during specification because `config/local.json` is absent. Implementation must check the runtime configured by `config/local.json` when practical. If the embedded Python version cannot be verified, Ruff's `target-version` must be omitted rather than guessed.
+The local Slicer runtime could not be verified during specification because `config/local.json` was absent. The user subsequently provided the local Slicer runtime details and embedded Python version, allowing Ruff's `target-version` to be set to `py312`.
 
 This task does not require an ADR. The metadata correction and initial quality-tool settings are narrow, reversible development-foundation choices and do not establish a difficult or expensive-to-reverse architecture.
 
@@ -123,7 +123,7 @@ This task does not require an ADR. The metadata correction and initial quality-t
 
 ## Files allowed
 
-Only these files may be created or modified during implementation:
+Only these files may be created or modified during implementation or task-card lifecycle transitions:
 
 - `extensions/slicerSTRT/slicerSTRT/slicerSTRT.py`
 - `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/__init__.py`, only for a directly reported quality finding
@@ -136,7 +136,7 @@ Only these files may be created or modified during implementation:
 - `.gitignore`, for the approved Ruff cache and root `.venv/` exclusions
 - `.venv/**`, as an ignored local development environment containing only Ruff, Pyright, and their transitive dependencies
 - `docs/development/coding_standards.md`
-- `tasks/backlog/BSSL-003-module-identity-python-quality.md`, including lifecycle moves of this same task card
+- `tasks/{backlog,active,review,completed}/BSSL-003-module-identity-python-quality.md`, including lifecycle moves of this same task card
 
 No other file is authorized. Update this task card and obtain human approval before changing the allowlist.
 
@@ -224,7 +224,7 @@ Using the Slicer executable configured by `config/local.json`, the user must:
 
 - Normal system Python does not expose the complete Slicer, Qt, CTK, and VTK runtime, so Pyright needs a documented compromise between useful project checks and external-import noise. The initial strategy downgrades missing runtime imports and suppresses missing-module-source noise without ignoring project files.
 - A separately installed package named `slicer` may not represent 3D Slicer's runtime API. The configuration must not treat that package as authoritative or add machine-specific paths to make checks pass.
-- The embedded Python version is currently unknown because `config/local.json` is absent. Ruff must omit `target-version` unless implementation can verify it from a configured Slicer runtime.
+- The embedded Python version was unavailable during specification but was later provided by the user as 3.12.10; Ruff now targets `py312`.
 - Ruff `B` or Pyright `basic` may reveal a finding that is not safely mechanical. Such a finding must be documented and deferred rather than expanding the task.
 - Import ordering or narrow suppression comments may touch several small Python files. The diff must remain behavior-preserving and every production correction must be itemized.
 - Manual Slicer verification depends on the user's configured local runtime and cannot be replaced by system-Python checks.
@@ -235,7 +235,7 @@ Modify only the necessary portion of `docs/development/coding_standards.md` to a
 
 ## Completion evidence
 
-Implementation evidence recorded on 2026-07-13. Ruff and Pyright validation is complete. The task remains active because manual Slicer verification is pending.
+Implementation evidence recorded on 2026-07-13. Manual Slicer verification, independent review, and final human approval are complete. The task is completed.
 
 Activation:
 
@@ -291,7 +291,7 @@ Configured Ruff baseline:
 - Selected rules: `E4`, `E7`, `E9`, `F`, `I`, and `B`.
 - No `N` naming rules, formatter, automatic fixes, unsafe fixes, build metadata, or runtime dependencies were added.
 - Exclusions cover `apps`, `knowledge`, `source`, `workspace`, `config/local.json`, Git metadata, caches, virtual environments, `Build`/`build`, `__pycache__`, and generated directories.
-- Ruff `target-version` is omitted. `config/local.json` is absent, so neither the configured Slicer version nor its embedded Python version could be verified without guessing.
+- Ruff `target-version = "py312"` is configured from the user-provided embedded Python version 3.12.10 in Slicer 5.13.0-2026-07-02.
 
 Configured Pyright baseline:
 
@@ -323,6 +323,7 @@ Commands and results:
 - Real initial analysis reported nine Ruff errors: two `I001` import-order findings and seven `F401` unused/import-export findings. Real initial Pyright analysis reported two `reportOptionalMemberAccess` errors and twelve expected `reportMissingImports` warnings.
 - After approved mechanical corrections, an intermediate run reported one remaining Ruff `I001`, zero Pyright errors, and eleven expected runtime-import warnings.
 - Final `./scripts/development/run-python-quality.ps1` runs with the root `.venv` active, from the repository root and from `%TEMP%`, both returned exit code `0`.
+- After the user supplied the local Slicer environment details, `.\.venv\Scripts\Activate.ps1` followed by `.\scripts\development\run-python-quality.ps1` returned exit code `0` from the repository root.
 - Targeted `rg` search found no remaining `learning sandbox`, `disposable training`, or `training code` wording under the active module Python path.
 - Git status and diff inspection found changes only in the approved allowlist. No CMake, `.ui`, dependency, protected-directory, workspace, generated, build-output, or private-configuration file changed.
 
@@ -351,10 +352,16 @@ Behavior-preserving Python corrections:
 Remaining diagnostics and verification:
 
 - Pyright intentionally retains eleven external Slicer/VTK `reportMissingImports` warnings. Removing or globally hiding them is not required and would weaken the documented baseline.
-- Manual Slicer verification was completed by the user. The exact results provided were:
-  - Slicer version: `[PASTE VERSION]`
-  - Embedded Python version: `[PASTE VERSION]`
+- Manual Slicer verification was completed by the user in the local environment. The exact results provided were:
+  - Slicer version: 5.13.0-2026-07-02
+  - Slicer revision: 0f71972
+  - Slicer revision display: 34834
+  - Main application revision: 0f71972
+  - Embedded Python version: 3.12.10 (main, Jul 4 2026, 10:23:12) [MSC v.1944 64 bit (AMD64)]
   - Module loaded: PASS
+  - Core Slicer imports: PASS
+  - numpy: PASS
+  - SimpleITK: PASS
   - Module title remained `slicerSTRT`: PASS
   - Module category remained `STRATUM`: PASS
   - Revised help text displayed correctly: PASS
@@ -380,8 +387,8 @@ Synchronization and review transition:
 
 ## Review findings
 
-Pending independent AI review after implementation and manual verification.
+- Independent review completed on 2026-07-13 after the updated runtime verification and quality rerun. No outstanding findings.
 
 ## Human approval
 
-Specification approved and task activation authorized by the user on 2026-07-13. Implementation review and final human approval remain pending.
+Specification approved and task activation authorized by the user on 2026-07-13. The user supplied the completed local Slicer verification, confirmed the Python quality command, and authorized completion on 2026-07-13.
