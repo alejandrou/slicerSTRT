@@ -1,0 +1,28 @@
+{
+  "include": [
+    "extensions/slicerSTRT"
+  ],
+  "exclude": [
+    "apps",
+    "knowledge",
+    "source",
+    "workspace",
+    "config/local.json",
+    "**/.git",
+    "**/.mypy_cache",
+    "**/.pytest_cache",
+    "**/.ruff_cache",
+    "**/.venv",
+    "**/Build",
+    "**/build",
+    "**/__pycache__",
+    "**/generated",
+    "**/venv"
+  ],
+  "extraPaths": [
+    "extensions/slicerSTRT/slicerSTRT"
+  ],
+  "typeCheckingMode": "basic",
+  "reportMissingImports": "warning",
+  "reportMissingModuleSource": "none"
+}

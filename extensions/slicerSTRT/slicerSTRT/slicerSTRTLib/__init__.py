@@ -1,3 +1,3 @@
-from .slicerSTRTLogic import slicerSTRTLogic
-from .slicerSTRTTest import slicerSTRTTest
-from .slicerSTRTWidget import slicerSTRTWidget
+from .slicerSTRTLogic import slicerSTRTLogic as slicerSTRTLogic
+from .slicerSTRTTest import slicerSTRTTest as slicerSTRTTest
+from .slicerSTRTWidget import slicerSTRTWidget as slicerSTRTWidget

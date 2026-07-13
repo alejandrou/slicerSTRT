@@ -1,3 +1,5 @@
+from typing import cast
+
 import slicer
 from slicer.i18n import tr as _
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleWidget
@@ -52,12 +54,14 @@ class slicerSTRTWidget(ScriptedLoadableModuleWidget):
 
     def onCheckEnvironmentButton(self) -> None:
         with slicer.util.tryWithErrorDisplay(_("Failed to run the environment check."), waitCursor=True):
-            report = self.logic.collectEnvironmentReport()
+            logic = cast(slicerSTRTLogic, self.logic)
+            report = logic.collectEnvironmentReport()
             self._setSummaryState(report["summaryStatus"], report["summaryMessage"])
             self.ui.environmentResultsTextEdit.setPlainText(report["reportText"])
 
     def onInspectVolumeButton(self) -> None:
         with slicer.util.tryWithErrorDisplay(_("Failed to inspect the selected volume."), waitCursor=True):
-            report = self.logic.inspectVolumeMetadata(self.ui.inputVolumeNodeComboBox.currentNode())
+            logic = cast(slicerSTRTLogic, self.logic)
+            report = logic.inspectVolumeMetadata(self.ui.inputVolumeNodeComboBox.currentNode())
             self._setVolumeMetadataState(report["summaryStatus"], report["summaryMessage"])
             self.ui.volumeMetadataResultsTextEdit.setPlainText(report["reportText"])
