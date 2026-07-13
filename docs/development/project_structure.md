@@ -1,125 +1,55 @@
-# slicerSTRT Project Structure
+# Project Structure
 
-Main workspace:
+This repository contains the STRATUM-related 3D Slicer development prototype. It is not production clinical software.
 
-`C:\stratum`
+## Top-Level Areas
 
-Open this folder directly in VS Code when working with Codex.
+- `AGENTS.md`: Codex routing, repository source-of-truth order, and edit-scope rules.
+- `.ai/`: authoritative policies, workflows, and templates for repository work.
+- `tasks/`: active, review, backlog, and completed task cards.
+- `docs/`: developer and technical documentation.
+- `config/`: portable local configuration template and ignored local configuration.
+- `extensions/`: STRATUM-specific Slicer extension and module source.
+- `source/`: local upstream Slicer source reference.
+- `apps/`: local Slicer application and build outputs.
+- `workspace/`: temporary work, experiments, scripts, and local generated artifacts.
+- `knowledge/`: ignored local reference material, downloaded files, and private working notes.
 
-## Folder responsibilities
+For exact edit permissions, follow `AGENTS.md` and the active task card.
 
-### `apps`
+## Development Code
 
-Contains built or installed applications.
+STRATUM extension development occurs under:
 
-Current Slicer build:
+```text
+extensions/slicerSTRT/
+```
 
-`C:\stratum\apps\SR\Slicer-build\Slicer.exe`
+The current scripted module lives under:
 
-Do not edit this folder unless explicitly requested.
+```text
+extensions/slicerSTRT/slicerSTRT/
+```
 
-### `source`
+Keep final module source in `extensions/`, not in `workspace/`.
 
-Contains the local Slicer source code.
+## Local Slicer Source And Build Outputs
 
-Use it as reference for:
+The local Slicer source tree under `source/` is used as a reference for Slicer APIs, MRML, Qt, VTK, ITK, CMake, and extension examples.
 
-- Slicer APIs
-- module examples
-- MRML
-- Qt
-- VTK
-- ITK
-- CMake
-- extension structure
+The local build tree under `apps/` is generated output. The conventional build location for this workspace is `apps/SR/`, with the executable under `apps/SR/Slicer-build/`.
 
-Do not edit this folder unless explicitly requested.
+Machine-specific paths should be configured in `config/local.json`, using `config/local.example.json` as the template.
 
-### `extensions`
+## Documentation
 
-Contains slicerSTRT-specific Slicer extensions and modules.
+- `docs/development/`: project structure, coding standards, and testing strategy.
+- `docs/slicer/`: reusable Slicer technical notes.
+- `docs/architecture/decisions/`: accepted ADRs.
+- `docs/knowledge/`: curated, non-sensitive, version-controlled reference notes useful to the project.
 
-Normal development goes here.
+## Task And Workflow Files
 
-Current extension:
+Current work is tracked under `tasks/`.
 
-`C:\stratum\extensions\slicerSTRT`
-
-Current module:
-
-`C:\stratum\extensions\slicerSTRT\slicerSTRT`
-
-### `docs`
-
-Contains documentation for the developer and Codex.
-
-Current sections:
-
-- `docs/development`
-- `docs/slicer`
-- `docs/codex`
-- `docs/knowledge`
-
-### `knowledge`
-
-Contains external references, PDFs, downloaded docs, notes, and extra material.
-
-Use as reference only.
-
-### `workspace`
-
-Contains temporary work, scripts, experiments, and local-only material.
-
-Do not put final module source code here.
-
-## Current extension structure
-
-`extensions\slicerSTRT`
-
-Contains:
-
-- `CMakeLists.txt`
-- `slicerSTRT.png`
-- `slicerSTRT\slicerSTRT.py`
-- `slicerSTRT\Resources`
-- `slicerSTRT\Testing`
-
-## Edit permissions
-
-Codex may normally edit:
-
-- `C:\stratum\extensions`
-- `C:\stratum\docs`
-- `C:\stratum\workspace`
-
-Codex must not edit unless explicitly requested:
-
-- `C:\stratum\apps`
-- `C:\stratum\source`
-
-## Development rule
-
-For now, slicerSTRT development should start as a Python scripted Slicer module.
-
-Do not rebuild Slicer for normal Python changes.
-Use Slicer Developer Mode and Reload / Reload and Test.
-
-## Sandbox roadmap
-
-The slicerSTRT learning sandbox is defined in:
-
-`docs/development/sandbox_roadmap.md`
-
-Sandbox code should live under:
-
-`extensions/slicerSTRT`
-
-Sandbox temporary/generated files should live under:
-
-`workspace`
-
-Suggested generated folders:
-
-`workspace/sample_data`
-`workspace/reports`
-
+Repository policies and workflows live under `.ai/`. Do not duplicate complete policies or workflows in development documentation; link to the authoritative file instead.

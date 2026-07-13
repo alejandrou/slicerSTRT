@@ -70,33 +70,21 @@ Do not modify or reinstall external skills unless explicitly requested.
 
 ## Git Restrictions
 
-Codex may use read-only Git commands to inspect the repository, including:
+Read-only Git inspection is allowed. Git mutations require an explicit user request.
 
-- `git status`
-- `git diff`
-- `git log`
-- `git show`
-- `git branch --show-current`
-
-Do not perform state-changing Git operations, including commit, push, pull, branch creation, checkout, merge, rebase, reset, force operations, staging, or tracked-file deletion, unless explicitly requested by the user.
-
-See `.ai/policies/git-workflow.md`.
+`.ai/policies/git-workflow.md` is the authoritative owner of Git restrictions and local-change handling.
 
 ## MCP Restrictions
 
-MCP is disabled by default. Use MCP only when the active task explicitly allows it, the user explicitly requests it, scene inspection or visual verification cannot reasonably be performed through normal tests, or a milestone requires additional evidence.
+MCP is disabled by default.
 
-MCP verification never replaces manual user verification. Do not use MCP with private, identifiable, or unapproved medical data.
-
-See `.ai/policies/mcp-policy.md`.
+`.ai/policies/mcp-policy.md` is the authoritative owner of MCP permissions, limits, and evidence requirements.
 
 ## Medical Data Restrictions
 
-Use only synthetic data, public Slicer sample data, anonymized test data, mock JSON/results, or explicitly approved public medical data.
+Private or sensitive medical data and unvalidated clinical use are prohibited.
 
-Do not commit private patient data, non-anonymized DICOM, sensitive medical images, real clinical reports, or private hospital data. Do not implement diagnosis, surgical guidance, real medical decision logic, or unvalidated STRATUM algorithms unless explicitly instructed.
-
-See `.ai/policies/medical-data-policy.md` and `.ai/policies/algorithm-boundary-policy.md`.
+`.ai/policies/medical-data-policy.md` is the authoritative owner of allowed and prohibited medical data. `.ai/policies/algorithm-boundary-policy.md` is the authoritative owner of algorithm-result validation boundaries.
 
 ## Expected Completion Report
 

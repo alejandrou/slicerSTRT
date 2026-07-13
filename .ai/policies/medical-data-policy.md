@@ -1,6 +1,6 @@
 # Medical Data Policy
 
-This repository is a learning sandbox. It must not contain private or sensitive medical data.
+This repository is an active STRATUM-related 3D Slicer development project and prototype. It is not production clinical software and must not contain private or sensitive medical data.
 
 ## Allowed Data
 

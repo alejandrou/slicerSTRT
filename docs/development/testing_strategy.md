@@ -1,57 +1,64 @@
-# slicerSTRT Testing Strategy
+# Testing Strategy
 
-This document defines how slicerSTRT Slicer code should be tested.
+This document describes how STRATUM Slicer code should be tested. Manual verification procedure details live in `.ai/workflows/manual-verification-workflow.md`.
 
-## Current phase
+## Test Locations
 
-The current slicerSTRT module is a Python scripted Slicer module.
+Tests for the current scripted module should live under:
 
-Testing should start simple.
+```text
+extensions/slicerSTRT/slicerSTRT/Testing/
+```
 
-## Test locations
+Keep test files near the module they validate.
 
-Tests for the current module should live under:
-
-`C:\stratum\extensions\slicerSTRT\slicerSTRT\Testing`
-
-## What to test first
+## What To Test First
 
 Prioritize tests for:
 
-1. Logic functions
-2. Data validation
-3. Coordinate conversions
-4. Input/output behavior
-5. Error handling
+1. Logic functions.
+2. Data validation.
+3. Coordinate conversions.
+4. Input/output behavior.
+5. Error handling.
 
-Avoid testing only GUI clicks unless necessary.
+Avoid testing only GUI clicks unless the task specifically concerns UI behavior.
 
-## Development workflow
+## Fast Automated Checks
 
-For normal Python changes:
+Fast checks should be repeatable and should not require private data, MCP, or a full Slicer rebuild.
 
-1. Edit code under `extensions\slicerSTRT`
-2. Open Slicer
-3. Use Developer Mode
-4. Use Reload / Reload and Test
-5. Fix errors
-6. Only rebuild Slicer if C++ or CMake changes require it
+Useful checks may include:
 
-## Test design rules
+- Python syntax checks for edited module files.
+- Focused unit-style tests for pure helper logic.
+- Slicer scripted-module tests when Slicer is available and the active task calls for them.
+
+## Slicer Tests
+
+For Python scripted-module changes:
+
+1. Edit code under `extensions/slicerSTRT/`.
+2. Open Slicer.
+3. Enable Developer Mode if needed.
+4. Use Reload or Reload and Test.
+5. Fix errors and repeat.
+
+Only rebuild Slicer when C++, CMake, generated wrapping, or dependency changes require it.
+
+## Test Data
+
+Use synthetic data, public Slicer sample data, anonymized test data, mock JSON/results, or explicitly approved public medical data.
+
+Do not require private patient data for basic tests. Follow `.ai/policies/medical-data-policy.md` for the authoritative medical-data rules.
+
+## Test Design
 
 Tests should be:
 
-- Small
-- Repeatable
-- Independent
-- Clear
-- Based on sample or synthetic data when possible
-
-Do not require private patient data for basic tests.
-
-## Medical data rule
-
-Do not commit patient data, private DICOM files, or sensitive medical images.
-
-Use anonymized, synthetic, or public sample data.
-
+- small;
+- repeatable;
+- independent;
+- clear;
+- focused on behavior that can regress;
+- explicit about units and coordinate systems when those matter.

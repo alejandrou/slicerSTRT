@@ -1,27 +1,30 @@
-# slicerSTRT
+# STRATUM / slicerSTRT
 
-Public workspace for the STRATUM / Slicer-based project.
+This repository is the active Windows 11 STRATUM-related 3D Slicer development project and prototype. It is not the upstream 3D Slicer repository and is not production clinical software.
 
-## Repository layout
+## Repository Layout
 
-- `source/`: upstream 3D Slicer source tree used as the base application source.
-- `apps/`: local application and build area. Generated build outputs are ignored.
-- `docs/knowledge/`: reference material, notes, PDFs, and other supporting knowledge.
-- `extensions/`: STRATUM-specific Slicer extensions and modules.
-- `workspace/`: temporary work, experiments, and local-only files.
+- `AGENTS.md`: entry point and routing rules for Codex.
+- `.ai/`: current policies, workflows, and templates.
+- `tasks/`: current task cards, review state, and completion evidence.
+- `docs/development/`: project structure, coding, testing, and local development guidance.
+- `docs/slicer/`: reusable 3D Slicer technical notes for this project.
+- `docs/knowledge/`: curated, non-sensitive, version-controlled reference notes.
+- `extensions/`: STRATUM-specific Slicer extension and module development.
+- `source/`: local upstream Slicer source reference.
+- `apps/`: local Slicer application/build outputs.
+- `workspace/`: temporary work, experiments, scripts, and generated local artifacts.
+- `knowledge/`: ignored local reference material, downloaded files, and private working notes.
+- `config/`: portable local configuration template and ignored machine-specific configuration.
 
-## Notes
+## Development Entry Points
 
-- The Slicer source tree lives in `source/` and is treated as the application base.
-- `apps/SR/` is a local build tree and should not be committed.
-- `docs/knowledge/` is intended for supporting reference material only.
+Extension development happens under `extensions/`.
 
-## Getting started
+Local Slicer build instructions are in `README_Stratum_Slicer_Build.md`.
 
-If you are opening this repository for the first time, start with:
+Project structure, coding guidance, and testing guidance are in `docs/development/`.
 
-1. `AGENTS.md`
-2. `docs/development/project_structure.md`
-3. `docs/codex/codex_workflow.md`
-4. `README_Stratum_Slicer_Build.md`
+3D Slicer module architecture and scripted-module notes are in `docs/slicer/`.
 
+Codex must start from `AGENTS.md`. Current work is tracked under `tasks/`.
