@@ -1,51 +1,35 @@
-# slicerSTRT Coding Standards
+# Coding Standards
 
-These rules are based on the Perk Lab presentation "Writing correct and understandable code".
+Mandatory code-quality policy lives in `.ai/policies/code-quality.md`. This document gives technical guidance for STRATUM Slicer development.
 
-## Main priorities
+## Priorities
 
-Prioritize:
+Prefer code that is:
 
-1. Readability
-2. Maintainability
-3. Robustness
+1. Readable.
+2. Maintainable.
+3. Robust.
 
-Do not optimize for performance too early.
+Do not optimize for performance before the behavior and boundaries are clear.
 
-## Separate responsibilities
+## Separate Responsibilities
 
-Do not mix everything in one file.
-
-Separate:
-
-- Algorithms
-- Tests
-- Input/output
-- GUI code
-- Utility code
+Keep UI, logic, I/O, tests, and reusable helpers separate when practical.
 
 For Slicer scripted modules:
 
-- Widget class: UI and user interaction
-- Logic class: processing and algorithmic logic
-- Test class: automated checks
+- Module entry point: metadata, startup setup, and public exports.
+- Widget class: UI loading, user interaction, signal connections, and display updates.
+- Logic class: computation, validation, MRML inspection, and reusable workflow logic.
+- Test class: automated checks that exercise logic and important integration behavior.
 
-Avoid putting real algorithms directly inside button callbacks.
+Avoid putting algorithms directly in button callbacks.
 
-## Naming rules
+## Naming
 
-Use clear names.
+Use clear names instead of abbreviations.
 
-Bad:
-
-- `tmp`
-- `im`
-- `BSh`
-- `pos`
-- `tt`
-- `x1`
-
-Better:
+Prefer:
 
 - `inputVolumeNode`
 - `segmentationNode`
@@ -61,58 +45,39 @@ Include units when relevant:
 - `timeSec`
 - `indexPixel`
 
-## Spatial naming
+## Coordinate Systems
 
-When working with medical images, transforms, points, or vectors, include the coordinate system when useful.
+When working with medical images, transforms, points, or vectors, include the coordinate system when it matters.
 
 Examples:
 
 - `entryPoint_RAS`
 - `targetPoint_RAS`
-- `needleTipPoint_RAS`
 - `imagePlaneNormalVector_IJK`
 - `imageToWorldTransform`
 - `probeToReferenceTransform`
 
-Avoid vague names such as:
+Avoid vague names such as `ProbeTransform`, `NeedleTrackerMatrix`, or `NeedleTipVector` when the coordinate system is significant.
 
-- `ProbeTransform`
-- `NeedleTrackerMatrix`
-- `NeedleTipVector`
+## Avoid Magic Values
 
-## Avoid magic numbers
+Use named constants, enums, or clear string values for non-obvious values.
 
-Bad:
-
-`if method == 1 or method == 3`
-
-Better:
-
-Use named constants, enums, or clear string values.
-
-All non-obvious numeric values must have a name or explanation.
+All non-obvious numeric values should have a name or explanation, especially thresholds, units, coordinate-system assumptions, and image-processing parameters.
 
 ## Comments
 
-Prefer self-documenting code.
+Prefer self-documenting code. Use comments to explain:
 
-Use comments to explain:
+- why something is done;
+- medical-image or processing assumptions;
+- coordinate-system assumptions;
+- non-obvious constraints;
+- safety checks.
 
-- Why something is done
-- Medical/image-processing assumptions
-- Coordinate system assumptions
-- Non-obvious constraints
-- Safety checks
+Do not use comments as change logs or to restate obvious syntax.
 
-Do not use comments for:
-
-- Dead code
-- Change logs
-- Obvious syntax
-
-Use TODO comments clearly:
-
-`# TODO: Validate this threshold with slicerSTRT sample data.`
+Use TODO comments only when they are specific and actionable.
 
 ## Cohesion
 
@@ -121,7 +86,6 @@ Keep functions focused.
 Rules of thumb:
 
 - One function should do one thing.
-- Avoid functions longer than 1–2 screens.
-- Avoid huge files.
+- Avoid functions longer than one or two screens.
 - Declare variables close to where they are used.
-- Split unclear functions instead of creating vague names like `Manager` or `Controller`.
+- Split unclear functions instead of creating vague containers such as `Manager` or `Controller`.

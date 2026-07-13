@@ -1,152 +1,105 @@
-## Slicer architecture summary
+# Slicer Module Architecture
+
+This document summarizes Slicer module architecture concepts used by the STRATUM prototype.
+
+## Core Concepts
 
 3D Slicer is built around:
-- Slicer application core
-- MRML scene
-- modules
-- extensions
-- libraries such as Qt, VTK, ITK, CTK, Python and NumPy
 
-Our project uses a Python scripted loadable module because it is the simplest way to extend Slicer with full access to the Slicer API.
+- the Slicer application core;
+- the MRML scene;
+- modules and extensions;
+- libraries such as Qt, VTK, ITK, CTK, Python, and NumPy.
 
-## MRML scene
+The current project uses a Python scripted loadable module because it provides full Slicer API access with a fast Reload and Reload and Test development loop.
 
-The MRML scene is the shared storage for Slicer data.
+## MRML Scene
 
-Modules should communicate mainly through MRML nodes, not by directly depending on each other.
+The MRML scene is the shared data model for Slicer.
 
-Important ideas:
+Important concepts:
+
 - Data is stored in MRML nodes.
-- Display options belong in display nodes.
+- Display properties belong in display nodes.
 - Storage information belongs in storage nodes.
-- Processing logic should read/write MRML nodes where needed.
-- Do not store important state only in the UI.
+- Modules should communicate mainly through MRML nodes rather than direct module-to-module dependencies.
+- Important workflow state should not live only in UI widgets.
 
-## Scripted module structure
+Processing logic may read from and write to MRML nodes, but it should validate inputs before changing scene state.
 
-The current `slicerSTRT` module is implemented in a single Python file:
+## Module Entry Point
 
-- `slicerSTRT.py`
+The module entry point should define:
 
-That file contains:
+- title;
+- categories;
+- contributors;
+- help text;
+- acknowledgement text;
+- startup setup or sample-data registration when needed;
+- public exports needed by Slicer.
 
-- the module class `slicerSTRT`
-- the parameter node class `slicerSTRTParameterNode`
-- the widget class `slicerSTRTWidget`
-- the logic class `slicerSTRTLogic`
-- the test class `slicerSTRTTest`
-- the `registerSampleData()` helper
+Do not put feature logic in the module metadata class.
 
-The UI definition lives in `Resources/UI/slicerSTRT.ui`.
+## Widget Responsibility
 
-## Module class rules
+The widget is responsible for:
 
-The module class should only define:
-- title
-- categories
-- contributors
-- help text
-- acknowledgement text
-- module-level setup if needed
+- loading the Qt `.ui` file or constructing UI controls;
+- connecting buttons, selectors, and other signals;
+- reading current UI values;
+- calling logic methods;
+- displaying results and validation messages;
+- synchronizing UI state with a parameter node when one is used.
 
-Do not put feature logic here.
+The widget should not contain processing algorithms, file parsing, or reusable computation.
 
-## Widget class rules
-
-The widget class is responsible for:
-- building the UI
-- connecting buttons and selectors
-- reading values from UI controls
-- calling methods from `slicerSTRTLogic`
-- updating labels, tables, and visual UI output
-- keeping UI synchronized with parameter nodes when used
-
-The widget must not contain processing algorithms.
-
-Bad:
-- calculating measurements directly in the button callback
-- parsing AI JSON directly inside the UI
-- modifying volumes directly from UI code
-
-Good:
-- button callback gets selected node
-- button callback calls `self.logic.someMethod(...)`
-- button callback displays returned result
-
-## Logic class rules
+## Logic Responsibility
 
 The logic class is responsible for:
-- computation
-- validation
-- MRML node inspection
-- measurements
-- data conversion
-- report generation helpers
-- prototype workflow logic
 
-The logic class must not depend on the widget.
+- computation;
+- input validation;
+- MRML node inspection;
+- measurements and coordinate conversion;
+- data conversion;
+- report or result helpers when they are not UI-specific.
 
-Logic methods should be callable from:
-- the UI
-- tests
-- another module
-- the Python console
+Logic should not depend on the widget. Logic methods should be callable from the UI, tests, another module, or the Python console.
 
-## Passive logic first
+Use passive logic by default: the widget creates or owns the logic instance, and the logic acts only when called. Add scene observers or background behavior only when a task requires them.
 
-Use passive logic by default.
+## Test Responsibility
 
-That means:
-- the Widget creates/owns a logic instance
-- the logic does work only when called
-- no background scene observers unless needed later
+Scripted-module tests should exercise logic and important integration paths. Prefer tests that can run without manual UI clicking.
 
-Avoid active logic until the project really needs real-time background behavior.
+Tests should use synthetic data, public Slicer sample data, anonymized test data, mock results, or explicitly approved public medical data.
 
-## Parameter node policy
+## Parameter Nodes
 
-For early learning features, simple UI state is acceptable.
+Parameter nodes store module state in the MRML scene.
 
 Use a parameter node when:
-- settings must survive scene save/load
-- the module has multiple linked inputs
-- the UI must stay synchronized with MRML state
-- workflows become more complex
 
-Do not over-engineer parameter nodes too early.
+- settings must survive scene save and load;
+- multiple inputs are linked as workflow state;
+- UI state must stay synchronized with MRML state;
+- the workflow is too complex for transient widget-only state.
 
-## Common mistakes to avoid
+Avoid adding parameter-node complexity before the workflow needs persisted state.
 
-1. Do not implement everything in the Widget.
-2. Do not let Logic depend on Widget.
-3. Do not store important state only in UI controls.
-4. Do not modify MRML nodes without updating the UI when needed.
-5. Do not add clinical/slicerSTRT production logic before the sandbox workflow is stable.
-6. Do not add sample data, API calls, or AI workflows without a clear task.
+## Qt UI Files
 
-## Current recommended feature order
+For scripted modules with a `.ui` file, keep UI layout in `Resources/UI/` and behavior in the widget class.
 
-1. Environment check
-2. Volume metadata viewer
-3. Markups distance calculator
-4. Segmentation inspector
-5. Mock AI JSON viewer
-6. Markdown report generator
-7. API integration placeholder
+After changing a `.ui` file, Reload may be enough. Restart Slicer if the UI does not refresh cleanly.
 
-## Coding rules for AI
+## Common Mistakes
 
-Before changing code:
-- inspect current files
-- explain planned changes
-- keep changes small
-- modify only files needed for the task
-- update tests if logic changes
-- update `context_handoff.md`
-- provide manual Slicer test steps
-
-Never:
-- rewrite the whole module without asking
-- add clinical claims
-- add real slicerSTRT API integration without approval
-- move logic into the UI
+- Putting all feature logic in the widget.
+- Letting logic depend on widget controls.
+- Storing important state only in UI fields.
+- Changing MRML nodes without validating inputs.
+- Ignoring units or coordinate systems in names.
+- Adding real clinical or algorithmic claims before validation boundaries exist.
+- Adding dependencies or sample data without an approved task.

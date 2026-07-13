@@ -1,311 +1,109 @@
-# Stratum - Build de 3D Slicer en Windows 11
+# STRATUM Slicer Build On Windows
 
-Instrucciones para compilar 3D Slicer desde código fuente dentro del proyecto `C:\stratum`.
+This document describes the local Windows 11 build setup for the STRATUM-related Slicer prototype.
 
-## Estructura esperada
+Machine-specific paths belong in `config/local.json`. Use `config/local.example.json` as the portable template.
 
-```text
-C:\stratum
-├─ source
-│  ├─ CMakeLists.txt
-│  └─ .git
-├─ apps
-│  └─ SR
-├─ workspace
-│  └─ build_scripts
-├─ extensions
-└─ knowledge
-```
+## Prerequisites
 
-Uso de carpetas:
+- Windows 11.
+- Visual Studio 2022 with the Desktop development with C++ workload.
+- MSVC v143 x64/x86 tools.
+- Windows 10 SDK or Windows 11 SDK.
+- Git for Windows, including `patch.exe`.
+- Qt 5.15.2 for MSVC 2019 64-bit, including Qt WebEngine.
+- CMake. The Visual Studio bundled CMake is acceptable when the standalone CMake installation is unavailable or broken.
 
-```text
-C:\stratum\source                 Código fuente de Slicer
-C:\stratum\apps\SR                Carpeta de build Release / SuperBuild
-C:\stratum\apps\SR\Slicer-build   Carpeta final donde queda Slicer.exe
-C:\stratum\workspace\build_scripts Scripts .bat de build
-C:\stratum\extensions             Futuras extensiones o módulos
-```
+## Local Configuration
 
----
+Copy `config/local.example.json` to `config/local.json` and set the local paths for:
 
-## 1. Herramientas necesarias
+- `slicerSourceDirectory`: local Slicer source tree.
+- `slicerBuildDirectory`: local Slicer SuperBuild/build tree.
+- `slicerExecutable`: built Slicer executable.
+- `slicerSkillDirectory`: installed Slicer skill, when used outside repository docs.
 
-Antes de compilar, el PC debe tener instalado:
+`config/local.json` is private local configuration and must remain ignored by Git.
 
-```text
-Visual Studio 2022 Community
-Workload: Desarrollo de escritorio con C++
-MSVC v143 x64/x86
-Windows 10 SDK o Windows 11 SDK
-Git for Windows
-Qt 5.15.2 msvc2019_64
-Qt WebEngine
-CMake
-```
+## Expected Repository Areas
 
-En este proyecto se usa el CMake incluido con Visual Studio:
+- `source/`: local Slicer source reference.
+- `apps/`: local application and build outputs.
+- `apps/SR/`: conventional local Slicer SuperBuild/build tree for this workspace.
+- `apps/SR/Slicer-build/`: conventional final Slicer build output.
+- `workspace/build_scripts/`: optional local build helper scripts.
+- `extensions/`: STRATUM-specific Slicer extension code.
 
-```text
-C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe
-```
+The `apps/` build tree is generated output. Do not commit it.
 
-No se usa `C:\Program Files\CMake\bin\cmake.exe` si esa instalación está rota o pesa 0 bytes.
+## Configure The Build
 
----
+Use the x64 Native Tools Command Prompt for VS 2022 for the main build.
 
-## 2. Abrir la consola correcta
-
-Abrir desde el menú de inicio:
-
-```text
-x64 Native Tools Command Prompt for VS 2022
-```
-
-No usar PowerShell para lanzar el build principal.
-
----
-
-## 3. Comprobaciones previas
-
-Desde `x64 Native Tools Command Prompt for VS 2022`:
+Before configuring, verify that the command prompt can find:
 
 ```bat
 where cl
-cl
-
 where git
-git --version
-
-dir "C:\Program Files\Git\usr\bin\patch.exe"
-
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --version
-
-"C:\Qt\5.15.2\msvc2019_64\bin\qmake.exe" -v
-
-dir C:\Qt\5.15.2\msvc2019_64\lib\cmake\Qt5\Qt5Config.cmake
-dir C:\Qt\5.15.2\msvc2019_64\lib\cmake\Qt5WebEngine\Qt5WebEngineConfig.cmake
-
-dir C:\stratum\source\CMakeLists.txt
-dir C:\stratum\source\.git
+where patch
+cmake --version
 ```
 
-Si `CMakeLists.txt` no está en `C:\stratum\source`, comprobar si está en:
+Also verify that Qt is installed and that the Qt CMake package directory exists. Store the exact Qt and CMake paths in local build scripts or `config/local.json`, not in repository-wide instructions.
 
-```bat
-dir C:\stratum\source\Slicer\CMakeLists.txt
-```
+If the Slicer source checkout is nested differently on a local machine, update the local configuration or build script variables rather than changing repository documentation.
 
-En ese caso, editar `CommonVars_Stratum_ASCII.bat` y cambiar:
+## Clean Build
 
-```bat
-set "SLICER_SOURCE_DIR=%STRATUM_DIR%\source"
-```
+A clean build removes the local build tree and configures Slicer from scratch.
 
-por:
+Use a clean build when:
 
-```bat
-set "SLICER_SOURCE_DIR=%STRATUM_DIR%\source\Slicer"
-```
+- configuring the project for the first time;
+- the build tree is corrupted;
+- dependency paths changed;
+- an incremental build cannot recover.
 
----
+The conventional local target is `apps/SR/`, with the final executable under `apps/SR/Slicer-build/`.
 
-## 4. Scripts de build
+## Incremental Build
 
-Los scripts deben estar en:
+Use an incremental build after small source or CMake changes when the build tree is healthy.
+
+Do not clean by default. A clean rebuild can be expensive because Slicer uses a SuperBuild with external dependencies.
+
+## Executable
+
+The conventional local executable is:
 
 ```text
-C:\stratum\workspace\build_scripts
+apps/SR/Slicer-build/Slicer.exe
 ```
 
-Archivos usados:
+If a local machine uses a different build tree, set `slicerExecutable` in `config/local.json`.
 
-```text
-CommonVars_Stratum_ASCII.bat
-Stratum_Release_Build_ASCII.bat
-Start_Stratum_Slicer_Release_ASCII.bat
-```
+## Reload Versus Rebuild
 
-`CommonVars_Stratum_ASCII.bat` contiene las rutas del proyecto:
-
-```bat
-set "STRATUM_DIR=C:\stratum"
-set "SLICER_SOURCE_DIR=%STRATUM_DIR%\source"
-set "SLICER_SUPERBUILD_BIN_DIR_REL_X64=%STRATUM_DIR%\apps\SR"
-set "SLICER_BIN_DIR_REL_X64=%SLICER_SUPERBUILD_BIN_DIR_REL_X64%\Slicer-build"
-
-set "QT5_DIR_X64=C:/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5"
-set "QT5_BIN_DIR=C:\Qt\5.15.2\msvc2019_64\bin"
-
-set "CMAKE_EXE=C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
-
-set "CMAKE_GENERATOR_X64=Visual Studio 17 2022"
-set "CMAKE_PLATFORM_X64=x64"
-
-set "GIT_CMD_DIR=C:\Program Files\Git\cmd"
-set "GIT_USR_BIN_DIR=C:\Program Files\Git\usr\bin"
-
-set "PATH=%GIT_CMD_DIR%;%GIT_USR_BIN_DIR%;%QT5_BIN_DIR%;%PATH%"
-```
-
----
-
-## 5. Primer build limpio
-
-Desde `x64 Native Tools Command Prompt for VS 2022`:
-
-```bat
-cd /d C:\stratum\workspace\build_scripts
-Stratum_Release_Build_ASCII.bat clean
-```
-
-Esto hace:
-
-```text
-1. Carga las variables del proyecto.
-2. Comprueba cl.exe, git.exe, patch.exe, CMake y Qt.
-3. Borra C:\stratum\apps\SR si existe.
-4. Configura CMake.
-5. Compila Slicer en Release.
-6. Comprueba que se han generado Slicer.exe y SlicerApp-real.exe.
-```
-
-La parte de configuración debería acabar con:
-
-```text
-Configuring done
-Generating done
-Build files have been written to: C:/slicerSTRT/apps/SR
-```
-
-Después empezará el build real con MSBuild:
-
-```text
-Build Release step
-MSBuild version ...
-```
-
----
-
-## 6. Build incremental
-
-Para continuar un build interrumpido o recompilar después de cambios pequeños en C++:
-
-```bat
-cd /d C:\stratum\workspace\build_scripts
-Stratum_Release_Build_ASCII.bat
-```
-
-No usar `clean` salvo que quieras borrar todo el build y empezar desde cero.
-
----
-
-## 7. Comprobar resultado final
-
-Cuando termine el build:
-
-```bat
-dir C:\stratum\apps\SR\Slicer-build\Slicer.exe
-dir C:\stratum\apps\SR\Slicer-build\bin\Release\SlicerApp-real.exe
-```
-
-Deben existir los dos.
-
-Para ejecutar Slicer:
-
-```bat
-C:\stratum\apps\SR\Slicer-build\Slicer.exe
-```
-
-O usando el script:
-
-```bat
-cd /d C:\stratum\workspace\build_scripts
-Start_Stratum_Slicer_Release_ASCII.bat
-```
-
----
-
-
----
-
-## 8. Cuándo recompilar
-
-| Cambio | Qué hacer |
+| Change | Recommended action |
 |---|---|
-| Solo usar Slicer | No recompilar |
-| Cambiar `.py` de un módulo | Reload en Slicer |
-| Cambiar `.ui` de un módulo Python | Reload o reiniciar Slicer |
-| Cambiar C++ | Build incremental |
-| Cambiar `CMakeLists.txt` | Ejecutar script de build sin `clean` |
-| Añadir librería C++ | Ejecutar script de build sin `clean`; si falla, usar `clean` |
-| Build corrupto o errores raros | `Stratum_Release_Build_ASCII.bat clean` |
+| Use Slicer without code changes | No rebuild |
+| Python scripted module `.py` change | Reload or Reload and Test in Slicer |
+| Python scripted module `.ui` change | Reload; restart Slicer if the UI does not refresh cleanly |
+| C++ change | Incremental build |
+| `CMakeLists.txt` change | Reconfigure or run the build script without cleaning first |
+| New C++ library or dependency path change | Reconfigure; clean only if incremental recovery fails |
+| Corrupted build tree or unresolved generated-state errors | Clean build |
 
----
+## Scripted Module Development
 
-## 9. Desarrollo de módulos Python
+Normal STRATUM extension work should happen under `extensions/`.
 
-Si se crea un módulo Python dentro de:
+For Python scripted modules, a full Slicer rebuild is usually not required. Start Slicer, enable Developer Mode, open the module, then use Reload or Reload and Test.
 
-```text
-C:\stratum\extensions
-```
+## Troubleshooting
 
-normalmente no hace falta recompilar Slicer.
+If Slicer reports a missing DLL, first try launching the built executable from the configured Slicer build output. Only copy DLLs manually when the build output is known to be incomplete and the missing library source is understood.
 
-Después de modificar un `.py`:
+If CMake cannot find Qt, check the Qt CMake package directory and update local build configuration.
 
-```python
-slicer.util.reloadScriptedModule("NombreDelModulo")
-```
-
-O usar el botón:
-
-```text
-Reload
-Reload and Test
-```
-
-desde el módulo dentro de Slicer.
-
-Si se modifica un `.ui` y el reload no refresca bien la interfaz, cerrar y abrir Slicer.
-
-
-## Local Slicer build tree
-
-`C:\stratum\apps\SR` contains the local Slicer SuperBuild/build tree.
-
-This folder is generated by the Slicer build process and contains Visual Studio projects, external dependencies, compiled libraries, temporary build folders, downloaded archives, install folders, and the final Slicer build output.
-
-Important paths:
-
-* Slicer build tree: `C:\stratum\apps\SR`
-* Slicer executable: `C:\stratum\apps\SR\Slicer-build\Slicer.exe`
-* Upstream Slicer source: `C:\stratum\source`
-* STRATUM extension code: `C:\stratum\extensions\slicerSTRT`
-
-Do not commit `apps/SR` to Git. It is a local generated build tree.
-
-For normal scripted module development, edit the extension code under `extensions/slicerSTRT` and reload the module from Slicer Developer Mode. Do not edit files directly inside `apps/SR` unless you are debugging the Slicer build itself.
-
----
-
-## 10. Sobre CopyDLLs.bat
-
-`CopyDLLs.bat` sirve para copiar DLLs, por ejemplo `vtk*.dll`, desde carpetas internas del build hacia la carpeta donde la aplicación puede encontrarlas.
-
-No ejecutarlo por defecto.
-
-Solo usar algo así si al abrir Slicer aparece un error de DLL faltante:
-
-```text
-The code execution cannot proceed because X.dll was not found
-```
-
-Para este proyecto, primero probar siempre:
-
-```bat
-C:\stratum\apps\SR\Slicer-build\Slicer.exe
-```
-
-Si abre correctamente, no hace falta copiar DLLs manualmente.
+If `cl`, `git`, `patch`, or CMake cannot be found, use the Visual Studio native tools prompt and verify local `PATH` setup.

@@ -1,107 +1,66 @@
-# slicerSTRT Scripted Module Structure
+# Scripted Module Structure
 
-This note summarizes the current structure of the `slicerSTRT` scripted module.
+This note summarizes the current `slicerSTRT` scripted module layout.
 
-## Current module layout
+## Current Layout
 
-The module entry point stays at:
+The module entry point is:
 
-- `C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRT.py`
+```text
+extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
+```
 
-Supporting classes live in the package:
+Supporting classes live in:
 
-- `C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRTLib\__init__.py`
-- `C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRTLib\slicerSTRTLogic.py`
-- `C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRTLib\slicerSTRTWidget.py`
-- `C:\stratum\extensions\slicerSTRT\slicerSTRT\slicerSTRTLib\slicerSTRTTest.py`
+```text
+extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/__init__.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTLogic.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTWidget.py
+extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTTest.py
+```
 
-`slicerSTRT.py` exports:
+The module UI file is:
 
-- `slicerSTRT`
-- `slicerSTRTWidget`
-- `slicerSTRTLogic`
-- `slicerSTRTTest`
-- `slicerSTRTParameterNode`
-- `registerSampleData()`
+```text
+extensions/slicerSTRT/slicerSTRT/Resources/UI/slicerSTRT.ui
+```
 
-The module UI lives in:
+Test CMake files are under:
 
-- `C:\stratum\extensions\slicerSTRT\slicerSTRT\Resources\UI\slicerSTRT.ui`
+```text
+extensions/slicerSTRT/slicerSTRT/Testing/
+```
 
-## What each part does
+## Entry Point
 
-### `slicerSTRT.py`
+`slicerSTRT.py` contains module metadata, startup setup, and public exports used by Slicer.
 
-Module metadata, startup setup, and public exports:
+It should stay small. Keep helper implementation in `slicerSTRTLib/` so Slicer does not try to load helper files as standalone modules.
 
-- title
-- categories
-- contributors
-- help text
-- acknowledgement text
-- sample data registration after startup
+## Logic
 
-### `slicerSTRTLib/slicerSTRTLogic.py`
+`slicerSTRTLib/slicerSTRTLogic.py` contains:
 
-Contains:
+- `registerSampleData()`;
+- `slicerSTRTParameterNode`;
+- `slicerSTRTLogic`.
 
-- `registerSampleData()`
-- `slicerSTRTParameterNode`
-- `slicerSTRTLogic`
+The logic file owns reusable processing and validation behavior.
 
-### `registerSampleData()`
+## Widget
 
-Registers the sample data category and sample volumes shown in Slicer's Sample Data module.
+`slicerSTRTLib/slicerSTRTWidget.py` contains `slicerSTRTWidget`.
 
-### `slicerSTRTParameterNode`
+The widget loads the `.ui` file, connects UI controls, synchronizes UI state, calls logic methods, and displays results.
 
-Stores the module state that should survive scene save and reload:
+## Tests
 
-- input volume
-- threshold value
-- invert flag
-- thresholded output volume
-- inverted output volume
+`slicerSTRTLib/slicerSTRTTest.py` contains `slicerSTRTTest`.
 
-### `slicerSTRTLib/slicerSTRTWidget.py`
+Tests should focus on logic and important Slicer integration behavior.
 
-Contains `slicerSTRTWidget`.
+## Reload Guidance
 
-### `slicerSTRTWidget`
+For normal Python scripted-module changes, use Slicer Developer Mode and Reload or Reload and Test.
 
-Handles the UI and user interaction:
-
-- loads the `.ui` file
-- connects selectors and buttons
-- synchronizes the UI with the parameter node
-- calls the logic when Apply is clicked
-
-### `slicerSTRTLogic`
-
-Contains the processing code:
-
-- parameter-node access
-- threshold processing
-- CLI invocation
-- output cleanup
-
-### `slicerSTRTLib/slicerSTRTTest.py`
-
-Contains `slicerSTRTTest`.
-
-### `slicerSTRTTest`
-
-Contains the scripted test that loads sample data and checks the logic.
-
-## Development guidance
-
-When editing this module:
-
-1. Keep metadata and startup code in `slicerSTRT.py`.
-2. Keep UI behavior in `slicerSTRTLib/slicerSTRTWidget.py`.
-3. Keep processing in `slicerSTRTLib/slicerSTRTLogic.py`.
-4. Keep regression checks in `slicerSTRTLib/slicerSTRTTest.py`.
-5. Keep only `slicerSTRT.py` at the module root so Slicer does not try to load helper files as standalone modules.
-6. Use Reload / Reload and Test after changes.
-
-
+For `.ui` changes, Reload may be sufficient. Restart Slicer if the interface does not refresh cleanly.

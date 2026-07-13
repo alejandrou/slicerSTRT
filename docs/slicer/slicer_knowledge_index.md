@@ -1,57 +1,47 @@
 # Slicer Knowledge Index
 
-This file tells Codex where to look for Slicer information locally.
+Use this index to find local Slicer information before relying on external examples.
 
-## Main local Slicer source
+Machine-specific source, build, executable, and skill paths belong in `config/local.json`.
 
-`C:\stratum\source`
+## Search Order
 
-Important folders:
+For Slicer-specific questions, use this order:
 
-- `C:\stratum\source\Modules`
-- `C:\stratum\source\Libs`
-- `C:\stratum\source\Base`
-- `C:\stratum\source\Docs`
-- `C:\stratum\source\Extensions`
-- `C:\stratum\source\Utilities`
+1. Current project code under `extensions/`.
+2. Local Slicer source configured by `config/local.json`.
+3. The installed Slicer skill, following the skill-routing rules in `AGENTS.md`.
+4. External sources only when local references are insufficient or current information is required.
 
-## Existing Slicer skill
+Do not invent Slicer APIs. Inspect local project code and local Slicer sources when API details matter.
 
-`C:\Users\AlejandroHerrera\.codex\skills\slicer-skill`
+## Local Slicer Source Areas
 
-Use this for:
+When a local Slicer source tree is configured, useful areas commonly include:
 
-- Slicer development patterns
-- Example extensions
-- Slicer source references
-- Project Week material
-- Slicer-specific AI guidance
+- `Modules/`
+- `Libs/`
+- `Base/`
+- `Docs/`
+- `Extensions/`
+- `Utilities/`
 
-## Search order
+## Topics That Need Local Verification
 
-When answering a Slicer question:
+Check local project code, Slicer source, or the installed Slicer skill before making claims about:
 
-1. Check the slicerSTRT extension first.
-2. Check local Slicer source.
-3. Check `slicer-skill`.
-4. Only use web if local references are insufficient or the user asks for current/latest information.
-
-## Important Slicer topics
-
-Codex should search local sources before answering questions about:
-
-- Scripted modules
-- Loadable C++ modules
-- CLI modules
-- MRML nodes
-- Scene management
-- Segmentations
-- Markups
-- Transforms
-- DICOM
-- VTK
-- ITK / SimpleITK
-- Qt widgets
-- CMake
-- Extension packaging
-
+- scripted modules;
+- loadable C++ modules;
+- CLI modules;
+- MRML nodes;
+- scene management;
+- segmentations;
+- markups;
+- transforms and coordinate systems;
+- DICOM;
+- VTK;
+- ITK and SimpleITK;
+- Qt widgets and `.ui` files;
+- CMake;
+- extension packaging;
+- Slicer testing.

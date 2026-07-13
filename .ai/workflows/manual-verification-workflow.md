@@ -2,11 +2,13 @@
 
 Manual verification is required when a task affects Slicer behavior or user-visible workflow.
 
+Machine-specific Slicer paths must come from `config/local.json`, using `config/local.example.json` as the portable template.
+
 ## Slicer Verification
 
 For normal Python scripted-module changes:
 
-1. Open `C:/stratum/apps/SR/Slicer-build/Slicer.exe`.
+1. Open the Slicer executable configured by `config/local.json`.
 2. Enable Developer Mode if needed.
 3. Open the relevant module.
 4. Use Reload or Reload and Test.
