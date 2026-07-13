@@ -16,7 +16,7 @@ Consolidate legacy repository documentation so every documentation responsibilit
 
 ## Context
 
-BSSL-001 established the repository workflow foundation in root `AGENTS.md`, `.ai/policies/`, `.ai/workflows/`, `.ai/templates/`, and `tasks/`. BSSL-001 is completed and merged into `main`.
+BSSL-001 established the repository workflow foundation in root `AGENTS.md`, `.ai/policies/`, `.ai/workflows/`, `.ai/templates/`, and `tasks/`. BSSL-001 is merged into `origin/main`. During the 2026-07-13 independent review, local `main` was still at the pre-BSSL-001 commit `19b775f`, so BSSL-002 scope comparisons use `origin/main` as the actual target baseline.
 
 Legacy documentation still contains overlapping workflow rules, old `.agents/` references, phase-based roadmap material, and historical project status. Some of that content is obsolete or duplicated by the new `.ai/` source-of-truth structure, but some remains technically valuable and should be preserved, merged, or pointed to from the correct owner instead of deleted casually.
 
@@ -90,7 +90,7 @@ Workflow and legacy documentation authorized for deletion:
 
 Current documentation authorized for modification:
 
-- `AGENTS.md`, only when links or references require correction
+- `AGENTS.md`, including the user-approved policy-ownership correction requested on 2026-07-13
 - `.ai/policies/medical-data-policy.md`
 - `.ai/workflows/manual-verification-workflow.md`
 - `README.md`
@@ -103,7 +103,7 @@ Current documentation authorized for modification:
 - `docs/slicer/scripted_module_structure.md`
 - `docs/knowledge/README.md`
 - `docs/planning/BSSL-002-documentation-migration-matrix.md`
-- `tasks/active/BSSL-002-consolidate-repository-documentation.md`
+- `tasks/review/BSSL-002-consolidate-repository-documentation.md`
 
 No other file is authorized for modification or deletion.
 
@@ -239,14 +239,24 @@ Initial inventory phase completed on 2026-07-13.
 
 The user reviewed and approved `docs/planning/BSSL-002-documentation-migration-matrix.md` on 2026-07-13 and authorized the consolidation phase. The task card was updated with exact allowed modifications and deletions before legacy documentation was changed.
 
-Approved BSSL-002 correction pass applied on 2026-07-13:
+First approved BSSL-002 correction pass applied on 2026-07-13:
 
 - Corrected `docs/slicer/scripted_module_structure.md` after read-only inspection of `extensions/slicerSTRT/slicerSTRT/`.
 - Restored concise local build helper script commands for clean build, incremental build, and optional launch in `README_Stratum_Slicer_Build.md`.
-- Added explicit executable result checks for `apps/SR/Slicer-build/Slicer.exe` and `apps/SR/Slicer-build/bin/Release/SlicerApp-real.exe`.
+- Added executable result paths for `apps/SR/Slicer-build/Slicer.exe` and `apps/SR/Slicer-build/bin/Release/SlicerApp-real.exe`.
 - Clarified that exact Qt and CMake paths belong in local build scripts or local environment variables, not unsupported `config/local.json` fields.
 - Clarified ownership of root `knowledge/` versus `docs/knowledge/` in the README, project structure guide, and knowledge README.
 - Confirmed no production module parameter-node wrapper or sample-data registration function is documented as implemented.
+
+Final review-correction pass applied on 2026-07-13 after an independent review returned `REQUEST CHANGES`:
+
+- Added portable Visual Studio 2022 x64 CMake configure, incremental build, and clean-build fallback commands that do not depend on ignored helper scripts.
+- Restored portable preflight checks for the source Git checkout, source `CMakeLists.txt`, `qmake`, `Qt5Config.cmake`, and `Qt5WebEngineConfig.cmake`.
+- Added configure-success criteria for `Configuring done`, `Generating done`, the build-file destination, and `CMakeCache.txt`.
+- Added concrete `dir` and `if not exist` result checks for both built executables and a direct `start` launch command.
+- Reduced the Git, MCP, and medical-data sections in `AGENTS.md` to concise repository defaults and pointers. Detailed restrictions now have one authoritative owner under `.ai/policies/`.
+- Moved this task from `tasks/active/` to `tasks/review/` and set its status to `review` at the user's request.
+- Recorded the actual comparison baseline and replaced obsolete working-tree and task-location evidence.
 
 Files modified by this correction pass:
 
@@ -255,7 +265,8 @@ Files modified by this correction pass:
 - `docs/development/project_structure.md`
 - `docs/knowledge/README.md`
 - `docs/slicer/scripted_module_structure.md`
-- `tasks/active/BSSL-002-consolidate-repository-documentation.md`
+- `AGENTS.md`
+- `tasks/review/BSSL-002-consolidate-repository-documentation.md`
 
 Files inspected:
 
@@ -298,7 +309,7 @@ Files inspected:
 - `tasks/phase_2b_volume_metadata.md`
 - `tasks/phase_2c_template_cleanup.md`
 - `tasks/completed/BSSL-001-ai-development-workflow.md`
-- `tasks/active/BSSL-002-consolidate-repository-documentation.md`
+- `tasks/review/BSSL-002-consolidate-repository-documentation.md`
 - `docs/planning/BSSL-002-documentation-migration-matrix.md`
 - `extensions/slicerSTRT/**` read-only, only to confirm the documented scripted-module structure
 - `extensions/slicerSTRT/slicerSTRT/slicerSTRT.py` read-only, to confirm entry-point responsibilities
@@ -306,6 +317,10 @@ Files inspected:
 - `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTLogic.py` read-only, to confirm current logic class and methods
 - `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTWidget.py` read-only, to confirm widget responsibilities
 - `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTTest.py` read-only, to confirm test coverage focus
+- `source/Docs/developer_guide/build_instructions/windows.md` read-only, to confirm the supported Visual Studio 2022, Qt 5.15.2, configure, and build pattern
+- `workspace/build_scripts/CommonVars_Stratum_ASCII.bat` read-only, to confirm local variable conventions
+- `workspace/build_scripts/Stratum_Release_Build_ASCII.bat` read-only, to confirm preflight, configure, build, and result-check behavior
+- `workspace/build_scripts/Start_Stratum_Slicer_Release_ASCII.bat` read-only, to confirm launch behavior
 
 Files created:
 
@@ -353,11 +368,12 @@ Files updated:
 - `docs/development/project_structure.md`
 - `docs/knowledge/README.md`
 - `docs/slicer/scripted_module_structure.md`
-- `tasks/active/BSSL-002-consolidate-repository-documentation.md`
+- `AGENTS.md`
+- `tasks/review/BSSL-002-consolidate-repository-documentation.md`
 
 Files intentionally retained:
 
-- `AGENTS.md`: no links to deleted files required correction.
+- `AGENTS.md`: retained as the repository router and updated to point to the authoritative detailed policies without copying their full rule sets.
 - `.ai/policies/*.md`: authoritative repository policies.
 - `.ai/workflows/*.md`: authoritative repository workflows.
 - `.ai/templates/*.md`: authoritative task, ADR, and review templates.
@@ -367,7 +383,7 @@ Files intentionally retained:
 
 Unique technical information preserved:
 
-- Local Slicer build prerequisites, configuration, clean/incremental build helper commands, optional launcher command, executable result checks, Reload versus rebuild guidance, and troubleshooting were preserved in `README_Stratum_Slicer_Build.md`.
+- Local Slicer build prerequisites, source/Qt preflight checks, portable configure and build fallbacks, optional helper commands, configure-success criteria, concrete executable checks, direct launch guidance, Reload versus rebuild guidance, and troubleshooting were preserved in `README_Stratum_Slicer_Build.md`.
 - Repository folder responsibilities and extension development locations were preserved in `docs/development/project_structure.md`.
 - UI, logic, test, naming-with-units, coordinate-system naming, cohesion, and comment guidance were preserved in `docs/development/coding_standards.md`.
 - Logic-first tests, Slicer Reload/Reload and Test, synthetic/public/anonymized/mock data, and manual verification references were preserved in `docs/development/testing_strategy.md`.
@@ -410,23 +426,25 @@ Validation performed and results:
 
 - `rg --files -g "*.md"` was used to inventory Markdown files.
 - `Get-ChildItem -LiteralPath .agents -Recurse -File` was used to inventory legacy `.agents/` files.
-- `Get-ChildItem -LiteralPath tasks\active -File` and `Get-ChildItem -LiteralPath tasks\review -File` confirmed one task card across active/review: `tasks/active/BSSL-002-consolidate-repository-documentation.md`; `.gitkeep` files are not task cards.
+- `Get-ChildItem -LiteralPath tasks\active,tasks\review -File | Where-Object { $_.Name -ne '.gitkeep' }` confirmed one task card across active/review: `tasks/review/BSSL-002-consolidate-repository-documentation.md`.
 - `rg --files extensions/slicerSTRT/slicerSTRT` listed the current scripted-module files without modifying them.
 - `rg -n "^(class|def)\s+|registerSampleData|parameterNode|ParameterNode|slicerSTRT" extensions/slicerSTRT/slicerSTRT/...` confirmed `slicerSTRTLogic.py` currently defines `slicerSTRTLogic` and not `registerSampleData()` or `slicerSTRTParameterNode`.
 - Read-only inspection of `slicerSTRTLogic.py` confirmed current responsibilities: `collectEnvironmentReport`, `formatEnvironmentReport`, `inspectVolumeMetadata`, and `formatVolumeMetadataReport`.
-- Targeted search confirmed the build guide includes clean build, incremental build, optional launcher, x64 Native Tools Command Prompt guidance, and executable checks for `apps/SR/Slicer-build/Slicer.exe` and `apps/SR/Slicer-build/bin/Release/SlicerApp-real.exe`.
+- Targeted search confirmed the build guide includes portable configure, clean build, incremental build, optional helper scripts, direct launch, x64 Native Tools Command Prompt guidance, and concrete `dir`/existence checks for both expected executables.
+- Read-only comparison with `source/Docs/developer_guide/build_instructions/windows.md` confirmed that the fallback uses Slicer's documented Visual Studio 2022 x64 generator, Qt 5.15.2 `Qt5_DIR`, `-S`/`-B` configure pattern, and `cmake --build ... --config Release` command.
+- Read-only checks confirmed the current local source `CMakeLists.txt`, source Git checkout, `qmake.exe`, `Qt5Config.cmake`, and `Qt5WebEngineConfig.cmake` exist at the machine-specific paths represented by the portable variables.
 - Targeted search found no unsupported Qt or CMake path fields in `README_Stratum_Slicer_Build.md` or `config/local.example.json`; exact Qt and CMake paths are directed to local build scripts or local environment variables.
 - Targeted search confirmed distinct documented responsibilities for root `knowledge/` and `docs/knowledge/`.
 - Scoped Markdown link check across retained repository documentation found no broken relative Markdown links after the correction pass.
 - Targeted retained-doc search across `README.md`, `README_Stratum_Slicer_Build.md`, `AGENTS.md`, `docs/`, and `.ai/` found no obsolete `.agents`, `docs/codex`, phase-roadmap, context-handoff, or personal absolute-path references.
-- Full repository Markdown search still finds legacy path names only in historical/completion task-card evidence and this active task card's approved scope/evidence, not in active guidance documentation.
+- Full repository Markdown search still finds legacy path names only in historical/completion task-card evidence and this review task card's approved scope/evidence, not in active guidance documentation.
 - `git diff --name-only -- '*.py' '*.cmake' 'CMakeLists.txt' '*.ui' 'extensions/**' 'source/**' 'apps/**' 'knowledge/**'` reported no production code, production CMake, UI, generated output, protected-directory, or dependency changes.
-- `Get-ChildItem -LiteralPath tasks\active,tasks\review -File | Where-Object { $_.Name -ne '.gitkeep' }` confirmed `tasks/active/BSSL-002-consolidate-repository-documentation.md` remains the only active or review task card.
+- `Get-ChildItem -LiteralPath tasks\active,tasks\review -File | Where-Object { $_.Name -ne '.gitkeep' }` confirmed `tasks/review/BSSL-002-consolidate-repository-documentation.md` is the only active or review task card.
 - Read-only Git inspection was used: `git branch --show-current` reported `feature/BSSL-002-documentation-audit`.
-- Read-only Git inspection was used: `git status --short` reported `?? tasks/active/BSSL-002-consolidate-repository-documentation.md` before matrix creation. This pre-existing untracked task-card state was not reverted.
-- After matrix creation, `git status --short` reported only untracked `docs/planning/` and `tasks/active/BSSL-002-consolidate-repository-documentation.md`.
-- `git diff --name-only` reported no tracked-file diff because the changed task card and new matrix are currently untracked.
-- `git ls-files --others --exclude-standard` reported `docs/planning/BSSL-002-documentation-migration-matrix.md` and `tasks/active/BSSL-002-consolidate-repository-documentation.md`.
+- The actual target comparison baseline is `origin/main` at merge commit `706332e`; `git merge-base origin/main HEAD` reported BSSL-001 commit `44047ae`.
+- Local `main` remained at `19b775f`, so `main...HEAD` also contained BSSL-001 and was not used as the BSSL-002-only scope comparison.
+- `git diff --name-status origin/main...HEAD` and the working-tree diff were reviewed separately so committed BSSL-002 changes, the correction pass, and the task move were all included in the audit.
+- Commit `52ce6fb` contains the first correction pass and the active-to-review task move. The final review-correction edits to `AGENTS.md`, `README_Stratum_Slicer_Build.md`, and this review task card remain uncommitted.
 - `config/local.example.json` exists and contains placeholder paths, not personal local paths.
 - Deleted-path existence checks confirmed `.agents/`, `docs/codex/`, `docs/development/sandbox_roadmap.md`, and old phase task files no longer exist.
 - Deleted-path existence checks confirmed `docs/planning/` and `docs/planning/BSSL-002-documentation-migration-matrix.md` no longer exist.
@@ -440,12 +458,13 @@ Validation performed and results:
 Read-only Git validation:
 
 - `git status --short` was used to inspect the final working tree.
-- Final `git status --short` showed only approved documentation modifications.
+- Final `git status --short` showed only approved modifications to `AGENTS.md`, `README_Stratum_Slicer_Build.md`, and this tracked review task card.
 - No commit, push, pull, branch creation, checkout, merge, rebase, reset, staging, or Git deletion command was run.
+- The first correction pass and task move are present in commit `52ce6fb`. The final three-file review-correction pass remains in the working tree and must be included in the eventual reviewed commit; no commit or staging was performed by the independent reviewer.
 
 Authoritative policy and workflow owners:
 
-- Editable/protected paths and source-of-truth routing: `AGENTS.md`.
+- Repository identity, editable/protected paths, source-of-truth routing, and concise policy defaults: `AGENTS.md`.
 - Git restrictions: `.ai/policies/git-workflow.md`.
 - MCP restrictions: `.ai/policies/mcp-policy.md`.
 - Medical-data restrictions: `.ai/policies/medical-data-policy.md`.
@@ -465,10 +484,12 @@ Authoritative policy and workflow owners:
 Remaining risks and ambiguities:
 
 - `tasks/completed/BSSL-001-ai-development-workflow.md` still contains historical references to legacy files as completion evidence. It is intentionally retained and was not authorized for modification in this consolidation phase.
-- The documentation points to `config/local.json` for supported local Slicer path fields, while exact Qt and CMake paths depend on the user's private local build scripts or environment variables.
+- Local `main` is stale relative to `origin/main`; updating it requires a separately authorized state-changing Git operation.
+- The final three-file review-correction pass is intentionally uncommitted and unstaged because the user prohibited commit and staging during review.
+- Exact Qt and CMake paths remain machine-specific and belong in local environment variables or ignored helper scripts.
 - No Slicer runtime verification was performed because this task is documentation-only and did not modify production module code.
 
-Manual verification required before independent review:
+Manual verification required before renewed independent review:
 
 - Review `README.md` and `README_Stratum_Slicer_Build.md` for clarity and current local build accuracy.
 - Review `docs/development/` and `docs/slicer/` to confirm useful technical knowledge was preserved without obsolete workflow content.
@@ -478,7 +499,20 @@ Manual verification required before independent review:
 
 ## Review findings
 
-Pending.
+Independent AI review on 2026-07-13 returned `REQUEST CHANGES`.
+
+Findings recorded:
+
+- `BLOCKING`: local `main` did not contain BSSL-001, so the BSSL-002-only comparison required `origin/main`; at the time of review, the first correction pass and task move were not part of the committed branch tip.
+- `IMPORTANT`: the build guide depended on optional ignored scripts and lacked portable fallback, preflight, configure-success, launch, and concrete executable-verification commands.
+- `IMPORTANT`: root `AGENTS.md` duplicated detailed Git, MCP, and medical-data policies while the task claimed `.ai/policies/` was authoritative.
+- `IMPORTANT`: completion evidence still described the task under `tasks/active/` and described an obsolete working-tree state.
+
+Correction status:
+
+- Build-guide, policy-ownership, task-location, baseline, and completion-evidence documentation findings were corrected in the working tree.
+- Commit `52ce6fb` subsequently captured the first correction pass and task move. The final review-correction pass remains uncommitted, and the local-`main` discrepancy remains explicitly documented; no state-changing Git action was performed by the reviewer.
+- BSSL-002 remains in `review` and requires renewed independent review after validation.
 
 ## Human approval
 

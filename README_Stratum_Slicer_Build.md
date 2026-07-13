@@ -43,18 +43,58 @@ The `workspace/` tree is ignored local material. Scripts under `workspace/build_
 
 Use the x64 Native Tools Command Prompt for VS 2022 for the main build.
 
-Before configuring, verify that the command prompt can find:
+Choose machine-specific values for the source, build, and Qt directories. The following examples use temporary command-prompt variables and do not modify repository configuration:
+
+```bat
+set "SLICER_SOURCE_DIR=<repository>\source"
+set "SLICER_BUILD_DIR=<repository>\apps\SR"
+set "QT_ROOT=<Qt 5.15.2 msvc2019_64 directory>"
+set "QT5_DIR=%QT_ROOT%\lib\cmake\Qt5"
+```
+
+If the checkout is under `source\Slicer`, set `SLICER_SOURCE_DIR` to that directory instead.
+
+Before configuring, verify the compiler, Git tools, CMake, source layout, and Qt installation:
 
 ```bat
 where cl
 where git
 where patch
 cmake --version
+git -C "%SLICER_SOURCE_DIR%" rev-parse --is-inside-work-tree
+dir "%SLICER_SOURCE_DIR%\CMakeLists.txt"
+dir "%QT_ROOT%\bin\qmake.exe"
+"%QT_ROOT%\bin\qmake.exe" -v
+dir "%QT5_DIR%\Qt5Config.cmake"
+dir "%QT_ROOT%\lib\cmake\Qt5WebEngine\Qt5WebEngineConfig.cmake"
 ```
 
-Also verify that Qt is installed and that the Qt CMake package directory exists. Store exact Qt and CMake paths in local build scripts or local environment variables, not in repository-wide instructions.
+Every command must succeed before configuring. Store permanent Qt and CMake paths in local build scripts or local environment variables, not in repository-wide instructions or unsupported `config/local.json` fields.
 
 If the Slicer source checkout is nested differently on a local machine, update the local configuration or build script variables rather than changing repository documentation.
+
+## Portable Command-Line Fallback
+
+The ignored helper scripts are convenient but are not required. The following commands implement the same configure and build sequence from an x64 Native Tools Command Prompt for VS 2022.
+
+Configure a new or existing SuperBuild tree:
+
+```bat
+cmake -G "Visual Studio 17 2022" -A x64 -DQt5_DIR:PATH="%QT5_DIR%" -S "%SLICER_SOURCE_DIR%" -B "%SLICER_BUILD_DIR%"
+if errorlevel 1 exit /b 1
+if not exist "%SLICER_BUILD_DIR%\CMakeCache.txt" exit /b 1
+```
+
+A successful configure reports `Configuring done` and `Generating done`, identifies `%SLICER_BUILD_DIR%` as the build-file destination, and creates `%SLICER_BUILD_DIR%\CMakeCache.txt`.
+
+Build or continue the Release build incrementally:
+
+```bat
+cmake --build "%SLICER_BUILD_DIR%" --config Release
+if errorlevel 1 exit /b 1
+```
+
+The build should start MSBuild and return exit code `0`. Re-running the same command continues an interrupted build or rebuilds changed targets without deleting completed external projects.
 
 ## Local Build Helper Scripts
 
@@ -83,9 +123,11 @@ Start_Stratum_Slicer_Release_ASCII.bat
 
 After a successful build, verify that these executables exist:
 
-```text
-apps/SR/Slicer-build/Slicer.exe
-apps/SR/Slicer-build/bin/Release/SlicerApp-real.exe
+```bat
+dir "%SLICER_BUILD_DIR%\Slicer-build\Slicer.exe"
+dir "%SLICER_BUILD_DIR%\Slicer-build\bin\Release\SlicerApp-real.exe"
+if not exist "%SLICER_BUILD_DIR%\Slicer-build\Slicer.exe" exit /b 1
+if not exist "%SLICER_BUILD_DIR%\Slicer-build\bin\Release\SlicerApp-real.exe" exit /b 1
 ```
 
 ## Clean Build
@@ -100,6 +142,18 @@ Use a clean build when:
 - an incremental build cannot recover.
 
 The conventional local target is `apps/SR/`, with the final executable under `apps/SR/Slicer-build/`.
+
+For a command-line clean build, remove only the configured generated build tree, then run the portable configure and build commands again:
+
+```bat
+if exist "%SLICER_BUILD_DIR%" rmdir /s /q "%SLICER_BUILD_DIR%"
+cmake -G "Visual Studio 17 2022" -A x64 -DQt5_DIR:PATH="%QT5_DIR%" -S "%SLICER_SOURCE_DIR%" -B "%SLICER_BUILD_DIR%"
+if errorlevel 1 exit /b 1
+cmake --build "%SLICER_BUILD_DIR%" --config Release
+if errorlevel 1 exit /b 1
+```
+
+Before running `rmdir`, confirm that `SLICER_BUILD_DIR` resolves to the intended generated Slicer build tree. Never point it at the repository root, source tree, extension source, or a directory containing irreplaceable files.
 
 ## Incremental Build
 
@@ -117,6 +171,12 @@ apps/SR/Slicer-build/bin/Release/SlicerApp-real.exe
 ```
 
 If a local machine uses a different build tree, set `slicerExecutable` in `config/local.json`.
+
+Launch the built wrapper executable directly:
+
+```bat
+start "" "%SLICER_BUILD_DIR%\Slicer-build\Slicer.exe"
+```
 
 ## Reload Versus Rebuild
 
