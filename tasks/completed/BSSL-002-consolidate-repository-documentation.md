@@ -1,7 +1,7 @@
 ---
 id: BSSL-002
 title: Consolidate and de-duplicate repository documentation
-status: review
+status: completed
 branch: feature/BSSL-002-documentation-audit
 required_skills: []
 optional_tools: []
@@ -103,7 +103,7 @@ Current documentation authorized for modification:
 - `docs/slicer/scripted_module_structure.md`
 - `docs/knowledge/README.md`
 - `docs/planning/BSSL-002-documentation-migration-matrix.md`
-- `tasks/review/BSSL-002-consolidate-repository-documentation.md`
+- `tasks/completed/BSSL-002-consolidate-repository-documentation.md`
 
 No other file is authorized for modification or deletion.
 
@@ -512,8 +512,17 @@ Correction status:
 
 - Build-guide, policy-ownership, task-location, baseline, and completion-evidence documentation findings were corrected in the working tree.
 - Commit `52ce6fb` subsequently captured the first correction pass and task move. The final review-correction pass remains uncommitted, and the local-`main` discrepancy remains explicitly documented; no state-changing Git action was performed by the reviewer.
-- BSSL-002 remains in `review` and requires renewed independent review after validation.
+- Final disposition:
+  - The reported review findings were corrected before merge.
+  - PR #2 was merged into `main`.
+  - After the merge, the user reviewed the final result and explicitly approved moving BSSL-002 to completed on 2026-07-13.
+  - No review findings remain open for this task.
 
 ## Human approval
 
-Pending.
+Human approval to complete BSSL-002 was granted by the user on 2026-07-13 after:
+
+- the documentation consolidation was completed;
+- the reported review findings were corrected;
+- PR #2 was merged into `main`;
+- the final repository documentation was accepted as complete.
