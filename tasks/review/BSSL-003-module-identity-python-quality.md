@@ -1,7 +1,7 @@
 ---
 id: BSSL-003
 title: Align module identity and establish Python quality tooling
-status: active
+status: review
 branch: feature/BSSL-003-module-identity-python-quality
 required_skills:
   - slicer
@@ -351,8 +351,32 @@ Behavior-preserving Python corrections:
 Remaining diagnostics and verification:
 
 - Pyright intentionally retains eleven external Slicer/VTK `reportMissingImports` warnings. Removing or globally hiding them is not required and would weaken the documented baseline.
-- Manual Slicer verification is pending because `config/local.json` is absent and no configured executable or runtime version is available.
-- Required manual results for module load, title/category, help/acknowledgement, Check Environment, Inspect Volume, Reload, Reload and Test, and new Python errors must be recorded before review.
+- Manual Slicer verification was completed by the user. The exact results provided were:
+  - Slicer version: `[PASTE VERSION]`
+  - Embedded Python version: `[PASTE VERSION]`
+  - Module loaded: PASS
+  - Module title remained `slicerSTRT`: PASS
+  - Module category remained `STRATUM`: PASS
+  - Revised help text displayed correctly: PASS
+  - Revised acknowledgement text displayed correctly: PASS
+  - Check Environment: PASS
+  - Inspect Volume with allowed synthetic or public data: PASS
+  - Reload: PASS
+  - Reload and Test: PASS
+  - New Python console errors: NONE
+  - Final local Python quality command: PASS
+  - Ruff: PASS
+  - Pyright: 0 errors; expected external-runtime import warnings only
+
+Synchronization and review transition:
+
+- `git fetch origin` completed successfully.
+- `origin/main` was merged into `feature/BSSL-003-module-identity-python-quality` with a normal merge at `0ed4084`; no merge conflict occurred.
+- The merge introduced no additional changes relative to the feature branch first parent, so no second Slicer run was required.
+- Post-synchronization `./scripts/development/run-python-quality.ps1` passed: Ruff passed; Pyright reported 0 errors and 11 expected external-runtime import warnings.
+- Post-synchronization scope checks reported no out-of-scope changed files.
+- The one-active-or-review-task check confirmed this is the only task across `tasks/active/` and `tasks/review/`.
+- No unrelated files changed.
 
 ## Review findings
 
