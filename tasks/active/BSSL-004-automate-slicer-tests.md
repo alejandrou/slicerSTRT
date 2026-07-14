@@ -18,7 +18,7 @@ Make the existing slicerSTRT tests repeatable from PowerShell and expose them th
 
 ## Context
 
-`slicerSTRTTest` currently covers environment reporting and scalar-volume metadata with synthetic MRML data. The module has Slicer generic testing enabled, while its additional Python CMake test registration is currently only a placeholder. Repeatable execution is needed before stateful and workflow changes are added.
+Before BSSL-004, generic Slicer tests were enabled and the project-specific Python CMake registration was a placeholder. `slicerSTRTTest` remains the source of truth for the existing environment-reporting and scalar-volume metadata coverage with synthetic MRML data. The `slicerSTRTModuleTest.py` file is now the thin unittest discovery adapter, and `slicer_add_python_unittest` now registers `py_slicerSTRTModuleTest`; the existing generic test remains registered separately. BSSL-005 depends on this completed testing foundation.
 
 ## Requirements
 
@@ -37,7 +37,16 @@ Make the existing slicerSTRT tests repeatable from PowerShell and expose them th
 
 ## Files allowed
 
-Likely areas include test CMake files, a PowerShell test helper, module tests, and narrowly scoped documentation. The exact allowlist requires inspection and approval during specification.
+Implementation files approved for this task:
+
+- `extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt`
+- `extensions/slicerSTRT/slicerSTRT/Testing/Python/slicerSTRTModuleTest.py`
+- `scripts/development/run-slicer-tests.ps1`
+- `docs/development/testing_strategy.md`
+- `.gitignore`
+- `tasks/{backlog,active,review,completed}/BSSL-004-automate-slicer-tests.md`
+
+`.gitignore` was changed only to add `/build/`, preventing generated standalone extension CMake/CTest files from appearing as source changes.
 
 ## Relevant skills and references
 
@@ -48,7 +57,14 @@ Likely areas include test CMake files, a PowerShell test helper, module tests, a
 
 ## Implementation plan
 
-To be defined during specification after local Slicer executable, source, and build conventions are verified.
+1. Verify the local Slicer executable, extension build directory, and supported Slicer
+   test conventions without changing local configuration.
+2. Preserve the existing `slicerSTRTTest` coverage and expose it through the
+   PowerShell runner and CTest registration.
+3. Validate success, failure, missing-configuration, and missing-executable paths;
+   keep Ruff/Pyright separate from Slicer test execution.
+4. Document the approved commands, explicitly distinguishing the upstream Slicer
+   SuperBuild from the standalone slicerSTRT extension build.
 
 ## Acceptance criteria
 
@@ -59,11 +75,34 @@ To be defined during specification after local Slicer executable, source, and bu
 
 ## Test plan
 
-To be defined during specification; it must include available, missing-configuration, missing-executable, and failing-test paths.
+- Available path: run the PowerShell runner from the repository root and from `%TEMP%`;
+  confirm all three existing tests pass, exit code `0`, and caller location is preserved.
+- CTest path: list tests and run `py_slicerSTRTModuleTest` with `--test-dir`
+  pointing to the standalone extension build; confirm `1/1` passes and exit code `0`.
+- Missing-configuration path: verify the runner reports missing `config/local.json`
+  or its required `slicerExecutable` value and returns nonzero without modifying config.
+- Missing-executable path: verify an absent or unusable configured executable is
+  reported clearly and returns nonzero.
+- Failing-test path: verify a Slicer test failure propagates a nonzero process exit code.
+- Quality path: run Ruff and Pyright separately; their availability/results do not
+  change Slicer test execution.
 
 ## Manual verification
 
-Run the module in Slicer, use Reload and Reload and Test, and verify the approved automated command against synthetic data. Record the local Slicer version and executable-selection result.
+Manual verification performed and confirmed by the project owner.
+
+- Slicer started successfully.
+- The `slicerSTRT` module loaded correctly.
+- Reload passed.
+- Reload and Test passed.
+- The project-specific tests passed.
+- The module remained usable after testing.
+- Check Environment worked.
+- Inspect Volume worked with synthetic data.
+- No private patient or medical data was used.
+
+No Slicer version, timestamp, screenshot, executable path, or other unrecorded
+environment detail is asserted here.
 
 ## Risks
 
@@ -71,11 +110,23 @@ Slicer test command and CMake registration details vary by local Slicer version 
 
 ## Documentation impact
 
-Document only the approved developer invocation and prerequisites after specification. Do not duplicate the general task or manual-verification workflow.
+`docs/development/testing_strategy.md` documents the PowerShell prerequisites and
+CTest invocation. The CTest command explicitly targets the standalone
+slicerSTRT extension build with `--test-dir`; the upstream Slicer SuperBuild is
+identified separately and is not presented as the extension CTest project.
 
 ## Completion evidence
 
-Reserved for implementation, automated-test, manual-verification, review, and approval evidence.
+Implementation and automated-test evidence is recorded below. Documentation
+verification for this pass: the CTest command includes `--test-dir`, uses a
+portable `<slicerSTRT-extension-build-directory>` placeholder, and distinguishes
+the upstream Slicer SuperBuild (`slicerBuildDirectory`) from the standalone
+extension build (`C:\stratum\build\slicerSTRT`). The discovery listing is documented
+with both expected registered test names.
+
+Lifecycle status: implementation, fast automated tests, and manual Slicer
+verification are complete. The task remains active and is ready for independent
+review; it has not been moved to `tasks/review/`.
 
 ## Review findings
 
@@ -87,7 +138,7 @@ Human approval received before activation and implementation.
 
 ## Implementation evidence
 
-Status: Active implementation completed; CTest validation passed; manual Slicer verification remains pending.
+Status: Active implementation completed; automated validation passed; project-owner manual Slicer verification completed.
 
 Files inspected:
 
@@ -113,7 +164,8 @@ Files modified:
 
 - extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt
 - docs/development/testing_strategy.md
-- This task card
+- .gitignore
+- tasks/active/BSSL-004-automate-slicer-tests.md
 
 Validation performed:
 
@@ -134,10 +186,24 @@ Validation performed:
 - The upstream Slicer SuperBuild directory is not the CTest project used for this extension validation.
 - Separate Ruff/Pyright command: correctly reported both tools unavailable and returned exit code 1 without installing or modifying dependencies.
 
+Failure-path validation was performed in a temporary sandbox under `$env:TEMP`
+using copies of the runner and test module; the repository files and
+`config/local.json` were not modified, and the sandbox was removed afterward.
+
+- Missing `config/local.json`: reported the missing configuration and returned exit code 1.
+- Malformed `config/local.json`: reported malformed JSON and returned exit code 1.
+- Missing or empty `slicerExecutable`: reported the absent or empty field and returned exit code 1.
+- Nonexistent executable path: reported that the configured executable does not exist and returned exit code 1.
+- Existing but unusable executable: reported that Slicer could not be started and returned exit code 1.
+- Deliberately failing discovered Slicer test: a temporary assertion in `test_environmentCheckReport` caused the Slicer process and runner to return exit code 1; the runner reported the failed test exit code.
+
 Slicer output included the existing three tests:
 
 - test_environmentCheckReport
 - test_inspectVolumeMetadata_withScalarVolume
 - test_inspectVolumeMetadata_withoutSelection
 
-Manual verification remains required: start Slicer, use Reload and Reload and Test, verify the module behavior, then run the PowerShell and focused CTest commands after extension reconfiguration. Only synthetic MRML data was used by the automated test.
+Manual verification was performed and confirmed by the project owner: Slicer
+started, the module loaded, Reload and Reload and Test passed, the project-specific
+tests passed, the module remained usable, Check Environment worked, and Inspect
+Volume worked with synthetic data. No private patient or medical data was used.
