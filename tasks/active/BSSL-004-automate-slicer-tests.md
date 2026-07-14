@@ -1,7 +1,7 @@
 ---
 id: BSSL-004
 title: Automate slicerSTRT test execution
-status: backlog
+status: active
 branch:
 priority: high
 depends_on:
@@ -83,4 +83,61 @@ Reserved for later independent review.
 
 ## Human approval
 
-Required before specification is activated and before implementation begins.
+Human approval received before activation and implementation.
+
+## Implementation evidence
+
+Status: Active implementation completed; CTest validation passed; manual Slicer verification remains pending.
+
+Files inspected:
+
+- AGENTS.md
+- .ai/workflows/task-lifecycle.md
+- .ai/policies/code-quality.md
+- .ai/policies/git-workflow.md
+- extensions/slicerSTRT/slicerSTRT/CMakeLists.txt
+- extensions/slicerSTRT/slicerSTRT/Testing/CMakeLists.txt
+- extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt
+- extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTTest.py
+- docs/development/testing_strategy.md
+- config/local.example.json
+- config/local.json (read-only; values not recorded)
+- Slicer source SlicerMacroPythonTesting.cmake and slicer/testing.py
+
+Files created:
+
+- extensions/slicerSTRT/slicerSTRT/Testing/Python/slicerSTRTModuleTest.py
+- scripts/development/run-slicer-tests.ps1
+
+Files modified:
+
+- extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt
+- docs/development/testing_strategy.md
+- This task card
+
+Validation performed:
+
+- PowerShell parser: passed.
+- Adapter Python syntax compilation: passed.
+- CMake registration statically verified; the expected generated name is py_slicerSTRTModuleTest.
+- PowerShell runner from the repository root: passed; all three existing tests ran and returned exit code 0.
+- PowerShell runner from %TEMP%: passed; all three existing tests ran and returned exit code 0; caller location preserved.
+- Slicer executable resolved from config/local.json; local configuration was not modified.
+- CTest listing: standalone extension build C:\stratum\build\slicerSTRT returned both registered tests:
+  - py_nomainwindow_qSlicerslicerSTRTModuleGenericTest
+  - py_slicerSTRTModuleTest
+- Focused CTest execution:
+  - Command: ctest --test-dir "C:\stratum\build\slicerSTRT" -C Release -R "^py_slicerSTRTModuleTest$" --output-on-failure
+  - Result: 1/1 passed; 100% tests passed out of 1.
+  - Exit code: 0.
+  - Execution time: 3.93 seconds reported by CTest; 3.959 seconds measured by the invoking PowerShell command.
+- The upstream Slicer SuperBuild directory is not the CTest project used for this extension validation.
+- Separate Ruff/Pyright command: correctly reported both tools unavailable and returned exit code 1 without installing or modifying dependencies.
+
+Slicer output included the existing three tests:
+
+- test_environmentCheckReport
+- test_inspectVolumeMetadata_withScalarVolume
+- test_inspectVolumeMetadata_withoutSelection
+
+Manual verification remains required: start Slicer, use Reload and Reload and Test, verify the module behavior, then run the PowerShell and focused CTest commands after extension reconfiguration. Only synthetic MRML data was used by the automated test.
