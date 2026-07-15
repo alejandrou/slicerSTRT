@@ -5,6 +5,7 @@
 /workspace/
 /config/local.json
 /.venv/
+/build/
 
 # Common generated artifacts
 *.pyc

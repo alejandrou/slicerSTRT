@@ -46,6 +46,65 @@ For Python scripted-module changes:
 
 Only rebuild Slicer when C++, CMake, generated wrapping, or dependency changes require it.
 
+### Automated slicerSTRT tests
+
+From the repository root, run the project-specific scripted-module tests with:
+
+```powershell
+.\scripts\development\run-slicer-tests.ps1
+```
+
+The runner resolves the repository-relative paths it needs from its own script
+location. Therefore, it can also be invoked from another working directory by
+using its absolute path; the relative command shown above is specifically a
+repository-root invocation.
+
+This command requires `config/local.json` with a non-empty `slicerExecutable` value. The
+configured path may be absolute or relative to the repository root. The tests run in
+Slicer's embedded Python runtime through the `slicerSTRTModuleTest` discovery adapter;
+they use synthetic MRML data and require no private medical data.
+
+The same test is registered with CTest as `py_slicerSTRTModuleTest`. CTest must be run
+against the standalone slicerSTRT extension build, not the upstream Slicer SuperBuild.
+The upstream build is normally represented by `slicerBuildDirectory` (for example,
+`C:\stratum\apps\SR`); it is not the CTest project used for this extension's
+registration. After reconfiguring the standalone extension build so CMake sees the
+registration, list the discovered tests with:
+
+```powershell
+ctest `
+  --test-dir "<slicerSTRT-extension-build-directory>" `
+  -C Release `
+  -N
+```
+
+The listing should include `py_nomainwindow_qSlicerslicerSTRTModuleGenericTest`
+and `py_slicerSTRTModuleTest`.
+
+Then run the focused test with:
+
+```powershell
+ctest `
+  --test-dir "<slicerSTRT-extension-build-directory>" `
+  -C Release `
+  -R "^py_slicerSTRTModuleTest$" `
+  --output-on-failure
+```
+
+For the current checkout, `<slicerSTRT-extension-build-directory>` is
+`C:\stratum\build\slicerSTRT`.
+
+PowerShell/Slicer execution and CTest both execute the existing three module tests.
+CTest registration provides build-integrated discovery, while Ruff and Pyright remain
+separate Python quality checks. Reload and Reload and Test remain the interactive Slicer
+development workflow and are not replaced by either automated path. A CMake change
+requires extension-build reconfiguration before the new CTest test appears.
+
+The runner also returns a nonzero exit code with an actionable message when
+`config/local.json` is missing or malformed, `slicerExecutable` is missing or
+empty, the configured executable does not exist, or the existing file cannot be
+started. A nonzero Slicer test exit code is propagated by the runner.
+
 ## Test Data
 
 Use synthetic data, public Slicer sample data, anonymized test data, mock JSON/results, or explicitly approved public medical data.
