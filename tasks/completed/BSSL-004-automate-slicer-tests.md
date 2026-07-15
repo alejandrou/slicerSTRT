@@ -1,7 +1,7 @@
 ---
 id: BSSL-004
 title: Automate slicerSTRT test execution
-status: review
+status: completed
 branch:
 priority: high
 depends_on:
@@ -125,8 +125,8 @@ extension build (`C:\stratum\build\slicerSTRT`). The discovery listing is docume
 with both expected registered test names.
 
 Lifecycle status: implementation, fast automated tests, manual Slicer
-verification, and independent review are complete. The task has been moved to
-`tasks/review/` and is ready for project-owner approval.
+verification, independent review, project-owner approval, and merge are complete.
+The task has been moved to `tasks/completed/`.
 
 ## Review findings
 
@@ -143,7 +143,7 @@ Project-owner approval recorded after independent review.
 
 ## Implementation evidence
 
-Status: Review complete; automated validation passed; project-owner manual Slicer verification completed.
+Status: Completed; automated validation passed; project-owner manual Slicer verification completed; PR #7 merged to `main` at `6e9a6213738b42a829580375a5920ecc780d309b`.
 
 Files inspected:
 
@@ -170,7 +170,7 @@ Files modified:
 - extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt
 - docs/development/testing_strategy.md
 - .gitignore
-- tasks/review/BSSL-004-automate-slicer-tests.md
+- tasks/completed/BSSL-004-automate-slicer-tests.md
 
 Validation performed:
 
