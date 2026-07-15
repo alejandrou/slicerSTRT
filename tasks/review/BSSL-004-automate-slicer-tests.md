@@ -1,7 +1,7 @@
 ---
 id: BSSL-004
 title: Automate slicerSTRT test execution
-status: active
+status: review
 branch:
 priority: high
 depends_on:
@@ -124,21 +124,26 @@ the upstream Slicer SuperBuild (`slicerBuildDirectory`) from the standalone
 extension build (`C:\stratum\build\slicerSTRT`). The discovery listing is documented
 with both expected registered test names.
 
-Lifecycle status: implementation, fast automated tests, and manual Slicer
-verification are complete. The task remains active and is ready for independent
-review; it has not been moved to `tasks/review/`.
+Lifecycle status: implementation, fast automated tests, manual Slicer
+verification, and independent review are complete. The task has been moved to
+`tasks/review/` and is ready for project-owner approval.
 
 ## Review findings
 
-Reserved for later independent review.
+Independent review against `main` found no blockers.
+
+- `extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt` now registers the project test with `slicer_add_python_unittest` using the thin adapter.
+- `scripts/development/run-slicer-tests.ps1` handles the documented success and failure paths with explicit exit codes and no production-module behavior change.
+- `docs/development/testing_strategy.md` now covers both CTest discovery and focused execution with the portable `--test-dir` listing command.
+- Failure-path validation covered missing and malformed configuration, missing or empty `slicerExecutable`, nonexistent paths, unusable executables, and a deliberately failing Slicer test.
 
 ## Human approval
 
-Human approval received before activation and implementation.
+Project-owner approval recorded after independent review.
 
 ## Implementation evidence
 
-Status: Active implementation completed; automated validation passed; project-owner manual Slicer verification completed.
+Status: Review complete; automated validation passed; project-owner manual Slicer verification completed.
 
 Files inspected:
 
@@ -165,7 +170,7 @@ Files modified:
 - extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt
 - docs/development/testing_strategy.md
 - .gitignore
-- tasks/active/BSSL-004-automate-slicer-tests.md
+- tasks/review/BSSL-004-automate-slicer-tests.md
 
 Validation performed:
 
