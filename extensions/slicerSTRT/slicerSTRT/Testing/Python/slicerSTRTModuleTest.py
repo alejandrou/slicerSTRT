@@ -2,5 +2,4 @@
 
 from slicerSTRTLib.slicerSTRTTest import slicerSTRTTest
 
-
 __all__ = ["slicerSTRTTest"]

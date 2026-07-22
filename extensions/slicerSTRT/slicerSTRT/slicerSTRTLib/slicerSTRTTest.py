@@ -1,8 +1,12 @@
+import os
+from typing import Callable, cast
+
 import slicer
 import vtk
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleTest
 
 from .slicerSTRTLogic import slicerSTRTLogic
+from .slicerSTRTParameterNode import slicerSTRTParameterNode
 
 
 class slicerSTRTTest(ScriptedLoadableModuleTest):
@@ -12,8 +16,14 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
     def runTest(self):
         self.setUp()
         self.test_environmentCheckReport()
+        self.setUp()
         self.test_inspectVolumeMetadata_withoutSelection()
+        self.setUp()
         self.test_inspectVolumeMetadata_withScalarVolume()
+        self.setUp()
+        self.test_parameterNode_defaultAndClearState()
+        self.setUp()
+        self.test_parameterNode_persistsInputVolumeAcrossSceneLoad()
 
     def test_environmentCheckReport(self):
         """Exercise the environment check logic."""
@@ -53,14 +63,7 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
     def test_inspectVolumeMetadata_withScalarVolume(self):
         logic = slicerSTRTLogic()
 
-        volumeNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLScalarVolumeNode", "SyntheticVolume")
-        imageData = vtk.vtkImageData()
-        imageData.SetDimensions(4, 5, 6)
-        imageData.AllocateScalars(vtk.VTK_SHORT, 1)
-        volumeNode.SetAndObserveImageData(imageData)
-        volumeNode.SetSpacing(1.0, 2.0, 3.0)
-        volumeNode.SetOrigin(10.0, 20.0, 30.0)
-        volumeNode.SetIJKToRASDirections(-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0)
+        volumeNode = self._createSyntheticVolume()
 
         report = logic.inspectVolumeMetadata(volumeNode)
 
@@ -72,3 +75,46 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
         self.assertEqual(report["voxelCount"], 120)
         self.assertEqual(report["scalarType"], "short")
         self.assertIn("Direction/orientation (IJK to RAS)", report["reportText"])
+
+    def test_parameterNode_defaultAndClearState(self):
+        parameterNode = self._parameterNode()
+
+        self.assertIsNone(parameterNode.inputVolumeNode)
+
+        volumeNode = self._createSyntheticVolume()
+        parameterNode.inputVolumeNode = volumeNode
+        self.assertIs(parameterNode.inputVolumeNode, volumeNode)
+
+        parameterNode.inputVolumeNode = None
+        self.assertIsNone(parameterNode.inputVolumeNode)
+
+    def test_parameterNode_persistsInputVolumeAcrossSceneLoad(self):
+        parameterNode = self._parameterNode()
+        parameterNode.inputVolumeNode = self._createSyntheticVolume()
+
+        sceneFilePath = os.path.join(slicer.util.tempDirectory(), "slicerSTRT-persistent-state.mrml")
+        self.assertTrue(slicer.util.saveScene(sceneFilePath))
+        slicer.mrmlScene.Clear()
+        slicer.util.loadScene(sceneFilePath)
+
+        restoredParameterNode = self._parameterNode()
+        restoredInputVolumeNode = restoredParameterNode.inputVolumeNode
+        if restoredInputVolumeNode is None:
+            raise AssertionError("The saved input-volume reference was not restored.")
+        self.assertEqual(restoredInputVolumeNode.GetName(), "SyntheticVolume")
+
+    @staticmethod
+    def _parameterNode():
+        return cast(Callable[[object], slicerSTRTParameterNode], slicerSTRTParameterNode)(slicerSTRTLogic().getParameterNode())
+
+    @staticmethod
+    def _createSyntheticVolume():
+        volumeNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLScalarVolumeNode", "SyntheticVolume")
+        imageData = vtk.vtkImageData()
+        imageData.SetDimensions(4, 5, 6)
+        imageData.AllocateScalars(vtk.VTK_SHORT, 1)
+        volumeNode.SetAndObserveImageData(imageData)
+        volumeNode.SetSpacing(1.0, 2.0, 3.0)
+        volumeNode.SetOrigin(10.0, 20.0, 30.0)
+        volumeNode.SetIJKToRASDirections(-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0)
+        return volumeNode

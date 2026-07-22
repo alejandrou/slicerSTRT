@@ -1,16 +1,22 @@
-from typing import cast
+from typing import Callable, cast
 
 import slicer
+import vtk
 from slicer.i18n import tr as _
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleWidget
+from slicer.util import VTKObservationMixin
 
 from .slicerSTRTLogic import slicerSTRTLogic
+from .slicerSTRTParameterNode import slicerSTRTParameterNode
 
 
-class slicerSTRTWidget(ScriptedLoadableModuleWidget):
+class slicerSTRTWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     def __init__(self, parent=None) -> None:
         ScriptedLoadableModuleWidget.__init__(self, parent)
+        VTKObservationMixin.__init__(self)
         self.logic = None
+        self._parameterNode = None
+        self._updatingGUIFromParameterNode = False
 
     def setup(self) -> None:
         ScriptedLoadableModuleWidget.setup(self)
@@ -26,13 +32,64 @@ class slicerSTRTWidget(ScriptedLoadableModuleWidget):
         self.ui.inputVolumeNodeComboBox.addEnabled = False
         self.ui.inputVolumeNodeComboBox.removeEnabled = False
         self.ui.inputVolumeNodeComboBox.setMRMLScene(slicer.mrmlScene)
+        self.addObserver(slicer.mrmlScene, slicer.mrmlScene.StartCloseEvent, self.onSceneStartClose)
+        self.addObserver(slicer.mrmlScene, slicer.mrmlScene.EndCloseEvent, self.onSceneEndClose)
+        self.ui.inputVolumeNodeComboBox.connect("currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
         self.ui.checkEnvironmentButton.connect("clicked(bool)", self.onCheckEnvironmentButton)
         self.ui.inspectVolumeButton.connect("clicked(bool)", self.onInspectVolumeButton)
         self._setSummaryState("WARN", _("Environment check has not been run yet."))
         self._setVolumeMetadataState("WARN", _("No volume is selected."))
+        self.initializeParameterNode()
 
     def cleanup(self) -> None:
-        pass
+        self.removeObservers()
+
+    def enter(self) -> None:
+        self.initializeParameterNode()
+
+    def exit(self) -> None:
+        if self._parameterNode is not None:
+            self.removeObserver(self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
+
+    def onSceneStartClose(self, caller=None, event=None) -> None:
+        self.setParameterNode(None)
+
+    def onSceneEndClose(self, caller=None, event=None) -> None:
+        if self.parent.isEntered:
+            self.initializeParameterNode()
+
+    def initializeParameterNode(self) -> None:
+        logic = cast(slicerSTRTLogic, self.logic)
+        self.setParameterNode(logic.getParameterNode())
+
+    def setParameterNode(self, parameterNode) -> None:
+        if isinstance(parameterNode, slicer.vtkMRMLScriptedModuleNode):
+            parameterNode = cast(Callable[[object], slicerSTRTParameterNode], slicerSTRTParameterNode)(parameterNode)
+
+        if self._parameterNode is not None:
+            self.removeObserver(self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
+
+        self._parameterNode = parameterNode
+        if self._parameterNode is not None:
+            self.addObserver(self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
+            self.updateGUIFromParameterNode()
+
+    def updateGUIFromParameterNode(self, caller=None, event=None) -> None:
+        if self._parameterNode is None or self._updatingGUIFromParameterNode:
+            return
+
+        self._updatingGUIFromParameterNode = True
+        try:
+            self.ui.inputVolumeNodeComboBox.setCurrentNode(self._parameterNode.inputVolumeNode)
+        finally:
+            self._updatingGUIFromParameterNode = False
+
+    def updateParameterNodeFromGUI(self, caller=None, event=None) -> None:
+        if self._parameterNode is None or self._updatingGUIFromParameterNode:
+            return
+
+        with slicer.util.NodeModify(self._parameterNode):
+            self._parameterNode.inputVolumeNode = self.ui.inputVolumeNodeComboBox.currentNode()
 
     def _setSummaryState(self, status: str, message: str) -> None:
         colors = {
@@ -62,6 +119,7 @@ class slicerSTRTWidget(ScriptedLoadableModuleWidget):
     def onInspectVolumeButton(self) -> None:
         with slicer.util.tryWithErrorDisplay(_("Failed to inspect the selected volume."), waitCursor=True):
             logic = cast(slicerSTRTLogic, self.logic)
-            report = logic.inspectVolumeMetadata(self.ui.inputVolumeNodeComboBox.currentNode())
+            parameterNode = cast(slicerSTRTParameterNode, self._parameterNode)
+            report = logic.inspectVolumeMetadata(parameterNode.inputVolumeNode)
             self._setVolumeMetadataState(report["summaryStatus"], report["summaryMessage"])
             self.ui.volumeMetadataResultsTextEdit.setPlainText(report["reportText"])
