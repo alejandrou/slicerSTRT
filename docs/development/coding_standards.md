@@ -1,6 +1,6 @@
 # Coding Standards
 
-Mandatory code-quality policy lives in `.ai/policies/code-quality.md`. This document gives technical guidance for STRATUM Slicer development.
+Mandatory code-quality policy lives in `.ai/policies/code-quality.md`. This document gives technical guidance for SLIAFlow Slicer development.
 
 ## Priorities
 
@@ -21,9 +21,9 @@ From the repository root, run:
 .\scripts\development\run-python-quality.ps1
 ```
 
-Create the ignored root `.venv` and install Ruff and Pyright there before the first run. Activate that environment in each new PowerShell session. The command runs Ruff and Pyright against project-owned Python under `extensions/slicerSTRT/`; they are development tools, not Slicer runtime dependencies, and the script does not install them.
+Create the ignored root `.venv` and install Ruff and Pyright there before the first run. Activate that environment in each new PowerShell session. The command runs Ruff and Pyright against project-owned Python under `extensions/SLIAFlow/`; they are development tools, not Slicer runtime dependencies, and the script does not install them.
 
-Pyright uses `basic` checking. Missing imports from Slicer's runtime-provided modules are warnings because normal system Python does not provide the real `slicer`, `qt`, `ctk`, and Slicer-bundled `vtk` environment. `reportMissingModuleSource` is disabled because several of these modules are compiled or injected at runtime. Project files remain included, `slicerSTRTLib` is resolved through the repository configuration, and other basic diagnostics remain enabled.
+Pyright uses `basic` checking. Missing imports from Slicer's runtime-provided modules are warnings because normal system Python does not provide the real `slicer`, `qt`, `ctk`, and Slicer-bundled `vtk` environment. `reportMissingModuleSource` is disabled because several of these modules are compiled or injected at runtime. Project files remain included, `SLIAFlowLib` is resolved through the repository configuration, and other basic diagnostics remain enabled.
 
 ## Separate Responsibilities
 

@@ -1,6 +1,6 @@
 [tool.ruff]
 target-version = "py312"
-include = ["extensions/slicerSTRT/**/*.py"]
+include = ["extensions/SLIAFlow/**/*.py"]
 extend-exclude = [
   "apps",
   "knowledge",

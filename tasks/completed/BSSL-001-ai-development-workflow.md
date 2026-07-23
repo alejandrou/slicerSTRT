@@ -16,7 +16,7 @@ Establish a minimal, reliable, and traceable Codex development workflow for this
 
 ## Context
 
-This repository is the active STRATUM-related 3D Slicer learning sandbox. The workflow must describe how this repository is developed now, not how a future repository might be onboarded or migrated.
+This repository is the active SLIAFlow-related 3D Slicer learning sandbox. The workflow must describe how this repository is developed now, not how a future repository might be onboarded or migrated.
 
 ## Requirements
 
@@ -202,7 +202,7 @@ BSSL-002 should assess these existing documentation files for consolidation or r
 - `tasks/phase_2b_volume_metadata.md`
 - `tasks/phase_2c_template_cleanup.md`
 - `README.md`
-- `README_Stratum_Slicer_Build.md`
+- `README_SLIAFlow_Build.md`
 
 ## Review findings
 

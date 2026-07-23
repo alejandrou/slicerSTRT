@@ -1,6 +1,6 @@
 ---
 id: BSSL-004
-title: Automate slicerSTRT test execution
+title: Automate SLIAFlow test execution
 status: completed
 branch:
 priority: high
@@ -10,19 +10,19 @@ optional_tools: []
 related_adrs: []
 ---
 
-# BSSL-004 - Automate slicerSTRT test execution
+# BSSL-004 - Automate SLIAFlow test execution
 
 ## Goal
 
-Make the existing slicerSTRT tests repeatable from PowerShell and expose them through the supported Slicer testing mechanism.
+Make the existing SLIAFlow tests repeatable from PowerShell and expose them through the supported Slicer testing mechanism.
 
 ## Context
 
-Before BSSL-004, generic Slicer tests were enabled and the project-specific Python CMake registration was a placeholder. `slicerSTRTTest` remains the source of truth for the existing environment-reporting and scalar-volume metadata coverage with synthetic MRML data. The `slicerSTRTModuleTest.py` file is now the thin unittest discovery adapter, and `slicer_add_python_unittest` now registers `py_slicerSTRTModuleTest`; the existing generic test remains registered separately. BSSL-005 depends on this completed testing foundation.
+Before BSSL-004, generic Slicer tests were enabled and the project-specific Python CMake registration was a placeholder. `SLIAFlowTest` remains the source of truth for the existing environment-reporting and scalar-volume metadata coverage with synthetic MRML data. The `SLIAFlowModuleTest.py` file is now the thin unittest discovery adapter, and `slicer_add_python_unittest` now registers `py_SLIAFlowModuleTest`; the existing generic test remains registered separately. BSSL-005 depends on this completed testing foundation.
 
 ## Requirements
 
-- Assess and preserve the current `slicerSTRTTest` coverage.
+- Assess and preserve the current `SLIAFlowTest` coverage.
 - Define a PowerShell entry point for Slicer command-line test execution with clear process exit codes.
 - Register the test with CMake/CTest when appropriate for the local Slicer build and extension structure.
 - Handle missing `config/local.json` and missing or unusable Slicer executables clearly.
@@ -39,8 +39,8 @@ Before BSSL-004, generic Slicer tests were enabled and the project-specific Pyth
 
 Implementation files approved for this task:
 
-- `extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt`
-- `extensions/slicerSTRT/slicerSTRT/Testing/Python/slicerSTRTModuleTest.py`
+- `extensions/SLIAFlow/SLIAFlow/Testing/Python/CMakeLists.txt`
+- `extensions/SLIAFlow/SLIAFlow/Testing/Python/SLIAFlowModuleTest.py`
 - `scripts/development/run-slicer-tests.ps1`
 - `docs/development/testing_strategy.md`
 - `.gitignore`
@@ -51,20 +51,20 @@ Implementation files approved for this task:
 ## Relevant skills and references
 
 - Slicer skill for supported test invocation and CMake/CTest integration.
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTTest.py`
-- `extensions/slicerSTRT/slicerSTRT/Testing/`
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowTest.py`
+- `extensions/SLIAFlow/SLIAFlow/Testing/`
 - `.ai/workflows/manual-verification-workflow.md`
 
 ## Implementation plan
 
 1. Verify the local Slicer executable, extension build directory, and supported Slicer
    test conventions without changing local configuration.
-2. Preserve the existing `slicerSTRTTest` coverage and expose it through the
+2. Preserve the existing `SLIAFlowTest` coverage and expose it through the
    PowerShell runner and CTest registration.
 3. Validate success, failure, missing-configuration, and missing-executable paths;
    keep Ruff/Pyright separate from Slicer test execution.
 4. Document the approved commands, explicitly distinguishing the upstream Slicer
-   SuperBuild from the standalone slicerSTRT extension build.
+   SuperBuild from the standalone SLIAFlow extension build.
 
 ## Acceptance criteria
 
@@ -77,7 +77,7 @@ Implementation files approved for this task:
 
 - Available path: run the PowerShell runner from the repository root and from `%TEMP%`;
   confirm all three existing tests pass, exit code `0`, and caller location is preserved.
-- CTest path: list tests and run `py_slicerSTRTModuleTest` with `--test-dir`
+- CTest path: list tests and run `py_SLIAFlowModuleTest` with `--test-dir`
   pointing to the standalone extension build; confirm `1/1` passes and exit code `0`.
 - Missing-configuration path: verify the runner reports missing `config/local.json`
   or its required `slicerExecutable` value and returns nonzero without modifying config.
@@ -92,7 +92,7 @@ Implementation files approved for this task:
 Manual verification performed and confirmed by the project owner.
 
 - Slicer started successfully.
-- The `slicerSTRT` module loaded correctly.
+- The `SLIAFlow` module loaded correctly.
 - Reload passed.
 - Reload and Test passed.
 - The project-specific tests passed.
@@ -112,16 +112,16 @@ Slicer test command and CMake registration details vary by local Slicer version 
 
 `docs/development/testing_strategy.md` documents the PowerShell prerequisites and
 CTest invocation. The CTest command explicitly targets the standalone
-slicerSTRT extension build with `--test-dir`; the upstream Slicer SuperBuild is
+SLIAFlow extension build with `--test-dir`; the upstream Slicer SuperBuild is
 identified separately and is not presented as the extension CTest project.
 
 ## Completion evidence
 
 Implementation and automated-test evidence is recorded below. Documentation
 verification for this pass: the CTest command includes `--test-dir`, uses a
-portable `<slicerSTRT-extension-build-directory>` placeholder, and distinguishes
+portable `<SLIAFlow-extension-build-directory>` placeholder, and distinguishes
 the upstream Slicer SuperBuild (`slicerBuildDirectory`) from the standalone
-extension build (`C:\stratum\build\slicerSTRT`). The discovery listing is documented
+extension build (`<repository-root>\build\SLIAFlow`). The discovery listing is documented
 with both expected registered test names.
 
 Lifecycle status: implementation, fast automated tests, manual Slicer
@@ -132,7 +132,7 @@ The task has been moved to `tasks/completed/`.
 
 Independent review against `main` found no blockers.
 
-- `extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt` now registers the project test with `slicer_add_python_unittest` using the thin adapter.
+- `extensions/SLIAFlow/SLIAFlow/Testing/Python/CMakeLists.txt` now registers the project test with `slicer_add_python_unittest` using the thin adapter.
 - `scripts/development/run-slicer-tests.ps1` handles the documented success and failure paths with explicit exit codes and no production-module behavior change.
 - `docs/development/testing_strategy.md` now covers both CTest discovery and focused execution with the portable `--test-dir` listing command.
 - Failure-path validation covered missing and malformed configuration, missing or empty `slicerExecutable`, nonexistent paths, unusable executables, and a deliberately failing Slicer test.
@@ -151,10 +151,10 @@ Files inspected:
 - .ai/workflows/task-lifecycle.md
 - .ai/policies/code-quality.md
 - .ai/policies/git-workflow.md
-- extensions/slicerSTRT/slicerSTRT/CMakeLists.txt
-- extensions/slicerSTRT/slicerSTRT/Testing/CMakeLists.txt
-- extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt
-- extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTTest.py
+- extensions/SLIAFlow/SLIAFlow/CMakeLists.txt
+- extensions/SLIAFlow/SLIAFlow/Testing/CMakeLists.txt
+- extensions/SLIAFlow/SLIAFlow/Testing/Python/CMakeLists.txt
+- extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowTest.py
 - docs/development/testing_strategy.md
 - config/local.example.json
 - config/local.json (read-only; values not recorded)
@@ -162,12 +162,12 @@ Files inspected:
 
 Files created:
 
-- extensions/slicerSTRT/slicerSTRT/Testing/Python/slicerSTRTModuleTest.py
+- extensions/SLIAFlow/SLIAFlow/Testing/Python/SLIAFlowModuleTest.py
 - scripts/development/run-slicer-tests.ps1
 
 Files modified:
 
-- extensions/slicerSTRT/slicerSTRT/Testing/Python/CMakeLists.txt
+- extensions/SLIAFlow/SLIAFlow/Testing/Python/CMakeLists.txt
 - docs/development/testing_strategy.md
 - .gitignore
 - tasks/completed/BSSL-004-automate-slicer-tests.md
@@ -176,15 +176,15 @@ Validation performed:
 
 - PowerShell parser: passed.
 - Adapter Python syntax compilation: passed.
-- CMake registration statically verified; the expected generated name is py_slicerSTRTModuleTest.
+- CMake registration statically verified; the expected generated name is py_SLIAFlowModuleTest.
 - PowerShell runner from the repository root: passed; all three existing tests ran and returned exit code 0.
 - PowerShell runner from %TEMP%: passed; all three existing tests ran and returned exit code 0; caller location preserved.
 - Slicer executable resolved from config/local.json; local configuration was not modified.
-- CTest listing: standalone extension build C:\stratum\build\slicerSTRT returned both registered tests:
-  - py_nomainwindow_qSlicerslicerSTRTModuleGenericTest
-  - py_slicerSTRTModuleTest
+- CTest listing: standalone extension build `<repository-root>\build\SLIAFlow` returned both registered tests:
+  - py_nomainwindow_qSlicerSLIAFlowModuleGenericTest
+  - py_SLIAFlowModuleTest
 - Focused CTest execution:
-  - Command: ctest --test-dir "C:\stratum\build\slicerSTRT" -C Release -R "^py_slicerSTRTModuleTest$" --output-on-failure
+  - Command: `ctest --test-dir "<repository-root>\build\SLIAFlow" -C Release -R "^py_SLIAFlowModuleTest$" --output-on-failure`
   - Result: 1/1 passed; 100% tests passed out of 1.
   - Exit code: 0.
   - Execution time: 3.93 seconds reported by CTest; 3.959 seconds measured by the invoking PowerShell command.

@@ -1,6 +1,6 @@
-# STRATUM / slicerSTRT
+# SLIAFlow
 
-This repository is the active Windows 11 STRATUM-related 3D Slicer development project and prototype. It is not the upstream 3D Slicer repository and is not production clinical software.
+This repository is the active Windows 11 SLIAFlow-related 3D Slicer development project and prototype. It is not the upstream 3D Slicer repository and is not production clinical software.
 
 ## Repository Layout
 
@@ -10,7 +10,7 @@ This repository is the active Windows 11 STRATUM-related 3D Slicer development p
 - `docs/development/`: project structure, coding, testing, and local development guidance.
 - `docs/slicer/`: reusable 3D Slicer technical notes for this project.
 - `docs/knowledge/`: curated, non-sensitive, version-controlled reference notes.
-- `extensions/`: STRATUM-specific Slicer extension and module development.
+- `extensions/`: SLIAFlow-specific Slicer extension and module development.
 - `source/`: local upstream Slicer source reference.
 - `apps/`: local Slicer application/build outputs.
 - `workspace/`: temporary work, experiments, scripts, and generated local artifacts.
@@ -21,7 +21,7 @@ This repository is the active Windows 11 STRATUM-related 3D Slicer development p
 
 Extension development happens under `extensions/`.
 
-Local Slicer build instructions are in `README_Stratum_Slicer_Build.md`.
+Local Slicer build instructions are in `README_SLIAFlow_Build.md`.
 
 Project structure, coding guidance, and testing guidance are in `docs/development/`.
 

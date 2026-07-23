@@ -1,6 +1,6 @@
 # Project Structure
 
-This repository contains the STRATUM-related 3D Slicer development prototype. It is not production clinical software.
+This repository contains the SLIAFlow-related 3D Slicer development prototype. It is not production clinical software.
 
 ## Top-Level Areas
 
@@ -9,7 +9,7 @@ This repository contains the STRATUM-related 3D Slicer development prototype. It
 - `tasks/`: active, review, backlog, and completed task cards.
 - `docs/`: developer and technical documentation.
 - `config/`: portable local configuration template and ignored local configuration.
-- `extensions/`: STRATUM-specific Slicer extension and module source.
+- `extensions/`: SLIAFlow-specific Slicer extension and module source.
 - `source/`: local upstream Slicer source reference.
 - `apps/`: local Slicer application and build outputs.
 - `workspace/`: temporary work, experiments, scripts, and local generated artifacts.
@@ -19,16 +19,16 @@ For exact edit permissions, follow `AGENTS.md` and the active task card.
 
 ## Development Code
 
-STRATUM extension development occurs under:
+SLIAFlow extension development occurs under:
 
 ```text
-extensions/slicerSTRT/
+extensions/SLIAFlow/
 ```
 
 The current scripted module lives under:
 
 ```text
-extensions/slicerSTRT/slicerSTRT/
+extensions/SLIAFlow/SLIAFlow/
 ```
 
 Keep final module source in `extensions/`, not in `workspace/`.

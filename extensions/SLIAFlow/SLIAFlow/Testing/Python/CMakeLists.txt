@@ -1,4 +1,4 @@
 slicer_add_python_unittest(
-  SCRIPT slicerSTRTModuleTest.py
+  SCRIPT SLIAFlowModuleTest.py
   SLICER_ARGS --no-main-window --disable-cli-modules
   )

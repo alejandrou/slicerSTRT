@@ -9,13 +9,13 @@ import slicer
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleLogic
 
 
-class slicerSTRTLogic(ScriptedLoadableModuleLogic):
+class SLIAFlowLogic(ScriptedLoadableModuleLogic):
     def __init__(self) -> None:
         super().__init__()
 
     @staticmethod
     def moduleFilePath() -> str:
-        return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "slicerSTRT.py"))
+        return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "SLIAFlow.py"))
 
     @staticmethod
     def _formatValue(value) -> str:

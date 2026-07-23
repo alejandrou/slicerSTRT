@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.28.0...3.28.0 FATAL_ERROR)
 
-project(slicerSTRT)
+project(SLIAFlow)
 
 #-----------------------------------------------------------------------------
 # Extension meta-information
-set(EXTENSION_HOMEPAGE "https://www.slicer.org/wiki/Documentation/Nightly/Extensions/slicerSTRT")
+set(EXTENSION_HOMEPAGE "https://www.slicer.org/wiki/Documentation/Nightly/Extensions/SLIAFlow")
 set(EXTENSION_CONTRIBUTORS "John Doe (AnyWare Corp.)")
 set(EXTENSION_DESCRIPTION "This is an example of a simple extension")
-set(EXTENSION_ICONURL "https://www.example.com/Slicer/Extensions/slicerSTRT.png")
-set(EXTENSION_SCREENSHOTURLS "https://www.example.com/Slicer/Extensions/slicerSTRT/Screenshots/1.png")
+set(EXTENSION_ICONURL "https://www.example.com/Slicer/Extensions/SLIAFlow.png")
+set(EXTENSION_SCREENSHOTURLS "https://www.example.com/Slicer/Extensions/SLIAFlow/Screenshots/1.png")
 set(EXTENSION_DEPENDS "NA") # Specified as a list or "NA" if no dependencies
 
 #-----------------------------------------------------------------------------
@@ -18,7 +18,7 @@ include(${Slicer_USE_FILE})
 
 #-----------------------------------------------------------------------------
 # Extension modules
-add_subdirectory(slicerSTRT)
+add_subdirectory(SLIAFlow)
 ## NEXT_MODULE
 
 #-----------------------------------------------------------------------------

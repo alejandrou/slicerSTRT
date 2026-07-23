@@ -1,45 +1,45 @@
 # Scripted Module Structure
 
-This note summarizes the current `slicerSTRT` scripted module layout.
+This note summarizes the current `SLIAFlow` scripted module layout.
 
 ## Current Layout
 
 The module entry point is:
 
 ```text
-extensions/slicerSTRT/slicerSTRT/slicerSTRT.py
+extensions/SLIAFlow/SLIAFlow/SLIAFlow.py
 ```
 
 Supporting classes live in:
 
 ```text
-extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/__init__.py
-extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTLogic.py
-extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTWidget.py
-extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTTest.py
+extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/__init__.py
+extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowLogic.py
+extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowWidget.py
+extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowTest.py
 ```
 
 The module UI file is:
 
 ```text
-extensions/slicerSTRT/slicerSTRT/Resources/UI/slicerSTRT.ui
+extensions/SLIAFlow/SLIAFlow/Resources/UI/SLIAFlow.ui
 ```
 
 Test CMake files are under:
 
 ```text
-extensions/slicerSTRT/slicerSTRT/Testing/
+extensions/SLIAFlow/SLIAFlow/Testing/
 ```
 
 ## Entry Point
 
-`slicerSTRT.py` contains module metadata, startup setup, and public exports used by Slicer.
+`SLIAFlow.py` contains module metadata, startup setup, and public exports used by Slicer.
 
-It should stay small. Keep helper implementation in `slicerSTRTLib/` so Slicer does not try to load helper files as standalone modules.
+It should stay small. Keep helper implementation in `SLIAFlowLib/` so Slicer does not try to load helper files as standalone modules.
 
 ## Logic
 
-`slicerSTRTLib/slicerSTRTLogic.py` currently defines `slicerSTRTLogic`.
+`SLIAFlowLib/SLIAFlowLogic.py` currently defines `SLIAFlowLogic`.
 
 The logic class owns reusable behavior for the module's current inspection tools:
 
@@ -52,13 +52,13 @@ The current production module does not define a parameter-node wrapper or sample
 
 ## Widget
 
-`slicerSTRTLib/slicerSTRTWidget.py` contains `slicerSTRTWidget`.
+`SLIAFlowLib/SLIAFlowWidget.py` contains `SLIAFlowWidget`.
 
 The widget loads the `.ui` file, connects UI controls, synchronizes UI state, calls logic methods, and displays results.
 
 ## Tests
 
-`slicerSTRTLib/slicerSTRTTest.py` contains `slicerSTRTTest`.
+`SLIAFlowLib/SLIAFlowTest.py` contains `SLIAFlowTest`.
 
 Tests should focus on logic and important Slicer integration behavior.
 

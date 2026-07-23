@@ -1,6 +1,6 @@
 # Slicer Module Architecture
 
-This document summarizes Slicer module architecture concepts used by the STRATUM prototype.
+This document summarizes Slicer module architecture concepts used by the SLIAFlow prototype.
 
 ## Core Concepts
 

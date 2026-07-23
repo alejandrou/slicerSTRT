@@ -2,9 +2,9 @@ $ErrorActionPreference = "Stop"
 
 $repositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
 $configPath = Join-Path $repositoryRoot "config\local.json"
-$modulePath = Join-Path $repositoryRoot "extensions\slicerSTRT\slicerSTRT"
+$modulePath = Join-Path $repositoryRoot "extensions\SLIAFlow\SLIAFlow"
 $testPath = Join-Path $modulePath "Testing\Python"
-$testName = "slicerSTRTModuleTest"
+$testName = "SLIAFlowModuleTest"
 
 function Stop-WithError {
     param([string]$Message)

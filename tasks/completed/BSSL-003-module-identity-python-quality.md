@@ -16,13 +16,13 @@ related_adrs: []
 
 ## Goal
 
-Complete one small, independently reviewable development-foundation task that aligns the remaining user-visible slicerSTRT module metadata with the active STRATUM project identity, establishes practical Ruff and Pyright baselines for project-owned Python, and provides one PowerShell command for running both tools locally.
+Complete one small, independently reviewable development-foundation task that aligns the remaining user-visible SLIAFlow module metadata with the active SLIAFlow project identity, establishes practical Ruff and Pyright baselines for project-owned Python, and provides one PowerShell command for running both tools locally.
 
 ## Context
 
 BSSL-002 consolidated the repository documentation and is completed and merged into `main`. This task must not repeat or redesign that documentation work.
 
-The current scripted module already provides Check Environment and Inspect Volume behavior. Its help and acknowledgement metadata still call the module a `learning sandbox`, which no longer matches the repository identity in `AGENTS.md`. The project-owned Python currently consists of the entry point and four files in `slicerSTRTLib`; there is no committed Ruff or Pyright configuration and no combined local Python-quality command.
+The current scripted module already provides Check Environment and Inspect Volume behavior. Its help and acknowledgement metadata still call the module a `learning sandbox`, which no longer matches the repository identity in `AGENTS.md`. The project-owned Python currently consists of the entry point and four files in `SLIAFlowLib`; there is no committed Ruff or Pyright configuration and no combined local Python-quality command.
 
 The local Slicer runtime could not be verified during specification because `config/local.json` was absent. The user subsequently provided the local Slicer runtime details and embedded Python version, allowing Ruff's `target-version` to be set to `py312`.
 
@@ -32,28 +32,28 @@ This task does not require an ADR. The metadata correction and initial quality-t
 
 ### Module identity
 
-- Update only obsolete user-visible help and acknowledgement wording in `slicerSTRT.py`.
-- Describe slicerSTRT accurately as:
-  - part of the active STRATUM-related 3D Slicer prototype;
+- Update only obsolete user-visible help and acknowledgement wording in `SLIAFlow.py`.
+- Describe SLIAFlow accurately as:
+  - part of the active SLIAFlow-related 3D Slicer prototype;
   - currently providing environment and volume-inspection tools;
   - not production clinical software;
-  - not implementing validated clinical or STRATUM algorithms.
+  - not implementing validated clinical or SLIAFlow algorithms.
 - Remove active module-metadata wording that presents the module as a `learning sandbox`, a disposable training module, or equivalent.
-- Preserve the module title `slicerSTRT`, category `STRATUM`, contributors, dependencies, public Slicer class names, and all existing behavior.
+- Preserve the module title `SLIAFlow`, category `SLIAFlow`, contributors, dependencies, public Slicer class names, and all existing behavior.
 - Do not change Check Environment, Inspect Volume, widget, logic, test, MRML, or UI behavior in this workstream.
 - Keep user-visible strings translatable through the existing Slicer internationalization pattern.
 
 ### Ruff baseline
 
 - Add a minimal `pyproject.toml` containing Ruff configuration only; do not add a build system, package metadata, runtime dependencies, or Slicer extension dependencies.
-- Limit analysis to Python files under `extensions/slicerSTRT/slicerSTRT/`.
+- Limit analysis to Python files under `extensions/SLIAFlow/SLIAFlow/`.
 - Explicitly exclude `source/`, `apps/`, `knowledge/`, `workspace/`, local configuration, generated files, caches, virtual environments, and build outputs.
 - Select the initial rule families `E4`, `E7`, `E9`, `F`, `I`, and `B`:
   - `E4`, `E7`, and `E9` for import, statement, and runtime/syntax-related pycodestyle errors;
   - `F` for Pyflakes import, undefined-name, and unused-import diagnostics;
   - `I` for import ordering;
   - `B` for low-risk flake8-bugbear correctness checks.
-- Do not enable generic naming rules such as `N`; established public classes including `slicerSTRT`, `slicerSTRTWidget`, `slicerSTRTLogic`, and `slicerSTRTTest` must not be renamed.
+- Do not enable generic naming rules such as `N`; established public classes including `SLIAFlow`, `SLIAFlowWidget`, `SLIAFlowLogic`, and `SLIAFlowTest` must not be renamed.
 - Do not enable Ruff formatting, repository-wide formatting rules, or broad style families that create large churn.
 - The local quality script must run `ruff check` without `--fix` or unsafe fixes. Any fixes must be reviewed and applied explicitly.
 - Verify the configured Slicer embedded Python version before setting Ruff `target-version`. Omit `target-version` if it cannot be verified from the configured runtime.
@@ -61,8 +61,8 @@ This task does not require an ADR. The metadata correction and initial quality-t
 ### Pyright baseline
 
 - Add `pyrightconfig.json` with `typeCheckingMode` set to `basic`.
-- Include only `extensions/slicerSTRT/` project-owned Python and exclude upstream, protected, generated, build, cache, virtual-environment, and local-only areas.
-- Add `extensions/slicerSTRT/slicerSTRT` to `extraPaths` so imports of `slicerSTRTLib` resolve from the repository root.
+- Include only `extensions/SLIAFlow/` project-owned Python and exclude upstream, protected, generated, build, cache, virtual-environment, and local-only areas.
+- Add `extensions/SLIAFlow/SLIAFlow` to `extraPaths` so imports of `SLIAFlowLib` resolve from the repository root.
 - Keep syntax errors, undefined local symbols, local import diagnostics, and the ordinary obvious-type diagnostics from `basic` mode enabled.
 - Treat missing imports from the external Slicer runtime as warnings rather than errors, and suppress `reportMissingModuleSource` noise caused by compiled or runtime-provided modules. This exception exists because normal system Python does not provide the real `slicer`, `qt`, `ctk`, and Slicer-bundled `vtk` runtime.
 - Keep local import findings visible. Do not ignore the extension tree, disable all diagnostics, or use an `ignore` entry that hides project files.
@@ -77,7 +77,7 @@ This task does not require an ADR. The metadata correction and initial quality-t
 - Check both `ruff` and `pyright` with clear preflight messages before running checks.
 - If either tool is unavailable, identify the missing command, state that no installation was attempted, and exit non-zero.
 - Print distinct Ruff and Pyright section headings.
-- Run `ruff check extensions/slicerSTRT/slicerSTRT` from the repository root.
+- Run `ruff check extensions/SLIAFlow/SLIAFlow` from the repository root.
 - Run `pyright --project pyrightconfig.json` from the repository root.
 - Attempt both checks when both commands are available, even if Ruff fails, and return non-zero if either check fails.
 - Restore the caller's location when the script exits.
@@ -125,11 +125,11 @@ This task does not require an ADR. The metadata correction and initial quality-t
 
 Only these files may be created or modified during implementation or task-card lifecycle transitions:
 
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRT.py`
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/__init__.py`, only for a directly reported quality finding
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTLogic.py`, only for a directly reported quality finding
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTWidget.py`, only for a directly reported quality finding
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTTest.py`, only for a directly reported quality finding
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlow.py`
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/__init__.py`, only for a directly reported quality finding
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowLogic.py`, only for a directly reported quality finding
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowWidget.py`, only for a directly reported quality finding
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowTest.py`, only for a directly reported quality finding
 - `pyproject.toml`
 - `pyrightconfig.json`
 - `scripts/development/run-python-quality.ps1`
@@ -153,7 +153,7 @@ No other file is authorized. Update this task card and obtain human approval bef
 - `.ai/policies/medical-data-policy.md`.
 - `.ai/policies/algorithm-boundary-policy.md`.
 - `config/local.example.json` for the portable local Slicer configuration shape.
-- Current project-owned Python under `extensions/slicerSTRT/slicerSTRT/`.
+- Current project-owned Python under `extensions/SLIAFlow/SLIAFlow/`.
 
 ## Implementation plan
 
@@ -175,15 +175,15 @@ No other file is authorized. Update this task card and obtain human approval bef
 - The script runs Ruff and Pyright when both are available.
 - The script reports each missing required command clearly, does not install anything, and exits non-zero when a required tool is unavailable.
 - The script attempts both checks when available and exits non-zero if either check fails.
-- Ruff checks only Python under `extensions/slicerSTRT/slicerSTRT/`.
-- Pyright checks only project-owned Python under `extensions/slicerSTRT/` and resolves `slicerSTRTLib` through the configured `extraPaths`.
+- Ruff checks only Python under `extensions/SLIAFlow/SLIAFlow/`.
+- Pyright checks only project-owned Python under `extensions/SLIAFlow/` and resolves `SLIAFlowLib` through the configured `extraPaths`.
 - Unavailable Slicer runtime imports do not create an unusable false-positive wall.
 - Missing-import and missing-module-source treatment, plus any narrower suppressions, are documented with reasons.
 - Useful syntax, undefined-symbol, local-import, and obvious-type diagnostics remain enabled.
 - Ruff uses `E4`, `E7`, `E9`, `F`, `I`, and `B`; no generic naming rules or formatter are enabled.
 - No Ruff target Python is guessed.
 - No obsolete `learning sandbox` or disposable-training wording remains in active module metadata.
-- Help and acknowledgement text accurately state the STRATUM prototype, current inspection tools, non-clinical status, and absence of validated clinical or STRATUM algorithms.
+- Help and acknowledgement text accurately state the SLIAFlow prototype, current inspection tools, non-clinical status, and absence of validated clinical or SLIAFlow algorithms.
 - Module title, category, contributors, dependencies, public Slicer class names, Check Environment, and Inspect Volume remain unchanged.
 - No large fake stubs, runtime dependencies, broad automated rewrite, project-wide formatting, or unrelated cleanup is introduced.
 - Every production Python correction is directly tied to a baseline diagnostic and listed individually in completion evidence.
@@ -210,8 +210,8 @@ Do not run automated fixes across the repository. Automated Slicer test executio
 
 Using the Slicer executable configured by `config/local.json`, the user must:
 
-1. Open Slicer and load the slicerSTRT module.
-2. Confirm the module title remains `slicerSTRT` and the category remains `STRATUM`.
+1. Open Slicer and load the SLIAFlow module.
+2. Confirm the module title remains `SLIAFlow` and the category remains `SLIAFlow`.
 3. Confirm the revised help and acknowledgement text displays correctly and communicates the prototype and non-clinical boundaries.
 4. Run Check Environment and confirm it still works.
 5. Select an allowed synthetic, public, anonymized, or mock volume and run Inspect Volume; confirm it still works.
@@ -262,11 +262,11 @@ Files inspected:
 - Presence of ignored `config/local.json`, without modifying private configuration
 - `.gitignore`
 - `docs/development/coding_standards.md`
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRT.py`
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/__init__.py`
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTLogic.py`
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTWidget.py`
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTTest.py`
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlow.py`
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/__init__.py`
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowLogic.py`
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowWidget.py`
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowTest.py`
 - Installed Slicer skill, used only for public scripted-module class naming, metadata internationalization, and Reload / Reload and Test verification guidance
 
 Files created:
@@ -278,16 +278,16 @@ Files created:
 Files modified:
 
 - `.gitignore`: added `.ruff_cache/` and `/.venv/` so approved local quality artifacts and the project development environment remain untracked.
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRT.py`: replaced obsolete learning-sandbox help and acknowledgement wording, removed one unused import, sorted imports, and made the three required public Slicer exports explicit. Title, category, contributors, dependencies, classes, widget/logic behavior, and tests were not changed.
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/__init__.py`: made its three public package exports explicit for Ruff without changing exported names.
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTLogic.py`: corrected standard-library import ordering only.
-- `extensions/slicerSTRT/slicerSTRT/slicerSTRTLib/slicerSTRTWidget.py`: added narrow `typing.cast` calls for the initialized logic object at the two callback use sites; runtime values and behavior are unchanged.
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlow.py`: replaced obsolete learning-sandbox help and acknowledgement wording, removed one unused import, sorted imports, and made the three required public Slicer exports explicit. Title, category, contributors, dependencies, classes, widget/logic behavior, and tests were not changed.
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/__init__.py`: made its three public package exports explicit for Ruff without changing exported names.
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowLogic.py`: corrected standard-library import ordering only.
+- `extensions/SLIAFlow/SLIAFlow/SLIAFlowLib/SLIAFlowWidget.py`: added narrow `typing.cast` calls for the initialized logic object at the two callback use sites; runtime values and behavior are unchanged.
 - `docs/development/coding_standards.md`: added only the concise `Local Python Quality Checks` section.
 - This task card: activation state and implementation evidence.
 
 Configured Ruff baseline:
 
-- Analysis include: `extensions/slicerSTRT/**/*.py`.
+- Analysis include: `extensions/SLIAFlow/**/*.py`.
 - Selected rules: `E4`, `E7`, `E9`, `F`, `I`, and `B`.
 - No `N` naming rules, formatter, automatic fixes, unsafe fixes, build metadata, or runtime dependencies were added.
 - Exclusions cover `apps`, `knowledge`, `source`, `workspace`, `config/local.json`, Git metadata, caches, virtual environments, `Build`/`build`, `__pycache__`, and generated directories.
@@ -295,9 +295,9 @@ Configured Ruff baseline:
 
 Configured Pyright baseline:
 
-- Analysis include: `extensions/slicerSTRT`.
+- Analysis include: `extensions/SLIAFlow`.
 - `typeCheckingMode` is `basic`.
-- `extraPaths` contains `extensions/slicerSTRT/slicerSTRT` so `slicerSTRTLib` resolves locally.
+- `extraPaths` contains `extensions/SLIAFlow/SLIAFlow` so `SLIAFlowLib` resolves locally.
 - Exclusions cover `apps`, `knowledge`, `source`, `workspace`, `config/local.json`, Git metadata, caches, virtual environments, `Build`/`build`, `__pycache__`, and generated directories.
 - No project path is ignored, no machine-specific interpreter path is committed, and no fake API stubs were added.
 
@@ -311,15 +311,15 @@ Commands and results:
 
 - Initial `Get-Command ruff` and `Get-Command pyright` checks reported that neither command was available on `PATH`.
 - Initial `./scripts/development/run-python-quality.ps1` runs from the repository root and another working directory printed clear errors for both missing commands, stated that no tools were installed or updated, and returned exit code `1`.
-- In-memory mock commands, used only to validate script control flow, confirmed that the script resolves `C:\stratum` from its own location, invokes `ruff check extensions/slicerSTRT/slicerSTRT`, invokes `pyright --project pyrightconfig.json`, attempts Pyright after a mocked Ruff failure, returns `1` on a mocked check failure, and returns `0` when both mocks succeed. These mocks are not evidence that Ruff or Pyright passed.
+- In-memory mock commands, used only to validate script control flow, confirmed that the script resolves the repository root from its own location, invokes `ruff check extensions/SLIAFlow/SLIAFlow`, invokes `pyright --project pyrightconfig.json`, attempts Pyright after a mocked Ruff failure, returns `1` on a mocked check failure, and returns `0` when both mocks succeed. These mocks are not evidence that Ruff or Pyright passed.
 - PowerShell's parser reported zero syntax errors for `scripts/development/run-python-quality.ps1`.
 - `ConvertFrom-Json` parsed `pyrightconfig.json` successfully and confirmed `basic`, `warning`, and `none` for the configured checking and diagnostic levels.
 - System Python is 3.10.11. It parsed all five project-owned Python files with `ast.parse` successfully without importing Slicer or generating cache files.
-- At the user's explicit follow-up request, system Python 3.10.11 created the ignored project environment at `C:\stratum\.venv` with `python -m venv .venv` so it persists across branch switches in this working tree.
+- At the user's explicit follow-up request, system Python 3.10.11 created the ignored project environment at the repository-root `.venv` directory with `python -m venv .venv` so it persists across branch switches in this working tree.
 - After activating `.venv`, its pip was upgraded to 26.1.2, then `python -m pip install ruff pyright` installed Ruff 0.15.21, Pyright 1.1.411, and their declared transitive packages. No Slicer runtime dependency or tracked dependency manifest was added.
-- Activation verification confirmed `VIRTUAL_ENV`, Python, Ruff, and Pyright all resolve inside `C:\stratum\.venv`.
+- Activation verification confirmed `VIRTUAL_ENV`, Python, Ruff, and Pyright all resolve inside the repository-root `.venv` directory.
 - Pyright initialized its bundled Node runtime inside `.venv` on first use.
-- After the root environment passed validation, the exact previous `%LOCALAPPDATA%\STRATUM\venvs\BSSL-003` directory was path-checked and recursively removed. The parent environment area and all other local paths were left untouched.
+- After the root environment passed validation, the exact previous `%LOCALAPPDATA%\SLIAFlow\venvs\BSSL-003` directory was path-checked and recursively removed. The parent environment area and all other local paths were left untouched.
 - Real initial analysis reported nine Ruff errors: two `I001` import-order findings and seven `F401` unused/import-export findings. Real initial Pyright analysis reported two `reportOptionalMemberAccess` errors and twelve expected `reportMissingImports` warnings.
 - After approved mechanical corrections, an intermediate run reported one remaining Ruff `I001`, zero Pyright errors, and eleven expected runtime-import warnings.
 - Final `./scripts/development/run-python-quality.ps1` runs with the root `.venv` active, from the repository root and from `%TEMP%`, both returned exit code `0`.
@@ -331,7 +331,7 @@ Ruff result:
 
 - Ruff 0.15.21 loaded `pyproject.toml` successfully.
 - Final result: `All checks passed!`, exit code `0`.
-- Analysis remained scoped to `extensions/slicerSTRT/slicerSTRT` with rules `E4`, `E7`, `E9`, `F`, `I`, and `B`.
+- Analysis remained scoped to `extensions/SLIAFlow/SLIAFlow` with rules `E4`, `E7`, `E9`, `F`, `I`, and `B`.
 
 Pyright result:
 
@@ -341,13 +341,13 @@ Pyright result:
 
 Behavior-preserving Python corrections:
 
-- `slicerSTRT.py`: removed the unused `import slicer` reported by Ruff `F401`; no reference used it.
-- `slicerSTRT.py`: ordered its import block as reported by Ruff `I001`.
-- `slicerSTRT.py`: changed the `slicerSTRTLogic`, `slicerSTRTTest`, and `slicerSTRTWidget` imports to explicit same-name re-exports, preserving the public names required by Slicer while resolving Ruff `F401` and the final `I001` layout finding.
-- `slicerSTRTLib/__init__.py`: changed each of the same three package imports to explicit same-name re-exports, preserving the public package API while resolving three Ruff `F401` findings.
-- `slicerSTRTLogic.py`: moved `import importlib` before `import os`, resolving Ruff `I001` without runtime effect.
-- `slicerSTRTWidget.py`: imported `typing.cast` and cast `self.logic` to `slicerSTRTLogic` locally before each of the two callback calls, resolving two Pyright `reportOptionalMemberAccess` errors. `cast` returns the original object unchanged at runtime.
-- The `slicerSTRT.py` help and acknowledgement edit is the separately required metadata identity update, not a quality-tool correction. No application logic changed.
+- `SLIAFlow.py`: removed the unused `import slicer` reported by Ruff `F401`; no reference used it.
+- `SLIAFlow.py`: ordered its import block as reported by Ruff `I001`.
+- `SLIAFlow.py`: changed the `SLIAFlowLogic`, `SLIAFlowTest`, and `SLIAFlowWidget` imports to explicit same-name re-exports, preserving the public names required by Slicer while resolving Ruff `F401` and the final `I001` layout finding.
+- `SLIAFlowLib/__init__.py`: changed each of the same three package imports to explicit same-name re-exports, preserving the public package API while resolving three Ruff `F401` findings.
+- `SLIAFlowLogic.py`: moved `import importlib` before `import os`, resolving Ruff `I001` without runtime effect.
+- `SLIAFlowWidget.py`: imported `typing.cast` and cast `self.logic` to `SLIAFlowLogic` locally before each of the two callback calls, resolving two Pyright `reportOptionalMemberAccess` errors. `cast` returns the original object unchanged at runtime.
+- The `SLIAFlow.py` help and acknowledgement edit is the separately required metadata identity update, not a quality-tool correction. No application logic changed.
 
 Remaining diagnostics and verification:
 
@@ -362,8 +362,8 @@ Remaining diagnostics and verification:
   - Core Slicer imports: PASS
   - numpy: PASS
   - SimpleITK: PASS
-  - Module title remained `slicerSTRT`: PASS
-  - Module category remained `STRATUM`: PASS
+  - Module title remained `SLIAFlow`: PASS
+  - Module category remained `SLIAFlow`: PASS
   - Revised help text displayed correctly: PASS
   - Revised acknowledgement text displayed correctly: PASS
   - Check Environment: PASS

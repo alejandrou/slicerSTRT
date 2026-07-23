@@ -5,11 +5,11 @@ import slicer
 import vtk
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleTest
 
-from .slicerSTRTLogic import slicerSTRTLogic
-from .slicerSTRTParameterNode import slicerSTRTParameterNode
+from .SLIAFlowLogic import SLIAFlowLogic
+from .SLIAFlowParameterNode import SLIAFlowParameterNode
 
 
-class slicerSTRTTest(ScriptedLoadableModuleTest):
+class SLIAFlowTest(ScriptedLoadableModuleTest):
     def setUp(self):
         slicer.mrmlScene.Clear()
 
@@ -30,7 +30,7 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
 
         self.delayDisplay("Starting the test")
 
-        logic = slicerSTRTLogic()
+        logic = SLIAFlowLogic()
         report = logic.collectEnvironmentReport()
 
         self.assertIn(report["summaryStatus"], ("PASS", "WARN"))
@@ -38,7 +38,7 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
         self.assertTrue(report["pythonVersion"])
         self.assertTrue(report["pythonExecutablePath"])
         self.assertTrue(report["currentWorkingDirectory"])
-        self.assertTrue(report["moduleFilePath"].endswith("slicerSTRT.py"))
+        self.assertTrue(report["moduleFilePath"].endswith("SLIAFlow.py"))
         self.assertTrue(report["sceneNodeCount"] >= 0)
 
         for moduleName in ("slicer", "vtk", "qt", "ctk"):
@@ -53,7 +53,7 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
         self.delayDisplay("Test passed")
 
     def test_inspectVolumeMetadata_withoutSelection(self):
-        logic = slicerSTRTLogic()
+        logic = SLIAFlowLogic()
         report = logic.inspectVolumeMetadata(None)
 
         self.assertEqual(report["summaryStatus"], "WARN")
@@ -61,7 +61,7 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
         self.assertIn("Select a volume node", report["reportText"])
 
     def test_inspectVolumeMetadata_withScalarVolume(self):
-        logic = slicerSTRTLogic()
+        logic = SLIAFlowLogic()
 
         volumeNode = self._createSyntheticVolume()
 
@@ -92,7 +92,7 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
         parameterNode = self._parameterNode()
         parameterNode.inputVolumeNode = self._createSyntheticVolume()
 
-        sceneFilePath = os.path.join(slicer.util.tempDirectory(), "slicerSTRT-persistent-state.mrml")
+        sceneFilePath = os.path.join(slicer.util.tempDirectory(), "SLIAFlow-persistent-state.mrml")
         self.assertTrue(slicer.util.saveScene(sceneFilePath))
         slicer.mrmlScene.Clear()
         slicer.util.loadScene(sceneFilePath)
@@ -105,7 +105,7 @@ class slicerSTRTTest(ScriptedLoadableModuleTest):
 
     @staticmethod
     def _parameterNode():
-        return cast(Callable[[object], slicerSTRTParameterNode], slicerSTRTParameterNode)(slicerSTRTLogic().getParameterNode())
+        return cast(Callable[[object], SLIAFlowParameterNode], SLIAFlowParameterNode)(SLIAFlowLogic().getParameterNode())
 
     @staticmethod
     def _createSyntheticVolume():

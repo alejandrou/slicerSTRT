@@ -6,11 +6,11 @@ from slicer.i18n import tr as _
 from slicer.ScriptedLoadableModule import ScriptedLoadableModuleWidget
 from slicer.util import VTKObservationMixin
 
-from .slicerSTRTLogic import slicerSTRTLogic
-from .slicerSTRTParameterNode import slicerSTRTParameterNode
+from .SLIAFlowLogic import SLIAFlowLogic
+from .SLIAFlowParameterNode import SLIAFlowParameterNode
 
 
-class slicerSTRTWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
+class SLIAFlowWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     def __init__(self, parent=None) -> None:
         ScriptedLoadableModuleWidget.__init__(self, parent)
         VTKObservationMixin.__init__(self)
@@ -21,12 +21,12 @@ class slicerSTRTWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     def setup(self) -> None:
         ScriptedLoadableModuleWidget.setup(self)
 
-        uiWidget = slicer.util.loadUI(self.resourcePath("UI/slicerSTRT.ui"))
+        uiWidget = slicer.util.loadUI(self.resourcePath("UI/SLIAFlow.ui"))
         self.layout.addWidget(uiWidget)
         self.ui = slicer.util.childWidgetVariables(uiWidget)
         uiWidget.setMRMLScene(slicer.mrmlScene)
 
-        self.logic = slicerSTRTLogic()
+        self.logic = SLIAFlowLogic()
         self.ui.inputVolumeNodeComboBox.nodeTypes = ["vtkMRMLScalarVolumeNode", "vtkMRMLVectorVolumeNode", "vtkMRMLLabelMapVolumeNode"]
         self.ui.inputVolumeNodeComboBox.noneEnabled = True
         self.ui.inputVolumeNodeComboBox.addEnabled = False
@@ -59,12 +59,12 @@ class slicerSTRTWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             self.initializeParameterNode()
 
     def initializeParameterNode(self) -> None:
-        logic = cast(slicerSTRTLogic, self.logic)
+        logic = cast(SLIAFlowLogic, self.logic)
         self.setParameterNode(logic.getParameterNode())
 
     def setParameterNode(self, parameterNode) -> None:
         if isinstance(parameterNode, slicer.vtkMRMLScriptedModuleNode):
-            parameterNode = cast(Callable[[object], slicerSTRTParameterNode], slicerSTRTParameterNode)(parameterNode)
+            parameterNode = cast(Callable[[object], SLIAFlowParameterNode], SLIAFlowParameterNode)(parameterNode)
 
         if self._parameterNode is not None:
             self.removeObserver(self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
@@ -111,15 +111,15 @@ class slicerSTRTWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
     def onCheckEnvironmentButton(self) -> None:
         with slicer.util.tryWithErrorDisplay(_("Failed to run the environment check."), waitCursor=True):
-            logic = cast(slicerSTRTLogic, self.logic)
+            logic = cast(SLIAFlowLogic, self.logic)
             report = logic.collectEnvironmentReport()
             self._setSummaryState(report["summaryStatus"], report["summaryMessage"])
             self.ui.environmentResultsTextEdit.setPlainText(report["reportText"])
 
     def onInspectVolumeButton(self) -> None:
         with slicer.util.tryWithErrorDisplay(_("Failed to inspect the selected volume."), waitCursor=True):
-            logic = cast(slicerSTRTLogic, self.logic)
-            parameterNode = cast(slicerSTRTParameterNode, self._parameterNode)
+            logic = cast(SLIAFlowLogic, self.logic)
+            parameterNode = cast(SLIAFlowParameterNode, self._parameterNode)
             report = logic.inspectVolumeMetadata(parameterNode.inputVolumeNode)
             self._setVolumeMetadataState(report["summaryStatus"], report["summaryMessage"])
             self.ui.volumeMetadataResultsTextEdit.setPlainText(report["reportText"])

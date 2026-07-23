@@ -1,6 +1,6 @@
-# STRATUM / slicerSTRT Agent Router
+# SLIAFlow Agent Router
 
-This repository is the active Windows 11 STRATUM-related 3D Slicer development project and prototype.
+This repository is the active Windows 11 SLIAFlow-related 3D Slicer development project and prototype.
 
 It is not the upstream 3D Slicer repository and is not production clinical software.
 

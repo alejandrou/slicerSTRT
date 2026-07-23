@@ -1,6 +1,6 @@
 {
   "include": [
-    "extensions/slicerSTRT"
+    "extensions/SLIAFlow"
   ],
   "exclude": [
     "apps",
@@ -20,7 +20,7 @@
     "**/venv"
   ],
   "extraPaths": [
-    "extensions/slicerSTRT/slicerSTRT"
+    "extensions/SLIAFlow/SLIAFlow"
   ],
   "typeCheckingMode": "basic",
   "reportMissingImports": "warning",
