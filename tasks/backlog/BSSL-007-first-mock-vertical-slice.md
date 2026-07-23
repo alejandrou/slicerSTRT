@@ -18,7 +18,7 @@ Implement the first complete non-clinical workflow from selected Slicer input, t
 
 ## Context
 
-BSSL-006 defines the provider boundary. This task should prove the boundary end to end with a deliberately mock workflow before any real STRATUM-related algorithm is considered.
+BSSL-006 defines the provider boundary. This task should prove the boundary end to end with a deliberately mock workflow before any real SLIAFlow-related algorithm is considered.
 
 ## Requirements
 
@@ -31,7 +31,7 @@ BSSL-006 defines the provider boundary. This task should prove the boundary end 
 
 ## Out of scope
 
-- Selecting, implementing, or integrating a real STRATUM algorithm.
+- Selecting, implementing, or integrating a real SLIAFlow algorithm.
 - Clinical interpretation, validation, reporting, or claims.
 - Expanding the workflow beyond the smallest approved vertical slice.
 

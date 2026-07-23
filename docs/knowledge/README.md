@@ -1,6 +1,6 @@
 # Knowledge
 
-This folder is for curated, non-sensitive, version-controlled reference notes useful to the STRATUM-related Slicer prototype.
+This folder is for curated, non-sensitive, version-controlled reference notes useful to the SLIAFlow-related Slicer prototype.
 
 Use `docs/knowledge/` for concise project reference notes that are safe and useful for the repository history.
 

@@ -14,7 +14,7 @@ related_adrs: []
 
 ## Goal
 
-Define a stable, testable boundary between the Slicer module and future STRATUM-related processing implementations.
+Define a stable, testable boundary between the Slicer module and future SLIAFlow-related processing implementations.
 
 ## Context
 
@@ -30,7 +30,7 @@ The current module provides inspection tools only. Future processing must remain
 
 ## Out of scope
 
-- A real STRATUM algorithm or any unvalidated clinical algorithm implementation.
+- A real SLIAFlow algorithm or any unvalidated clinical algorithm implementation.
 - Clinical validation, performance claims, or clinical reporting.
 - Choosing implementation details that require a new architectural decision without recording it.
 

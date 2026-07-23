@@ -29,7 +29,7 @@ Push-Location -LiteralPath $repositoryRoot
 try {
     Write-Host ""
     Write-Host "== Ruff =="
-    & $ruffCommand check "extensions/slicerSTRT/slicerSTRT"
+    & $ruffCommand check "extensions/SLIAFlow/SLIAFlow"
     $ruffExitCode = $LASTEXITCODE
     if ($ruffExitCode -ne 0) {
         Write-Host "ERROR: Ruff failed with exit code $ruffExitCode." -ForegroundColor Red

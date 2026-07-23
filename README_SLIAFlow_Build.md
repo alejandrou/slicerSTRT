@@ -1,6 +1,6 @@
-# STRATUM Slicer Build On Windows
+# SLIAFlow Slicer Build On Windows
 
-This document describes the local Windows 11 build setup for the STRATUM-related Slicer prototype.
+This document describes the local Windows 11 build setup for the SLIAFlow-related Slicer prototype.
 
 Machine-specific Slicer paths used by repository tooling belong in `config/local.json`. Use `config/local.example.json` as the portable template.
 
@@ -34,7 +34,7 @@ Copy `config/local.example.json` to `config/local.json` and set the local paths 
 - `apps/SR/`: conventional local Slicer SuperBuild/build tree for this workspace.
 - `apps/SR/Slicer-build/`: conventional final Slicer build output.
 - `workspace/build_scripts/`: optional local build helper scripts.
-- `extensions/`: STRATUM-specific Slicer extension code.
+- `extensions/`: SLIAFlow-specific Slicer extension code.
 
 The `apps/` build tree is generated output. Do not commit it.
 The `workspace/` tree is ignored local material. Scripts under `workspace/build_scripts/` may contain machine-specific paths, are not guaranteed to exist in every clone, and local paths must not be committed.
@@ -104,21 +104,21 @@ Clean build:
 
 ```bat
 cd /d <repository>\workspace\build_scripts
-Stratum_Release_Build_ASCII.bat clean
+SLIAFlow_Release_Build_ASCII.bat clean
 ```
 
 Incremental build:
 
 ```bat
 cd /d <repository>\workspace\build_scripts
-Stratum_Release_Build_ASCII.bat
+SLIAFlow_Release_Build_ASCII.bat
 ```
 
 Optional launcher:
 
 ```bat
 cd /d <repository>\workspace\build_scripts
-Start_Stratum_Slicer_Release_ASCII.bat
+Start_SLIAFlow_Slicer_Release_ASCII.bat
 ```
 
 After a successful build, verify that these executables exist:
@@ -192,7 +192,7 @@ start "" "%SLICER_BUILD_DIR%\Slicer-build\Slicer.exe"
 
 ## Scripted Module Development
 
-Normal STRATUM extension work should happen under `extensions/`.
+Normal SLIAFlow extension work should happen under `extensions/`.
 
 For Python scripted modules, a full Slicer rebuild is usually not required. Start Slicer, enable Developer Mode, open the module, then use Reload or Reload and Test.
 
